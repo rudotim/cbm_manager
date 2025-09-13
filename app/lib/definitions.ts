@@ -5,7 +5,7 @@
 import { RowDataPacket } from "mysql2";
 
 // However, these types are generated automatically if you're using an ORM such as Prisma.
-export type User = {
+export type User = RowDataPacket & {
   id: string;
   name: string;
   email: string;
@@ -19,6 +19,21 @@ export type Customer = {
   image_url: string;
 };
 
+// export type Invoice = {
+//   id: string;
+//   customer_id: string;
+//   amount: number;
+//   date: string;
+//   // In TypeScript, this is called a string union type.
+//   // It means that the "status" property can only be one of the two strings: 'pending' or 'paid'.
+//   status: "pending" | "paid";
+// };
+
+// export type Revenue = {
+//   month: string;
+//   revenue: number;
+// };
+
 export type Invoice = {
   id: string;
   customer_id: string;
@@ -29,21 +44,7 @@ export type Invoice = {
   status: "pending" | "paid";
 };
 
-// export type Revenue = {
-//   month: string;
-//   revenue: number;
-// };
-
-export interface Revenue extends RowDataPacket {
-  MembershipID: number;
-  CodeNo: number;
-  Date: string;
-  Description: string;
-  Amount: number;
-  Payment: number;
-}
-
-export type LatestInvoice = {
+export type LatestInvoice = RowDataPacket & {
   id: string;
   name: string;
   image_url: string;
@@ -52,11 +53,24 @@ export type LatestInvoice = {
 };
 
 // The database returns a number for amount, but we later format it to a string with the formatCurrency function
+// export type LatestInvoiceRaw = Omit<LatestInvoice, "amount"> & {
+//   amount: number;
+// };
+
 export type LatestInvoiceRaw = Omit<LatestInvoice, "amount"> & {
   amount: number;
 };
 
-export type InvoicesTable = {
+export type Revenue = RowDataPacket & {
+  MembershipID: number;
+  CodeNo: number;
+  Date: string;
+  Description: string;
+  Amount: number;
+  Payment: number;
+};
+
+export type InvoicesTable = RowDataPacket & {
   id: string;
   customer_id: string;
   name: string;

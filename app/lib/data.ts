@@ -4,6 +4,7 @@ import {
   CustomersTableType,
   InvoiceForm,
   InvoicesTable,
+  LatestInvoice,
   LatestInvoiceRaw,
   Revenue,
 } from "./definitions";
@@ -11,8 +12,6 @@ import { formatCurrency } from "./utils";
 
 //const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
 import mysql from "mysql2/promise";
-
-console.log("mysql url>", process.env.MYSQL_URL!);
 
 const sql = await mysql.createConnection({
   host: process.env.MYSQL_URL!,
@@ -22,15 +21,6 @@ const sql = await mysql.createConnection({
 });
 
 export async function fetchRevenue(): Promise<Revenue[]> {
-  // new Promise((resolve, reject) => {
-  const d = await sql.query<Revenue[]>(
-    "SELECT * FROM invoice_history limit 10"
-  );
-  return d[0];
-  //});
-}
-
-export async function fetchRevenue2() {
   try {
     // Artificially delay a response for demo purposes.
     // Don't do this in production :)
@@ -39,29 +29,27 @@ export async function fetchRevenue2() {
     // await new Promise((resolve) => setTimeout(resolve, 3000));
 
     const data = await //sql.execute(<Revenue[]>`SELECT * FROM invoice_history`)
-    sql.query<Revenue[]>(`SELECT * FROM invoice_history`);
+    sql.query<Revenue[]>(`SELECT * FROM invoice_history limit 10`);
 
     console.log("Data fetch completed after 3 seconds:", data);
 
-    return data;
+    return data[0];
   } catch (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to fetch invoice_history data.");
   }
 }
 
-export async function fetchLatestInvoices() {
+export async function fetchLatestInvoices(): Promise<LatestInvoice[]> {
+  console.log("GETTING MOST RECNET OINVOICWE");
   try {
-    const data = await sql<LatestInvoiceRaw[]>`
-      SELECT invoices.amount, customers.name, customers.image_url, customers.email, invoices.id
-      FROM invoices
-      JOIN customers ON invoices.customer_id = customers.id
-      ORDER BY invoices.date DESC
-      LIMIT 5`;
+    const data = await sql.query<LatestInvoice[]>(`
+      SELECT 20 as amount, "Bob" as name, "/profile.jpg" as image_url, "bob@bobby.com" as email, 1 as id
+    `);
 
-    const latestInvoices = data.map((invoice) => ({
+    const latestInvoices = data[0].map((invoice) => ({
       ...invoice,
-      amount: formatCurrency(invoice.amount),
+      amount: formatCurrency(Number(invoice.amount)),
     }));
     return latestInvoices;
   } catch (error) {
@@ -75,12 +63,15 @@ export async function fetchCardData() {
     // You can probably combine these into a single SQL query
     // However, we are intentionally splitting them to demonstrate
     // how to initialize multiple queries in parallel with JS.
-    const invoiceCountPromise = sql`SELECT COUNT(*) FROM invoices`;
-    const customerCountPromise = sql`SELECT COUNT(*) FROM customers`;
-    const invoiceStatusPromise = sql`SELECT
-         SUM(CASE WHEN status = 'paid' THEN amount ELSE 0 END) AS "paid",
-         SUM(CASE WHEN status = 'pending' THEN amount ELSE 0 END) AS "pending"
-         FROM invoices`;
+    const invoiceCountPromise = await sql.query(
+      `SELECT COUNT(*) as "count" FROM invoices`
+    );
+    const customerCountPromise = await sql.query(
+      `SELECT COUNT(*) as "count" FROM membership`
+    );
+    const invoiceStatusPromise = await sql.query(`SELECT
+         SUM(Amount) as "paid"
+         FROM invoices`);
 
     const data = await Promise.all([
       invoiceCountPromise,
@@ -88,10 +79,10 @@ export async function fetchCardData() {
       invoiceStatusPromise,
     ]);
 
-    const numberOfInvoices = Number(data[0][0].count ?? "0");
-    const numberOfCustomers = Number(data[1][0].count ?? "0");
-    const totalPaidInvoices = formatCurrency(data[2][0].paid ?? "0");
-    const totalPendingInvoices = formatCurrency(data[2][0].pending ?? "0");
+    const numberOfCustomers = 1;
+    const numberOfInvoices = Number(data[1][0][0].count ?? "0");
+    const totalPaidInvoices = formatCurrency(2);
+    const totalPendingInvoices = formatCurrency(5); // formatCurrency(data[2][0].pending ?? "0");
 
     return {
       numberOfCustomers,
@@ -113,7 +104,17 @@ export async function fetchFilteredInvoices(
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
   try {
-    const invoices = await sql<InvoicesTable[]>`
+    const invoices = await sql.query<InvoicesTable[]>(`
+      select 2 as "id", 
+        20 as "amount",
+        "2022-12-06" as "date",
+        "paid" as "status",
+        "Bobble" as "name",
+        "Bob@bobbob.com" as "email",
+        NULL as "image_url"
+    `);
+
+    /*
       SELECT
         invoices.id,
         invoices.amount,
@@ -132,9 +133,9 @@ export async function fetchFilteredInvoices(
         invoices.status ILIKE ${`%${query}%`}
       ORDER BY invoices.date DESC
       LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
-    `;
+    */
 
-    return invoices;
+    return invoices[0];
   } catch (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to fetch invoices.");
