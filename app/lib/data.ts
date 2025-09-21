@@ -118,7 +118,9 @@ export async function fetchFilteredInvoices(
     // `);
 
     const invoices = await sql.query<InvoicesTable[]>(`
-      select inv.MembershipID as "id", 
+      select 
+      inv.invoice_id as "id",
+      inv.MembershipID as "customer_id", 
         inv.Amount as "amount",
         inv.Date as "date",
         "paid" as "status",
@@ -186,22 +188,24 @@ export async function fetchInvoicesPages(query: string) {
 
 export async function fetchInvoiceById(id: string) {
   try {
-    const data = await sql<InvoiceForm[]>`
+    //  const data = await sql<InvoiceForm[]>`
+    const data = await sql.query<InvoiceForm[]>(`
       SELECT
-        invoices.id,
-        invoices.customer_id,
-        invoices.amount,
-        invoices.status
+        invoice_id as "id",
+        MembershipID as "customer_id",
+        Amount as "amount",
+        Description as "status"
       FROM invoices
-      WHERE invoices.id = ${id};
-    `;
+      WHERE invoice_id = "${id}";
+    `);
 
-    const invoice = data.map((invoice) => ({
+    const invoice = data[0].map((invoice) => ({
       ...invoice,
       // Convert amount from cents to dollars
       amount: invoice.amount / 100,
     }));
 
+    console.log("returning: ", invoice, id);
     return invoice[0];
   } catch (error) {
     console.error("Database Error:", error);
@@ -210,16 +214,17 @@ export async function fetchInvoiceById(id: string) {
 }
 
 export async function fetchCustomers() {
+  //const customers = await sql<CustomerField[]>`
   try {
-    const customers = await sql<CustomerField[]>`
+    const customers = await sql.query<CustomerField[]>(`
       SELECT
-        id,
-        name
-      FROM customers
-      ORDER BY name ASC
-    `;
+        MembershipID as "id",
+        CONCAT(LastName, ', ', FirstName) as "name"
+      FROM membership
+      ORDER BY LastName ASC
+    `);
 
-    return customers;
+    return customers[0];
   } catch (err) {
     console.error("Database Error:", err);
     throw new Error("Failed to fetch all customers.");

@@ -101,12 +101,12 @@ export type FormattedCustomersTable = {
   total_paid: string;
 };
 
-export type CustomerField = {
+export type CustomerField = RowDataPacket & {
   id: string;
   name: string;
 };
 
-export type InvoiceForm = {
+export type InvoiceForm = RowDataPacket & {
   id: string;
   customer_id: string;
   amount: number;
