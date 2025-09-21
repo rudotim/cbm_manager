@@ -81,7 +81,7 @@ export type InvoicesTable = RowDataPacket & {
   status: "pending" | "paid";
 };
 
-export type CustomersTableType = {
+export type CustomersTableType = RowDataPacket & {
   id: string;
   name: string;
   email: string;

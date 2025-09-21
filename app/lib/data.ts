@@ -31,7 +31,7 @@ export async function fetchRevenue(): Promise<Revenue[]> {
     const data = await //sql.execute(<Revenue[]>`SELECT * FROM invoice_history`)
     sql.query<Revenue[]>(`SELECT * FROM invoice_history limit 10`);
 
-    console.log("Data fetch completed after 3 seconds:", data);
+    console.log("fetchRevenue fetch completed after 3 seconds:");
 
     return data[0];
   } catch (error) {
@@ -41,7 +41,8 @@ export async function fetchRevenue(): Promise<Revenue[]> {
 }
 
 export async function fetchLatestInvoices(): Promise<LatestInvoice[]> {
-  console.log("GETTING MOST RECNET OINVOICWE");
+  console.log("fetchLatestInvoices fetch completed after 3 seconds:");
+
   try {
     const data = await sql.query<LatestInvoice[]>(`
       SELECT 20 as amount, "Bob" as name, "/profile.jpg" as image_url, "bob@bobby.com" as email, 1 as id
@@ -59,6 +60,8 @@ export async function fetchLatestInvoices(): Promise<LatestInvoice[]> {
 }
 
 export async function fetchCardData() {
+  console.log("fetchCardData fetch completed after 3 seconds:");
+
   try {
     // You can probably combine these into a single SQL query
     // However, we are intentionally splitting them to demonstrate
@@ -104,14 +107,31 @@ export async function fetchFilteredInvoices(
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
   try {
+    // const invoices = await sql.query<InvoicesTable[]>(`
+    //   select 2 as "id",
+    //     20 as "amount",
+    //     "2022-12-06" as "date",
+    //     "paid" as "status",
+    //     "Bobble" as "name",
+    //     "Bob@bobbob.com" as "email",
+    //     NULL as "image_url"
+    // `);
+
     const invoices = await sql.query<InvoicesTable[]>(`
-      select 2 as "id", 
-        20 as "amount",
-        "2022-12-06" as "date",
+      select inv.MembershipID as "id", 
+        inv.Amount as "amount",
+        inv.Date as "date",
         "paid" as "status",
-        "Bobble" as "name",
-        "Bob@bobbob.com" as "email",
-        NULL as "image_url"
+        m.FirstName as "name",
+        m.Email as "email",
+        "/profile.jpg" as "image_url"
+      FROM invoices inv
+      LEFT JOIN membership m
+      ON m.MembershipID = inv.MembershipID
+      WHERE 
+        m.FirstName like "${`%${query}%`}" OR
+        m.email like "${`%${query}%`}"
+        limit 10
     `);
 
     /*
@@ -144,18 +164,19 @@ export async function fetchFilteredInvoices(
 
 export async function fetchInvoicesPages(query: string) {
   try {
-    const data = await sql`SELECT COUNT(*)
-    FROM invoices
-    JOIN customers ON invoices.customer_id = customers.id
-    WHERE
-      customers.name ILIKE ${`%${query}%`} OR
-      customers.email ILIKE ${`%${query}%`} OR
-      invoices.amount::text ILIKE ${`%${query}%`} OR
-      invoices.date::text ILIKE ${`%${query}%`} OR
-      invoices.status ILIKE ${`%${query}%`}
-  `;
+    const data = await sql.query(`
+      select count(*) as 'count'
+      FROM invoices inv
+      LEFT JOIN membership m
+      ON m.MembershipID = inv.MembershipID
+      WHERE 
+        m.FirstName like "${`%${query}%`}" OR
+        m.email like "${`%${query}%`}"
+  `);
 
-    const totalPages = Math.ceil(Number(data[0].count) / ITEMS_PER_PAGE);
+    console.log("Total Pages:", data[0], data[0][0].count);
+
+    const totalPages = Math.ceil(Number(data[0][0].count) / ITEMS_PER_PAGE);
     return totalPages;
   } catch (error) {
     console.error("Database Error:", error);
