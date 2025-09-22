@@ -107,16 +107,6 @@ export async function fetchFilteredInvoices(
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
   try {
-    // const invoices = await sql.query<InvoicesTable[]>(`
-    //   select 2 as "id",
-    //     20 as "amount",
-    //     "2022-12-06" as "date",
-    //     "paid" as "status",
-    //     "Bobble" as "name",
-    //     "Bob@bobbob.com" as "email",
-    //     NULL as "image_url"
-    // `);
-
     const invoices = await sql.query<InvoicesTable[]>(`
       select 
       inv.invoice_id as "id",
@@ -133,7 +123,8 @@ export async function fetchFilteredInvoices(
       WHERE 
         m.FirstName like "${`%${query}%`}" OR
         m.email like "${`%${query}%`}"
-        limit 10
+      ORDER BY inv.Date DESC
+        limit ${ITEMS_PER_PAGE} OFFSET ${offset}
     `);
 
     /*
