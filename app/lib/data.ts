@@ -48,9 +48,20 @@ export async function fetchLatestInvoices(): Promise<LatestInvoice[]> {
 
   try {
     const data = await sql.query<LatestInvoice[]>(`
-      SELECT 20 as amount, "Bob" as name, "/profile.jpg" as image_url, "bob@bobby.com" as email, 1 as id
+      SELECT
+	i.amount,
+	m.FirstName,	
+	m.email,
+  "/profile.jpg" as image_url,
+	i.invoice_id
+FROM
+	invoices i
+JOIN membership m ON
+	i.MembershipID = m.MembershipID
+ORDER BY
+	i.date DESC
+LIMIT 5      
     `);
-
     const latestInvoices = data[0].map((invoice) => ({
       ...invoice,
       amount: formatCurrency(Number(invoice.amount)),
