@@ -24,6 +24,15 @@ const FormSchema = z.object({
 const CreateInvoice = FormSchema.omit({ id: true, date: true });
 const UpdateInvoice = FormSchema.omit({ id: true, date: true });
 
+const MemberFormSchema = z.object({
+  id: z.string(),
+  fname: z.string(),
+  amount: z.coerce.number(),
+  status: z.enum(["pending", "paid"]),
+  date: z.string(),
+});
+const CreateMember = MemberFormSchema.omit({ id: true, date: true });
+
 export async function createInvoice(formData: FormData) {
   console.log("Creating invoice on server");
   const { customerId, amount, status } = CreateInvoice.parse({
@@ -67,6 +76,27 @@ export async function updateInvoice(id: string, formData: FormData) {
 export async function deleteInvoice(id: string) {
   await sql.execute(`DELETE FROM invoices WHERE invoice_id = ${id}`);
   revalidatePath("/dashboard/invoices");
+}
+
+export async function createMember(formData: FormData) {
+  console.log("Creating member on server");
+  const { fname, amount, status } = CreateMember.parse({
+    fname: formData.get("fname"),
+    amount: formData.get("amount"),
+    status: formData.get("status"),
+  });
+  const amountInCents = amount * 100;
+  const date = new Date().toISOString().split("T")[0];
+  // Test it out:
+  console.log(fname, amount, status);
+
+  // await sql.execute(`
+  //   INSERT INTO membership (MembershipID, Amount, Description, Date)
+  //   VALUES (${fname}, ${amountInCents}, "${status}", "${date}")
+  // `);
+
+  revalidatePath("/dashboard/members");
+  redirect("/dashboard/members");
 }
 
 export async function authenticate(

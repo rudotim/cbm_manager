@@ -91,7 +91,7 @@ export type CustomersTableType = RowDataPacket & {
   total_paid: number;
 };
 
-export type FormattedCustomersTable = {
+export type FormattedCustomersTable = RowDataPacket & {
   id: string;
   name: string;
   email: string;

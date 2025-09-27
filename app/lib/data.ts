@@ -20,6 +20,22 @@ const sql = await mysql.createConnection({
   database: process.env.MYSQL_DATABASE!,
 });
 
+// Potentially use a pool
+// const pool = mysql.createPool({
+//     host: process.env.DB_HOST,
+//     user: process.env.DB_USER,
+//     password: process.env.DB_PASSWORD,
+//     database: process.env.DB_NAME,
+//     waitForConnections: true,
+//     connectionLimit: 10, // Adjust this based on your max_user_connections
+//     queueLimit: 0
+//   });
+
+//  export async function query(sql, params) {
+//       const [rows] = await pool.execute(sql, params);
+//       return rows;
+//     }
+
 export async function fetchRevenue(): Promise<Revenue[]> {
   try {
     const data = await //sql.execute(<Revenue[]>`SELECT * FROM invoice_history`)
@@ -227,27 +243,33 @@ export async function fetchCustomers() {
   }
 }
 
-export async function fetchFilteredCustomers(query: string) {
-  try {
-    const data = await sql<CustomersTableType[]>`
-		SELECT
-		  customers.id,
-		  customers.name,
-		  customers.email,
-		  customers.image_url,
-		  COUNT(invoices.id) AS total_invoices,
-		  SUM(CASE WHEN invoices.status = 'pending' THEN invoices.amount ELSE 0 END) AS total_pending,
-		  SUM(CASE WHEN invoices.status = 'paid' THEN invoices.amount ELSE 0 END) AS total_paid
-		FROM customers
-		LEFT JOIN invoices ON customers.id = invoices.customer_id
-		WHERE
-		  customers.name ILIKE ${`%${query}%`} OR
-        customers.email ILIKE ${`%${query}%`}
-		GROUP BY customers.id, customers.name, customers.email, customers.image_url
-		ORDER BY customers.name ASC
-	  `;
+export async function fetchFilteredCustomers(
+  query: string,
+  currentPage: number
+) {
+  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
-    const customers = data.map((customer) => ({
+  try {
+    const data = await sql.query<CustomersTableType[]>(`
+SELECT
+  m.MembershipID as "id",
+  m.FirstName as "name",
+  m.email,
+  "/profile.jpg" as "image_url",
+  COUNT(i.MembershipID) AS total_invoices,
+  SUM(CASE WHEN i.Description = 'pending' THEN i.amount ELSE 0 END) AS total_pending,
+  SUM(CASE WHEN i.Description = 'paid' THEN i.amount ELSE 0 END) AS total_paid
+FROM membership m
+LEFT JOIN invoices i ON m.MembershipID = i.MembershipID
+WHERE
+  m.FirstName LIKE "${`%${query}%`}" OR
+  m.email LIKE "${`%${query}%`}"
+GROUP BY m.MembershipID, m.FirstName, m.email
+ORDER BY m.FirstName ASC
+limit ${ITEMS_PER_PAGE} OFFSET ${offset}
+	  `);
+
+    const customers = data[0].map((customer) => ({
       ...customer,
       total_pending: formatCurrency(customer.total_pending),
       total_paid: formatCurrency(customer.total_paid),
@@ -257,5 +279,26 @@ export async function fetchFilteredCustomers(query: string) {
   } catch (err) {
     console.error("Database Error:", err);
     throw new Error("Failed to fetch customer table.");
+  }
+}
+
+export async function fetchCustomerPages(query: string) {
+  try {
+    const data = await sql.query(`
+select count(*) as "count"
+      FROM membership m
+      INNER JOIN invoices inv
+      ON m.MembershipID = inv.MembershipID      
+      WHERE 
+        m.FirstName like "${`%${query}%`}" OR
+        m.email like "${`%${query}%`}"
+      group by m.MembershipID 
+
+  `);
+
+    return Math.ceil(Number((data[0] as any)[0].count) / ITEMS_PER_PAGE);
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch total number of invoices.");
   }
 }
