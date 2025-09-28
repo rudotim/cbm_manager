@@ -3,7 +3,7 @@ import Search from "@/app/ui/search";
 import Table from "@/app/ui/members/table";
 import { CreateMember } from "@/app/ui/members/buttons";
 import { lusitana } from "@/app/ui/fonts";
-import { TableRowSkeleton } from "@/app/ui/skeletons";
+import { InvoicesTableSkeleton } from "@/app/ui/skeletons";
 import { Suspense } from "react";
 import { fetchCustomerPages } from "@/app/lib/data";
 
@@ -28,7 +28,10 @@ export default async function MembershipPage(props: {
         <CreateMember />
       </div>
       {
-        <Suspense key={query + currentPage} fallback={<TableRowSkeleton />}>
+        <Suspense
+          key={query + currentPage}
+          fallback={<InvoicesTableSkeleton />}
+        >
           <Table query={query} currentPage={currentPage} />
         </Suspense>
       }
