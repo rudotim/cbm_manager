@@ -19,6 +19,7 @@ const links = [
     icon: DocumentDuplicateIcon,
   },
   { name: "Members", href: "/dashboard/members", icon: UserGroupIcon },
+  { name: "Dock", href: "/dashboard/dock", icon: UserGroupIcon },
 ];
 
 export default function NavLinks() {

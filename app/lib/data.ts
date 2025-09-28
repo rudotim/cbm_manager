@@ -6,6 +6,7 @@ import {
   InvoicesTable,
   LatestInvoice,
   LatestInvoiceRaw,
+  DockTableType,
   Revenue,
 } from "./definitions";
 import { formatCurrency } from "./utils";
@@ -300,5 +301,31 @@ select count(*) as "count"
   } catch (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to fetch total number of invoices.");
+  }
+}
+
+export async function fetchDockTableData(query: string, currentPage: number) {
+  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+
+  try {
+    const data = await sql.query<DockTableType[]>(`
+  select d.slipNo, concat(m.firstname, " ", m.lastname) as "name",
+d.'Boat Size', d.Owed, d.Balance from membership m
+INNER join dock_2025 d ON 
+d.MembershipID = m.MembershipID
+order by SlipNo asc
+limit ${ITEMS_PER_PAGE} OFFSET ${offset}
+	  `);
+
+    const customers = data[0].map((customer) => ({
+      ...customer,
+      owed: formatCurrency(customer.total_pending),
+      balance: formatCurrency(customer.total_paid),
+    }));
+
+    return customers;
+  } catch (err) {
+    console.error("Database Error:", err);
+    throw new Error("Failed to fetch customer table.");
   }
 }

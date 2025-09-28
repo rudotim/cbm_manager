@@ -112,3 +112,12 @@ export type InvoiceForm = RowDataPacket & {
   amount: number;
   status: "pending" | "paid";
 };
+
+export type DockTableType = RowDataPacket & {
+  id: number;
+  name: string;
+  slipNo: number;
+  boat_size: number;
+  owed: number;
+  balance: number;
+};
