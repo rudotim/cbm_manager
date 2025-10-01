@@ -46,7 +46,7 @@ export async function createInvoice(formData: FormData) {
   console.log(customerId, amount, status);
 
   await sql.execute(`
-    INSERT INTO invoices (MembershipID, Amount, Description, Date)
+    INSERT INTO invoices (membership_id, amount, description, date)
     VALUES (${customerId}, ${amountInCents}, "${status}", "${date}")
   `);
 
@@ -65,8 +65,8 @@ export async function updateInvoice(id: string, formData: FormData) {
 
   await sql.execute(`
     UPDATE invoices
-    SET MembershipID = ${customerId}, Amount = ${amountInCents}, Description = "${status}"
-    WHERE invoice_id = ${id}
+    SET membership_id = ${customerId}, amount = ${amountInCents}, description = "${status}"
+    WHERE id = ${id}
   `);
 
   revalidatePath("/dashboard/invoices");
@@ -74,7 +74,7 @@ export async function updateInvoice(id: string, formData: FormData) {
 }
 
 export async function deleteInvoice(id: string) {
-  await sql.execute(`DELETE FROM invoices WHERE invoice_id = ${id}`);
+  await sql.execute(`DELETE FROM invoices WHERE id = ${id}`);
   revalidatePath("/dashboard/invoices");
 }
 
