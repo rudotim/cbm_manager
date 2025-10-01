@@ -116,7 +116,8 @@ export type InvoiceForm = RowDataPacket & {
 export type DockTableType = RowDataPacket & {
   id: number;
   name: string;
-  slipNo: number;
+  year: number;
+  slip_number: number;
   boat_size: number;
   owed: number;
   balance: number;
