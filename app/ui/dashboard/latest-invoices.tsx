@@ -5,7 +5,6 @@ import { lusitana } from "@/app/ui/fonts";
 import { LatestInvoice } from "@/app/lib/definitions";
 import { fetchLatestInvoices } from "@/app/lib/data";
 import InvoiceStatus from "@/app/ui/invoices/status";
-import InvoiceAmount from "@/app/ui/invoices/invoice_amount";
 
 export default async function LatestInvoices() {
   const latestInvoices = await fetchLatestInvoices();
