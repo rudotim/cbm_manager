@@ -16,7 +16,7 @@ import { ChevronDownIcon } from "@heroicons/react/16/solid";
 export default function Form({ customers }: { customers: CustomerField[] }) {
   const [membershipType, setMembershipType] = useState("stockholder");
 
-  const onNewMembershipType = (e) => {
+  const onNewMembershipType = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log(e.target.value);
     setMembershipType(e.target.value);
   };
