@@ -1,0 +1,37 @@
+body {
+  font-family: helvetica;
+}
+
+.link-container {
+  margin-bottom: 20px;
+  width: 300px;
+}
+
+.link-container h2 {
+  background-color: #abd5ea;
+  color: #333;
+  font-size: 18px;
+  line-height: 30px;
+  margin: 0;
+  padding-left: 10px;
+}
+
+.link-container ul {
+  font-size: 13px;
+  list-style-type: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.link-container ul li {
+  background-image: url("https://i.msdn.microsoft.com/dynimg/IC688534.png");
+  background-repeat: no-repeat;
+  background-position: center left;
+  border-bottom: #777 1px solid;
+  padding-left: 20px;
+  line-height: 30px;
+}
+
+.link-container ul li a {
+  text-decoration: none;
+}
