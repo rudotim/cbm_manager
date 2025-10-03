@@ -291,14 +291,15 @@ export async function fetchFilteredCustomers(
     const data = await sql.query<CustomersTableType[]>(`
 SELECT
   m.membership_id as "id",
-  m.first_name as "name",
-  m.email,
-  "/profile.jpg" as "image_url",
+  concat(m.first_name, " ", m.last_name) as "name",
   COUNT(i.membership_id) AS total_invoices,
+  m.membership_type,
+  IFNULL(d.slip_number, 0) as "slip_number",
   SUM(CASE WHEN i.description = 'pending' THEN i.amount ELSE 0 END) AS total_pending,
   SUM(CASE WHEN i.description = 'paid' THEN i.amount ELSE 0 END) AS total_paid
 FROM membership m
 LEFT JOIN invoices i ON m.membership_id = i.membership_id
+LEFT JOIN dock d on m.membership_id = d.membership_id
 WHERE
   m.first_name LIKE "${`%${query}%`}" OR
   m.email LIKE "${`%${query}%`}"
@@ -336,7 +337,10 @@ select count(*) as "count"
 
   `);
 
-    console.log("[membership] fetching membership page count for pagination");
+    console.log(
+      "[membership] fetching membership page count for pagination:",
+      data[0][0].count
+    );
     return Math.ceil(Number((data[0] as any)[0].count) / ITEMS_PER_PAGE);
   } catch (error) {
     console.error("Database Error:", error);

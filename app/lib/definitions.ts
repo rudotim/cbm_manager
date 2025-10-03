@@ -85,7 +85,8 @@ export type CustomersTableType = RowDataPacket & {
   id: string;
   name: string;
   email: string;
-  image_url: string;
+  membership_type: string;
+  slip_number: number;
   total_invoices: number;
   total_pending: number;
   total_paid: number;

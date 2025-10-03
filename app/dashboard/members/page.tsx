@@ -41,9 +41,3 @@ export default async function MembershipPage(props: {
     </div>
   );
 }
-
-// const MembershipPage = () => {
-//   return <div>Members</div>;
-// };
-
-// export default MembershipPage;
