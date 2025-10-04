@@ -32,6 +32,7 @@ const MemberFormSchema = z.object({
   date: z.string(),
 });
 const CreateMember = MemberFormSchema.omit({ id: true, date: true });
+const UpdateMember = MemberFormSchema.omit({ id: true, date: true });
 
 export async function createInvoice(formData: FormData) {
   console.log("Creating invoice on server");
@@ -97,6 +98,30 @@ export async function createMember(formData: FormData) {
 
   revalidatePath("/dashboard/members");
   redirect("/dashboard/members");
+}
+
+export async function updateMember(id: string, formData: FormData) {
+  // const { customerId, amount, status } = UpdateMember.parse({
+  //   customerId: formData.get("customerId"),
+  //   amount: formData.get("amount"),
+  //   status: formData.get("status"),
+  // });
+
+  // const amountInCents = amount * 100;
+
+  // await sql.execute(`
+  //   UPDATE invoices
+  //   SET membership_id = ${customerId}, amount = ${amountInCents}, description = "${status}"
+  //   WHERE id = ${id}
+  // `);
+
+  revalidatePath("/dashboard/members");
+  redirect("/dashboard/members");
+}
+
+export async function deleteMember(id: string) {
+  await sql.execute(`DELETE FROM membership WHERE membership_id = ${id}`);
+  revalidatePath("/dashboard/members");
 }
 
 export async function authenticate(

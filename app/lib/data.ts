@@ -1,6 +1,7 @@
 import postgres from "postgres";
 import {
   CustomerField,
+  CustomerForm,
   CustomersTableType,
   InvoiceForm,
   InvoicesTable,
@@ -262,6 +263,66 @@ export async function fetchInvoiceById(id: string) {
   }
 }
 
+export async function fetchMemberPropertyByMemberId(id: string) {
+  try {
+    const data = await sql.query<MemberProperty>(`
+      SELECT
+        p.id,
+        p.property_address,
+        p.owner_name,
+        p.owner_address,
+        p.owner_city,
+        p.owner_zip,
+        p.owner_state,
+        p.owner_phone,
+        p.notes        
+      FROM properties p
+      INNER JOIN membership m ON
+      m.property_id = p.id
+      WHERE
+      m.membership_id = "${id}";
+    `);
+
+    console.log("[properties] fetchMemberPropertyById");
+
+    return data[0][0];
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch member record");
+  }
+}
+
+export async function fetchMemberById(id: string) {
+  try {
+    const data = await sql.query<MemberForm>(`
+      SELECT
+        membership_id as "id",
+        first_name,
+        last_name,
+        email,
+        cell_phone,
+        cape_phone,
+        membership_type,
+        status,
+        mailing_street,
+        mailing_street2,
+        mailing_city,
+        mailing_zip
+        
+      FROM membership
+      WHERE membership_id = "${id}";
+    `);
+
+    console.log("[members] fetchCustomerById");
+
+    return data[0][0];
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch member record");
+  }
+}
+
+// Verify that this is called
 export async function fetchCustomers() {
   try {
     const customers = await sql.query<CustomerField[]>(`

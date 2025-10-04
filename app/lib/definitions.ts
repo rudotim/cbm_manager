@@ -114,6 +114,33 @@ export type InvoiceForm = RowDataPacket & {
   status: "pending" | "paid";
 };
 
+export type MemberForm = RowDataPacket & {
+  id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  cell_phone: string;
+  cape_phone: string;
+  membership_type: string;
+  status: string;
+  mailing_street: string;
+  mailing_street2: string;
+  mailing_city: string;
+  mailing_zip: string;
+};
+
+export type MemberProperty = RowDataPacket & {
+  id: string;
+  property_address: string;
+  owner_name: string;
+  owner_address: string;
+  owner_city: string;
+  owner_zip: string;
+  owner_state: string;
+  owner_phone: string;
+  notes: string;
+};
+
 export type DockTableType = RowDataPacket & {
   id: number;
   name: string;
