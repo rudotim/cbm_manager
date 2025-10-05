@@ -150,3 +150,11 @@ export type DockTableType = RowDataPacket & {
   owed: number;
   balance: number;
 };
+
+export type PropertyTableType = RowDataPacket & {
+  id: number;
+  property_address: string;
+  owner_address: string;
+  owner_name: string;
+  membership_type: string;
+};

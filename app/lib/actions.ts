@@ -124,6 +124,25 @@ export async function deleteMember(id: string) {
   revalidatePath("/dashboard/members");
 }
 
+export async function updateProperty(id: string, formData: FormData) {
+  // const { customerId, amount, status } = UpdateMember.parse({
+  //   customerId: formData.get("customerId"),
+  //   amount: formData.get("amount"),
+  //   status: formData.get("status"),
+  // });
+
+  // const amountInCents = amount * 100;
+
+  // await sql.execute(`
+  //   UPDATE invoices
+  //   SET membership_id = ${customerId}, amount = ${amountInCents}, description = "${status}"
+  //   WHERE id = ${id}
+  // `);
+
+  revalidatePath("/dashboard/properties");
+  redirect("/dashboard/properties");
+}
+
 export async function authenticate(
   prevState: string | undefined,
   formData: FormData

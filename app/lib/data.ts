@@ -9,6 +9,8 @@ import {
   LatestInvoiceRaw,
   DockTableType,
   Revenue,
+  PropertyTableType,
+  MemberProperty,
 } from "./definitions";
 import { formatCurrency } from "./utils";
 
@@ -457,5 +459,104 @@ export async function fetchDockPages(query: string) {
   } catch (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to fetch total number of invoices.");
+  }
+}
+
+export async function fetchPropertyById(id: string) {
+  try {
+    const data = await sql.query<MemberProperty>(`
+      SELECT
+        p.id,
+        p.property_address,
+        p.owner_name,
+        p.owner_address,
+        p.owner_city,
+        p.owner_zip,
+        p.owner_state,
+        p.owner_phone,
+        p.notes        
+      FROM properties p
+      WHERE
+      p.id = "${id}";
+    `);
+
+    console.log("[properties] fetchPropertyById");
+
+    return data[0][0];
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch member record");
+  }
+}
+
+export async function fetchPropertyPages(query: string) {
+  try {
+    const data = await sql.query(`
+select count(*) as "count"
+      FROM properties p
+      WHERE 
+        p.owner_address like "${`%${query}%`}" OR
+        p.owner_name like "${`%${query}%`}"
+      ORDER BY p.property_address
+  `);
+
+    console.log(
+      "[properties] fetching property page count for pagination:",
+      data[0][0].count
+    );
+    return Math.ceil(Number((data[0] as any)[0].count) / ITEMS_PER_PAGE);
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch total number of invoices.");
+  }
+}
+
+export async function fetchFilteredProperties(
+  query: string,
+  currentPage: number
+) {
+  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+
+  try {
+    const data = await sql.query<PropertyTableType[]>(`SELECT 
+        p.id,
+        p.property_address,
+        p.owner_name
+      FROM properties p
+
+      WHERE 
+        p.property_address like "${`%${query}%`}" OR
+        p.owner_name like "${`%${query}%`}"
+      ORDER BY p.property_address
+            limit ${ITEMS_PER_PAGE} OFFSET ${offset}
+	  `);
+
+    // const data = await sql.query<PropertyTableType[]>(`SELECT
+    //   d.dock_id as "id",
+    //   d.slip_number,
+    //   concat(m.first_name, " ", m.last_name) as "name",
+    //   "2025" as year,
+    //   d.boat_size,
+    //   d.owed,
+    //   d.balance
+    // FROM membership m
+    // INNER join dock d ON
+    //   d.membership_id = m.membership_id
+    // ORDER BY d.slip_number asc
+    // limit ${ITEMS_PER_PAGE} OFFSET ${offset}
+    // `);
+
+    // const dock_records = data[0].map((dock_record) => ({
+    //   ...dock_record,
+    //   owed: formatCurrency(dock_record.owed),
+    //   balance: formatCurrency(dock_record.balance),
+    // }));
+
+    console.log("[properties] Fetching properties filtered table data");
+
+    return data[0];
+  } catch (err) {
+    console.error("Database Error:", err);
+    throw new Error("Failed to fetch dock table.");
   }
 }
