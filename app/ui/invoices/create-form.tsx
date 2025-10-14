@@ -16,7 +16,7 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
         {/* Customer Name */}
         <div className="mb-4">
           <label htmlFor="customer" className="mb-2 block text-sm font-medium">
-            Choose customer
+            Choose Member
           </label>
           <div className="relative">
             <select
@@ -26,7 +26,7 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
               defaultValue=""
             >
               <option value="" disabled>
-                Select a customer
+                Select a member
               </option>
               {customers.map((customer) => (
                 <option key={customer.id} value={customer.id}>
@@ -41,13 +41,127 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
         {/* Invoice Amount */}
         <div className="mb-4">
           <label htmlFor="amount" className="mb-2 block text-sm font-medium">
-            Choose an amount
+            Service Fee
           </label>
           <div className="relative mt-2 rounded-md">
             <div className="relative">
               <input
                 id="amount"
                 name="amount"
+                type="number"
+                step="0.01"
+                placeholder="Enter USD amount"
+                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                required
+              />
+              <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+            </div>
+          </div>
+        </div>
+
+        {/* Beach Badges */}
+        <div className="mb-4">
+          <label
+            htmlFor="beach_badges"
+            className="mb-2 block text-sm font-medium"
+          >
+            Additional Beach Badges
+          </label>
+          <div className="relative mt-2 rounded-md">
+            <div className="relative">
+              <input
+                id="beach_badges"
+                name="beach_badges"
+                type="number"
+                step="1"
+                placeholder="Maximum 6"
+                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                required
+              />
+              <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+            </div>
+          </div>
+        </div>
+
+        {/* Visionary Fund */}
+        <div className="mb-4">
+          <label
+            htmlFor="visionary_fund"
+            className="mb-2 block text-sm font-medium"
+          >
+            Visionary Fund
+          </label>
+          <div className="relative mt-2 rounded-md">
+            <div className="relative">
+              <input
+                id="visionary_fund"
+                name="visionary_fund"
+                type="number"
+                step="0.01"
+                placeholder="Enter USD amount"
+                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                required
+              />
+              <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+            </div>
+          </div>
+        </div>
+
+        {/* Dock Slip Rental */}
+        <div className="mb-4">
+          <label htmlFor="dock_slip" className="mb-2 block text-sm font-medium">
+            Dock Slip Rental
+          </label>
+          <div className="relative mt-2 rounded-md">
+            <div className="relative">
+              <input
+                id="dock_slip"
+                name="dock_slip"
+                type="number"
+                step="0.01"
+                placeholder="Enter USD amount"
+                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                required
+              />
+              <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+            </div>
+          </div>
+        </div>
+
+        {/* Optional Tee Slip */}
+        <div className="mb-4">
+          <label htmlFor="t_slip" className="mb-2 block text-sm font-medium">
+            Optional Tee Slip
+          </label>
+          <div className="relative mt-2 rounded-md">
+            <div className="relative">
+              <input
+                id="t_slip"
+                name="t_slip"
+                type="number"
+                step="0.01"
+                placeholder="Enter USD amount"
+                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                required
+              />
+              <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+            </div>
+          </div>
+        </div>
+
+        {/* Optional Shore Power */}
+        <div className="mb-4">
+          <label
+            htmlFor="shore_power"
+            className="mb-2 block text-sm font-medium"
+          >
+            Optional Shore Power
+          </label>
+          <div className="relative mt-2 rounded-md">
+            <div className="relative">
+              <input
+                id="shore_power"
+                name="shore_power"
                 type="number"
                 step="0.01"
                 placeholder="Enter USD amount"
