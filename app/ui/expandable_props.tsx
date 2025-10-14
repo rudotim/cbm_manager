@@ -119,7 +119,6 @@ export default function Expandable({
   // Consumers can ignore the built-in button and control open state externally.
   return (
     <div className={`expandable-wrapper ${className}`.trim()}>
-      {/* Example toggle button built-in for convenience — consumers may choose to remove it. */}
       <div id="expandable-panel" style={style}>
         {/* keep a ref wrapper around the real content so we can measure scrollHeight reliably */}
         {renderChildren && (
