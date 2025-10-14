@@ -462,7 +462,7 @@ export async function fetchDockPages(query: string) {
 
 export async function fetchPropertyById(id: string) {
   try {
-    const data = await sql.query<MemberProperty>(`
+    const data = await sql.query<MemberProperty[]>(`
       SELECT
         p.id,
         p.property_address,
