@@ -419,8 +419,8 @@ export async function fetchDockTableData(query: string, currentPage: number) {
       concat(m.first_name, " ", m.last_name) as "name",
       "2025" as year,
       d.boat_size, 
-      d.owed, 
-      d.balance 
+      d.shore_power,
+      d.t_slip
     FROM membership m
     INNER join dock d ON 
       d.membership_id = m.membership_id
@@ -430,8 +430,8 @@ export async function fetchDockTableData(query: string, currentPage: number) {
 
     const dock_records = data[0].map((dock_record) => ({
       ...dock_record,
-      owed: formatCurrency(dock_record.owed),
-      balance: formatCurrency(dock_record.balance),
+      shore_power: dock_record.shore_power === 0 ? "-" : "Yes",
+      t_slip: dock_record.t_slip === 0 ? "-" : "Yes",
     }));
 
     console.log("[dock] Fetching dock table data");

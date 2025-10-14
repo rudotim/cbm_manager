@@ -27,10 +27,10 @@ export default async function DockMemberTable({
                       Year
                     </th>
                     <th scope="col" className="px-3 py-5 font-medium">
-                      Total Pending
+                      Shore Power
                     </th>
                     <th scope="col" className="px-4 py-5 font-medium">
-                      Total Paid
+                      T Slip
                     </th>
                   </tr>
                 </thead>
@@ -50,10 +50,10 @@ export default async function DockMemberTable({
                         {dock_record.year}
                       </td>
                       <td className="whitespace-nowrap bg-white px-4 py-5 text-sm">
-                        {dock_record.owed}
+                        {dock_record.shore_power}
                       </td>
                       <td className="whitespace-nowrap bg-white px-4 py-5 text-sm group-first-of-type:rounded-md group-last-of-type:rounded-md">
-                        {dock_record.balance}
+                        {dock_record.t_slip}
                       </td>
                     </tr>
                   ))}
