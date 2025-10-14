@@ -5,7 +5,7 @@ import { CreateDockRecord } from "@/app/ui/dock/buttons";
 import { lusitana } from "@/app/ui/fonts";
 import { InvoicesTableSkeleton } from "@/app/ui/skeletons";
 import { Suspense } from "react";
-import { fetchCustomerPages } from "@/app/lib/data";
+import { fetchDockPages } from "@/app/lib/data";
 
 export default async function DockPage(props: {
   searchParams?: Promise<{
@@ -16,7 +16,7 @@ export default async function DockPage(props: {
   const searchParams = await props.searchParams;
   const query = searchParams?.query || "";
   const currentPage = Number(searchParams?.page) || 1;
-  const totalPages = await fetchCustomerPages(query);
+  const totalPages = await fetchDockPages(query);
 
   return (
     <div className="w-full">
