@@ -1,7 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
-import { CustomerField, MemberForm } from "@/app/lib/definitions";
+import clsx from "clsx";
+import {
+  CustomerField,
+  MemberForm,
+  MemberProperty,
+} from "@/app/lib/definitions";
 import {
   CheckIcon,
   ClockIcon,
@@ -11,13 +16,14 @@ import {
 import Link from "next/link";
 import { Button } from "@/app/ui/button";
 import { updateMember } from "@/app/lib/actions";
+import PropertyEntry from "./property_entry";
 
 export default function EditMemberForm({
   customer,
-  property,
+  properties,
 }: {
   customer: MemberForm;
-  property: MemberProperty;
+  properties: MemberProperty[];
 }) {
   const [membershipType, setMembershipType] = useState("stockholder");
   console.log("Editing customer:", customer);
@@ -40,6 +46,7 @@ export default function EditMemberForm({
           </p>
 
           <div className="grid grid-cols-1 gap-x-6 gap-y-2 sm:grid-cols-6">
+            {/* First Name */}
             <div className="sm:col-span-3">
               <label
                 htmlFor="first-name"
@@ -59,6 +66,7 @@ export default function EditMemberForm({
               </div>
             </div>
 
+            {/* Last Name */}
             <div className="sm:col-span-3">
               <label
                 htmlFor="last-name"
@@ -78,6 +86,7 @@ export default function EditMemberForm({
               </div>
             </div>
 
+            {/* Email Address */}
             <div className="sm:col-span-4">
               <label
                 htmlFor="email"
@@ -97,6 +106,7 @@ export default function EditMemberForm({
               </div>
             </div>
 
+            {/* Cell Phone */}
             <div className="sm:col-span-2 sm:col-start-1">
               <label
                 htmlFor="cell_phone"
@@ -116,6 +126,7 @@ export default function EditMemberForm({
               </div>
             </div>
 
+            {/* Cape Phone */}
             <div className="sm:col-span-2">
               <label
                 htmlFor="cape_phone"
@@ -134,6 +145,8 @@ export default function EditMemberForm({
                 />
               </div>
             </div>
+
+            {/* Membership Type */}
             <fieldset className="col-span-full">
               <legend className="text-sm/6 font-semibold text-gray-900">
                 Membership Type
@@ -176,6 +189,7 @@ export default function EditMemberForm({
               </div>
             </fieldset>
 
+            {/* Status */}
             <div className="sm:col-span-3">
               <label
                 htmlFor="status"
@@ -198,7 +212,8 @@ export default function EditMemberForm({
               </div>
             </div>
 
-            {/* Property Address */}
+            {/* Member Property Address */}
+            {/*
             <div className="col-span-full">
               <h2 className="text-1xl mt-4 font-semibold text-gray-900 dark:text-white">
                 Cape Breton Property Address
@@ -220,6 +235,7 @@ export default function EditMemberForm({
                 />
               </div>
             </div>
+            */}
 
             {/* Mailing Address */}
             <div className="col-span-full">
@@ -244,6 +260,7 @@ export default function EditMemberForm({
               </div>
             </div>
 
+            {/* City */}
             <div className="sm:col-span-2 sm:col-start-1">
               <label
                 htmlFor="city"
@@ -263,6 +280,7 @@ export default function EditMemberForm({
               </div>
             </div>
 
+            {/* State/Province */}
             <div className="sm:col-span-2">
               <label
                 htmlFor="region"
@@ -282,6 +300,7 @@ export default function EditMemberForm({
               </div>
             </div>
 
+            {/* Zip / Postal */}
             <div className="sm:col-span-2">
               <label
                 htmlFor="postal-code"
@@ -301,104 +320,21 @@ export default function EditMemberForm({
               </div>
             </div>
 
-            {/* Property Owner Address */}
-            <div className="col-span-full">
-              <h2 className="text-1xl mt-4 font-semibold text-gray-900 dark:text-white">
-                Property Owner Address (If different from mailing)
-              </h2>
-              <label
-                htmlFor="street-address"
-                className="block text-sm/6 font-medium text-gray-900 dark:text-white"
-              >
-                Street address
-              </label>
-              <div className="mt-2">
-                <input
-                  id="street-address"
-                  name="street-address"
-                  type="text"
-                  autoComplete="street-address"
-                  defaultValue={property?.owner_address || ""}
-                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-indigo-500"
-                />
-              </div>
-            </div>
-
-            <div className="sm:col-span-2 sm:col-start-1">
-              <label
-                htmlFor="city"
-                className="block text-sm/6 font-medium text-gray-900 dark:text-white"
-              >
-                City
-              </label>
-              <div className="mt-2">
-                <input
-                  id="city"
-                  name="city"
-                  type="text"
-                  autoComplete="address-level2"
-                  defaultValue={property?.owner_city || ""}
-                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-indigo-500"
-                />
-              </div>
-            </div>
-
-            <div className="sm:col-span-2">
-              <label
-                htmlFor="region"
-                className="block text-sm/6 font-medium text-gray-900 dark:text-white"
-              >
-                State / Province
-              </label>
-              <div className="mt-2">
-                <input
-                  id="region"
-                  name="region"
-                  type="text"
-                  autoComplete="address-level1"
-                  defaultValue={property?.owner_state || ""}
-                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-indigo-500"
-                />
-              </div>
-            </div>
-
-            <div className="sm:col-span-2">
-              <label
-                htmlFor="postal-code"
-                className="block text-sm/6 font-medium text-gray-900 dark:text-white"
-              >
-                ZIP / Postal code
-              </label>
-              <div className="mt-2">
-                <input
-                  id="postal-code"
-                  name="postal-code"
-                  type="text"
-                  autoComplete="postal-code"
-                  defaultValue={property?.owner_zip || ""}
-                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-indigo-500"
-                />
-              </div>
-            </div>
-
-            <div className="sm:col-span-2">
-              <label
-                htmlFor="property_owner_phone"
-                className="block text-sm/6 font-medium text-gray-900 dark:text-white"
-              >
-                Property Owner Phone
-              </label>
-              <div className="mt-2">
-                <input
-                  id="property_owner_phone"
-                  name="property_owner_phone"
-                  type="tel"
-                  autoComplete="phone"
-                  defaultValue={property?.owner_phone || ""}
-                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-indigo-500"
-                />
-              </div>
-            </div>
+            <h2 className="text-base/7 mt-4 font-semibold text-gray-900 dark:text-white">
+              Properties
+            </h2>
+            {properties.map((invoice, i) => {
+              return (
+                <div
+                  key={invoice.id}
+                  className={clsx("col-span-full", {
+                    "border-t": i !== 0,
+                  })}
+                >
+                  <PropertyEntry property={invoice} />
+                </div>
+              );
+            })}
           </div>
           {/* End of form */}
         </div>

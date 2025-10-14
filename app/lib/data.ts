@@ -265,9 +265,9 @@ export async function fetchInvoiceById(id: string) {
   }
 }
 
-export async function fetchMemberPropertyByMemberId(id: string) {
+export async function fetchMemberPropertiesByMemberId(id: string) {
   try {
-    const data = await sql.query<MemberProperty>(`
+    const data = await sql.query<MemberProperty[]>(`
       SELECT
         p.id,
         p.property_address,
@@ -287,10 +287,10 @@ export async function fetchMemberPropertyByMemberId(id: string) {
 
     console.log("[properties] fetchMemberPropertyById");
 
-    return data[0][0];
+    return data[0];
   } catch (error) {
     console.error("Database Error:", error);
-    throw new Error("Failed to fetch member record");
+    throw new Error("Failed to fetch member property record");
   }
 }
 
@@ -365,8 +365,9 @@ LEFT JOIN invoices i ON m.membership_id = i.membership_id
 LEFT JOIN dock d on m.membership_id = d.membership_id
 WHERE
   m.first_name LIKE "${`%${query}%`}" OR
+  m.last_name LIKE "${`%${query}%`}" OR
   m.email LIKE "${`%${query}%`}"
-GROUP BY m.membership_id, m.first_name, m.email
+  GROUP BY m.membership_id
 ORDER BY m.first_name ASC
 limit ${ITEMS_PER_PAGE} OFFSET ${offset}
 	  `);
@@ -391,18 +392,15 @@ export async function fetchCustomerPages(query: string) {
     const data = await sql.query(`
 select count(*) as "count"
       FROM membership m
-      INNER JOIN invoices inv
-      ON m.membership_id = inv.membership_id      
       WHERE 
         m.first_name like "${`%${query}%`}" OR
+        m.last_name like "${`%${query}%`}" OR
         m.email like "${`%${query}%`}"
-      group by m.membership_id 
-
   `);
 
     console.log(
       "[membership] fetching membership page count for pagination:",
-      data[0][0].count
+      (data[0] as any)[0].count
     );
     return Math.ceil(Number((data[0] as any)[0].count) / ITEMS_PER_PAGE);
   } catch (error) {
