@@ -149,6 +149,9 @@ export type DockTableType = RowDataPacket & {
   boat_size: number;
   owed: number;
   balance: number;
+  shore_power: number;
+  t_slip: number;
+  membership_id: number;
 };
 
 export type PropertyTableType = RowDataPacket & {

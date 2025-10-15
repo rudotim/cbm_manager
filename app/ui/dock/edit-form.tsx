@@ -1,32 +1,42 @@
-import { CustomerField } from "@/app/lib/definitions";
-import Link from "next/link";
+"use client";
+
+import { CustomerField, DockTableType } from "@/app/lib/definitions";
 import {
   CheckIcon,
   ClockIcon,
   CurrencyDollarIcon,
   UserCircleIcon,
 } from "@heroicons/react/24/outline";
+import Link from "next/link";
 import { Button } from "@/app/ui/button";
-import { createInvoice } from "@/app/lib/actions";
+import { updateDock } from "@/app/lib/actions";
 
-export default function Form({ customers }: { customers: CustomerField[] }) {
+export default function EditDockForm({
+  invoice,
+  customers,
+}: {
+  invoice: DockTableType;
+  customers: CustomerField[];
+}) {
+  const updateDockWithId = updateDock.bind(null, invoice.id);
+
   return (
-    <form action={createInvoice}>
+    <form action={updateDockWithId}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
         {/* Customer Name */}
         <div className="mb-4">
           <label htmlFor="customer" className="mb-2 block text-sm font-medium">
-            Choose Member
+            Choose customer
           </label>
           <div className="relative">
             <select
               id="customer"
               name="customerId"
               className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-              defaultValue=""
+              defaultValue={invoice.membership_id}
             >
               <option value="" disabled>
-                Select a member
+                Select a customer
               </option>
               {customers.map((customer) => (
                 <option key={customer.id} value={customer.id}>
@@ -56,6 +66,7 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
                 placeholder="Enter slip number"
                 className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 required
+                defaultValue={invoice.slip_number}
               />
               <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
             </div>
@@ -77,6 +88,7 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
                 placeholder="Length of boat"
                 className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 required
+                defaultValue={invoice.boat_size}
               />
               <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
             </div>
@@ -96,7 +108,7 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
                     id="comments"
                     type="checkbox"
                     name="comments"
-                    defaultChecked
+                    defaultChecked={invoice.shore_power > 0}
                     aria-describedby="comments-description"
                     className="col-start-1 row-start-1 appearance-none rounded-sm border border-gray-300 bg-white checked:border-indigo-600 checked:bg-indigo-600 indeterminate:border-indigo-600 indeterminate:bg-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto"
                   />
@@ -138,7 +150,7 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
                     id="comments"
                     type="checkbox"
                     name="comments"
-                    defaultChecked
+                    defaultChecked={invoice.t_slip > 0}
                     aria-describedby="comments-description"
                     className="col-start-1 row-start-1 appearance-none rounded-sm border border-gray-300 bg-white checked:border-indigo-600 checked:bg-indigo-600 indeterminate:border-indigo-600 indeterminate:bg-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto"
                   />
@@ -186,7 +198,7 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
         >
           Cancel
         </Link>
-        <Button type="submit">Create Dock Record</Button>
+        <Button type="submit">Update Dock Record</Button>
       </div>
     </form>
   );

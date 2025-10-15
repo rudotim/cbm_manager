@@ -143,6 +143,41 @@ export async function updateProperty(id: string, formData: FormData) {
   redirect("/dashboard/properties");
 }
 
+export async function updateDock(id: number, formData: FormData) {
+  const { customerId, amount, status } = UpdateInvoice.parse({
+    customerId: formData.get("customerId"),
+    amount: formData.get("amount"),
+    status: formData.get("status"),
+  });
+
+  //   d.dock_id as "id",
+  // d.slip_number,
+  // concat(m.first_name, " ", m.last_name) as "name",
+  // "2025" as year,
+  // d.boat_size,
+  // d.shore_power,
+  // d.t_slip
+
+  const amountInCents = amount * 100;
+
+  await sql.execute(`
+    UPDATE dock
+    SET 
+    membership_id = ${customerId}, 
+    amount = ${amountInCents}, 
+    description = "${status}"
+    WHERE id = ${id}
+  `);
+
+  revalidatePath("/dashboard/dock");
+  redirect("/dashboard/dock");
+}
+
+export async function deleteDock(id: string) {
+  await sql.execute(`DELETE FROM dock WHERE id = ${id}`);
+  revalidatePath("/dashboard/dock");
+}
+
 export async function authenticate(
   prevState: string | undefined,
   formData: FormData

@@ -460,6 +460,40 @@ export async function fetchDockPages(query: string) {
   }
 }
 
+export async function fetchDockById(id: string) {
+  try {
+    const data = await sql.query<DockTableType[]>(`
+     SELECT 
+      d.dock_id as "id", 
+      d.slip_number, 
+      concat(m.first_name, " ", m.last_name) as "name",
+      "2025" as year,
+      d.boat_size, 
+      d.shore_power,
+      d.t_slip,
+      m.membership_id
+    FROM membership m
+    INNER join dock d ON 
+      d.membership_id = m.membership_id    
+      WHERE dock_id = "${id}";
+    `);
+
+    console.log("[dock] fetchDockById");
+
+    // const invoice = data[0].map((invoice) => ({
+    //   ...invoice,
+    //   // Convert amount from cents to dollars
+    //   amount: invoice.amount / 100,
+    // }));
+
+    //return invoice[0];
+    return data[0][0];
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch dock record by id", id);
+  }
+}
+
 export async function fetchPropertyById(id: string) {
   try {
     const data = await sql.query<MemberProperty[]>(`

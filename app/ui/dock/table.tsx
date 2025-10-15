@@ -1,4 +1,5 @@
 import { fetchDockTableData } from "@/app/lib/data";
+import { UpdateDock, DeleteDock } from "@/app/ui/dock/buttons";
 
 export default async function DockMemberTable({
   query,
@@ -54,6 +55,12 @@ export default async function DockMemberTable({
                       </td>
                       <td className="whitespace-nowrap bg-white px-4 py-5 text-sm group-first-of-type:rounded-md group-last-of-type:rounded-md">
                         {dock_record.t_slip}
+                      </td>
+                      <td className="whitespace-nowrap py-3 pl-6 pr-3">
+                        <div className="flex justify-end gap-3">
+                          <UpdateDock id={dock_record.id} />
+                          <DeleteDock id={dock_record.id} />
+                        </div>
                       </td>
                     </tr>
                   ))}

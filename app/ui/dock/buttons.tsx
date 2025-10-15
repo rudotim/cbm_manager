@@ -1,3 +1,4 @@
+import { deleteDock } from "@/app/lib/actions";
 import { PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 
@@ -10,5 +11,29 @@ export function CreateDockRecord() {
       <span className="hidden md:block">Add Dock Record</span>{" "}
       <PlusIcon className="h-5 md:ml-4" />
     </Link>
+  );
+}
+
+export function UpdateDock({ id }: { id: string }) {
+  return (
+    <Link
+      href={`/dashboard/dock/${id}/edit`}
+      className="rounded-md border p-2 hover:bg-gray-100"
+    >
+      <PencilIcon className="w-5" />
+    </Link>
+  );
+}
+
+export function DeleteDock({ id }: { id: string }) {
+  const deleteInvoiceWithId = deleteDock.bind(null, id);
+
+  return (
+    <form action={deleteInvoiceWithId}>
+      <button type="submit" className="rounded-md border p-2 hover:bg-gray-100">
+        <span className="sr-only">Delete</span>
+        <TrashIcon className="w-5" />
+      </button>
+    </form>
   );
 }
