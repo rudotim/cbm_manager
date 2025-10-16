@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import clsx from "clsx";
 import {
   CustomerField,
+  DockTableType,
   MemberForm,
   MemberProperty,
 } from "@/app/lib/definitions";
@@ -17,13 +18,16 @@ import Link from "next/link";
 import { Button } from "@/app/ui/button";
 import { updateMember } from "@/app/lib/actions";
 import PropertyEntry from "./property_entry";
+import DockEntry from "./dock_entry";
 
 export default function EditMemberForm({
   customer,
   properties,
+  dock,
 }: {
   customer: MemberForm;
   properties: MemberProperty[];
+  dock: DockTableType[];
 }) {
   const [membershipType, setMembershipType] = useState("stockholder");
   console.log("Editing customer:", customer);
@@ -212,31 +216,6 @@ export default function EditMemberForm({
               </div>
             </div>
 
-            {/* Member Property Address */}
-            {/*
-            <div className="col-span-full">
-              <h2 className="text-1xl mt-4 font-semibold text-gray-900 dark:text-white">
-                Cape Breton Property Address
-              </h2>
-              <label
-                htmlFor="street-address"
-                className="block text-sm/6 font-medium text-gray-900 dark:text-white"
-              >
-                Street address
-              </label>
-              <div className="mt-2">
-                <input
-                  id="street-address"
-                  name="street-address"
-                  type="text"
-                  autoComplete="street-address"
-                  defaultValue={property?.property_address || ""}
-                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-indigo-500"
-                />
-              </div>
-            </div>
-            */}
-
             {/* Mailing Address */}
             <div className="col-span-full">
               <h2 className="text-base/7 mt-4 font-semibold text-gray-900 dark:text-white">
@@ -320,21 +299,53 @@ export default function EditMemberForm({
               </div>
             </div>
 
-            <h2 className="text-base/7 mt-4 font-semibold text-gray-900 dark:text-white">
-              Properties
-            </h2>
-            {properties.map((invoice, i) => {
-              return (
-                <div
-                  key={invoice.id}
-                  className={clsx("col-span-full", {
-                    "border-t": i !== 0,
-                  })}
-                >
-                  <PropertyEntry property={invoice} />
+            <div className="col-span-full">
+              <h2 className="text-base/7 mt-4 font-semibold text-gray-900 dark:text-white">
+                Dock:
+              </h2>
+              {dock.length === 0 ? (
+                <div className="text-base/7 mt-4 font-semibold text-gray-900 dark:text-white">
+                  None
                 </div>
-              );
-            })}
+              ) : (
+                dock.map((invoice, i) => {
+                  return (
+                    <div
+                      key={invoice.id}
+                      className={clsx("col-span-full", {
+                        "border-t": i !== 0,
+                      })}
+                    >
+                      <DockEntry property={invoice} />
+                    </div>
+                  );
+                })
+              )}
+            </div>
+
+            <div className="col-span-full">
+              <h2 className="text-base/7 mt-4 font-semibold text-gray-900 dark:text-white">
+                Property:
+              </h2>
+              {properties.length === 0 ? (
+                <div className="text-base/7 mt-4 font-semibold text-gray-900 dark:text-white">
+                  None
+                </div>
+              ) : (
+                properties.map((invoice, i) => {
+                  return (
+                    <div
+                      key={invoice.id}
+                      className={clsx("col-span-full", {
+                        "border-t": i !== 0,
+                      })}
+                    >
+                      <PropertyEntry property={invoice} />
+                    </div>
+                  );
+                })
+              )}
+            </div>
           </div>
           {/* End of form */}
         </div>

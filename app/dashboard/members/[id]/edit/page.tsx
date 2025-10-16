@@ -3,6 +3,7 @@ import Breadcrumbs from "@/app/ui/members/breadcrumbs";
 import {
   fetchMemberById,
   fetchMemberPropertiesByMemberId,
+  fetchDockByMembershipId,
 } from "@/app/lib/data";
 
 export default async function Page(props: { params: Promise<{ id: string }> }) {
@@ -11,6 +12,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
 
   const customer = await fetchMemberById(id);
   const properties = await fetchMemberPropertiesByMemberId(id);
+  const dock = await fetchDockByMembershipId(id);
 
   console.log("Fetched customer:", customer, "id=", id);
   return (
@@ -25,7 +27,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
           },
         ]}
       />
-      <Form customer={customer} properties={properties} />
+      <Form customer={customer} properties={properties} dock={dock} />
     </main>
   );
 }
