@@ -3,6 +3,7 @@
 notes.txt
 invoices.db
 schema.sqlite.sql
+backup/
 
 sql/
 
