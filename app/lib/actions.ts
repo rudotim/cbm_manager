@@ -26,9 +26,17 @@ const UpdateInvoice = FormSchema.omit({ id: true, date: true });
 
 const MemberFormSchema = z.object({
   id: z.string(),
-  fname: z.string(),
-  amount: z.coerce.number(),
-  status: z.enum(["pending", "paid"]),
+  first_name: z.string(),
+  last_name: z.string(),
+  email: z.string(),
+  cell_phone: z.string(),
+  cape_phone: z.string(),
+  membership_type: z.string(),
+  status: z.string(),
+  mailing_street: z.string(),
+  mailing_city: z.string(),
+  mailing_state: z.string(),
+  mailing_zip: z.string(),
   date: z.string(),
 });
 const CreateMember = MemberFormSchema.omit({ id: true, date: true });
@@ -81,20 +89,45 @@ export async function deleteInvoice(id: string) {
 
 export async function createMember(formData: FormData) {
   console.log("Creating member on server");
-  const { fname, amount, status } = CreateMember.parse({
-    fname: formData.get("fname"),
-    amount: formData.get("amount"),
+  const {
+    first_name,
+    last_name,
+    email,
+    cell_phone,
+    cape_phone,
+    membership_type,
+    status,
+    mailing_street,
+    mailing_city,
+    mailing_state,
+    mailing_zip,
+  } = CreateMember.parse({
+    first_name: formData.get("first_name"),
+    last_name: formData.get("last_name"),
+    email: formData.get("email"),
+    cell_phone: formData.get("cell_phone"),
+    membership_type: formData.get("membership_type"),
+    cape_phone: formData.get("cape_phone"),
     status: formData.get("status"),
+    mailing_street: formData.get("mailing_street"),
+    mailing_city: formData.get("mailing_city"),
+    mailing_state: formData.get("mailing_state"),
+    mailing_zip: formData.get("mailing_zip"),
   });
-  const amountInCents = amount * 100;
   const date = new Date().toISOString().split("T")[0];
-  // Test it out:
-  console.log(fname, amount, status);
 
-  // await sql.execute(`
-  //   INSERT INTO membership (MembershipID, Amount, Description, Date)
-  //   VALUES (${fname}, ${amountInCents}, "${status}", "${date}")
-  // `);
+  await sql.execute(`
+    INSERT INTO membership (
+    first_name, last_name, email, cell_phone, cape_phone,
+    membership_type, status, mailing_street, mailing_city,
+    mailing_state, mailing_zip)
+    VALUES (
+    "${first_name}", "${last_name}", "${email}", "${cell_phone}", "${cape_phone}",
+    "${membership_type}", "${status}", "${mailing_street}", 
+    "${mailing_city}", "${mailing_state}",
+    "${mailing_zip}"
+    )
+  `);
 
   revalidatePath("/dashboard/members");
   redirect("/dashboard/members");

@@ -17,7 +17,6 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
   const [membershipType, setMembershipType] = useState("stockholder");
 
   const onNewMembershipType = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
     setMembershipType(e.target.value);
   };
 
@@ -32,15 +31,15 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
           <div className="grid grid-cols-1 gap-x-6 gap-y-2 sm:grid-cols-6">
             <div className="sm:col-span-3">
               <label
-                htmlFor="first-name"
+                htmlFor="first_name"
                 className="block text-sm/6 font-medium text-gray-900 dark:text-white"
               >
                 First name
               </label>
               <div className="mt-2">
                 <input
-                  id="first-name"
-                  name="first-name"
+                  id="first_name"
+                  name="first_name"
                   type="text"
                   autoComplete="given-name"
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-indigo-500"
@@ -50,15 +49,15 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
 
             <div className="sm:col-span-3">
               <label
-                htmlFor="last-name"
+                htmlFor="last_name"
                 className="block text-sm/6 font-medium text-gray-900 dark:text-white"
               >
                 Last name
               </label>
               <div className="mt-2">
                 <input
-                  id="last-name"
-                  name="last-name"
+                  id="last_name"
+                  name="last_name"
                   type="text"
                   autoComplete="family-name"
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-indigo-500"
@@ -129,6 +128,7 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
                     id="stockholder"
                     type="radio"
                     name="membership_type"
+                    value="Stock"
                     onChange={onNewMembershipType}
                     className="relative size-4 appearance-none rounded-full border border-gray-300 bg-white before:absolute before:inset-1 before:rounded-full before:bg-white not-checked:before:hidden checked:border-indigo-600 checked:bg-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:before:bg-gray-400 forced-colors:appearance-auto forced-colors:before:hidden"
                   />
@@ -144,6 +144,7 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
                     id="associate"
                     type="radio"
                     name="membership_type"
+                    value="Associate"
                     onChange={onNewMembershipType}
                     className="relative size-4 appearance-none rounded-full border border-gray-300 bg-white before:absolute before:inset-1 before:rounded-full before:bg-white not-checked:before:hidden checked:border-indigo-600 checked:bg-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:before:bg-gray-400 forced-colors:appearance-auto forced-colors:before:hidden"
                   />
@@ -157,6 +158,7 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
               </div>
             </fieldset>
 
+            {/* Status */}
             <div className="sm:col-span-3">
               <label
                 htmlFor="status"
@@ -187,17 +189,17 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
                 Use a permanent address where you can receive mail.
               </p>
               <label
-                htmlFor="street-address"
+                htmlFor="mailing_street"
                 className="block text-sm/6 font-medium text-gray-900 dark:text-white"
               >
                 Street address
               </label>
               <div className="mt-2">
                 <input
-                  id="street-address"
-                  name="street-address"
+                  id="mailing_street"
+                  name="mailing_street"
                   type="text"
-                  autoComplete="street-address"
+                  autoComplete="mailing_street"
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-indigo-500"
                 />
               </div>
@@ -206,15 +208,15 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
             {/* City */}
             <div className="sm:col-span-2 sm:col-start-1">
               <label
-                htmlFor="city"
+                htmlFor="mailing_city"
                 className="block text-sm/6 font-medium text-gray-900 dark:text-white"
               >
                 City
               </label>
               <div className="mt-2">
                 <input
-                  id="city"
-                  name="city"
+                  id="mailing_city"
+                  name="mailing_city"
                   type="text"
                   autoComplete="address-level2"
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-indigo-500"
@@ -222,17 +224,18 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
               </div>
             </div>
 
+            {/* State */}
             <div className="sm:col-span-2">
               <label
-                htmlFor="region"
+                htmlFor="mailing_state"
                 className="block text-sm/6 font-medium text-gray-900 dark:text-white"
               >
                 State / Province
               </label>
               <div className="mt-2">
                 <input
-                  id="region"
-                  name="region"
+                  id="mailing_state"
+                  name="mailing_state"
                   type="text"
                   autoComplete="address-level1"
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-indigo-500"
@@ -243,17 +246,17 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
             {/* Mailing zip code */}
             <div className="sm:col-span-2">
               <label
-                htmlFor="postal-code"
+                htmlFor="mailing_zip"
                 className="block text-sm/6 font-medium text-gray-900 dark:text-white"
               >
                 ZIP / Postal code
               </label>
               <div className="mt-2">
                 <input
-                  id="postal-code"
-                  name="postal-code"
+                  id="mailing_zip"
+                  name="mailing_zip"
                   type="text"
-                  autoComplete="postal-code"
+                  autoComplete="mailing_zip"
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-indigo-500"
                 />
               </div>

@@ -1,7 +1,7 @@
 import postgres from "postgres";
 import {
   CustomerField,
-  CustomerForm,
+  MemberForm,
   CustomersTableType,
   InvoiceForm,
   InvoicesTable,
@@ -307,10 +307,9 @@ export async function fetchMemberById(id: string) {
         membership_type,
         status,
         mailing_street,
-        mailing_street2,
         mailing_city,
-        mailing_zip
-        
+        mailing_state,
+        mailing_zip        
       FROM membership
       WHERE membership_id = "${id}";
     `);
@@ -365,8 +364,7 @@ LEFT JOIN invoices i ON m.membership_id = i.membership_id
 LEFT JOIN dock d on m.membership_id = d.membership_id
 WHERE
   m.first_name LIKE "${`%${query}%`}" OR
-  m.last_name LIKE "${`%${query}%`}" OR
-  m.email LIKE "${`%${query}%`}"
+  m.last_name LIKE "${`%${query}%`}"
   GROUP BY m.membership_id
 ORDER BY m.first_name ASC
 limit ${ITEMS_PER_PAGE} OFFSET ${offset}
@@ -394,8 +392,7 @@ select count(*) as "count"
       FROM membership m
       WHERE 
         m.first_name like "${`%${query}%`}" OR
-        m.last_name like "${`%${query}%`}" OR
-        m.email like "${`%${query}%`}"
+        m.last_name like "${`%${query}%`}"
   `);
 
     console.log(
@@ -460,7 +457,7 @@ export async function fetchDockPages(query: string) {
   }
 }
 
-export async function fetchDockById(id: string, all: boolean = true) {
+export async function fetchDockById(id: string) {
   try {
     const data = await sql.query<DockTableType[]>(`
      SELECT 
@@ -480,9 +477,7 @@ export async function fetchDockById(id: string, all: boolean = true) {
 
     console.log("[dock] fetchDockById:", data[0]);
 
-    //return invoice[0];
-    return all ? data[0] : data[0][0];
-    //return data[0][0];
+    return data[0][0];
   } catch (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to fetch dock record by id", id);
@@ -507,7 +502,7 @@ export async function fetchDockByMembershipId(id: string, all: boolean = true) {
       WHERE d.membership_id = "${id}";
     `);
 
-    console.log("[dock] fetchDockById:", data[0]);
+    console.log("[dock] fetchDockByMembershipId:", data[0]);
 
     //return invoice[0];
     return all ? data[0] : data[0][0];

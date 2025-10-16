@@ -124,8 +124,8 @@ export type MemberForm = RowDataPacket & {
   membership_type: string;
   status: string;
   mailing_street: string;
-  mailing_street2: string;
   mailing_city: string;
+  mailing_state: string;
   mailing_zip: string;
 };
 

@@ -253,7 +253,7 @@ export default function EditMemberForm({
                   name="city"
                   type="text"
                   autoComplete="address-level2"
-                  defaultValue={customer.mailing_street2}
+                  defaultValue={customer.mailing_city}
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-indigo-500"
                 />
               </div>
@@ -273,7 +273,7 @@ export default function EditMemberForm({
                   name="region"
                   type="text"
                   autoComplete="address-level1"
-                  defaultValue={customer.mailing_city}
+                  defaultValue={customer.mailing_state}
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-indigo-500"
                 />
               </div>
