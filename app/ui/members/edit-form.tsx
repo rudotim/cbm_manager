@@ -45,9 +45,6 @@ export default function EditMemberForm({
           <h2 className="text-base/7 font-semibold text-gray-900 dark:text-white">
             Personal Information
           </h2>
-          <p className="mt-1 text-sm/6 text-gray-600 dark:text-gray-400">
-            Use a permanent address where you can receive mail.
-          </p>
 
           <div className="grid grid-cols-1 gap-x-6 gap-y-2 sm:grid-cols-6">
             {/* First Name */}
@@ -221,6 +218,9 @@ export default function EditMemberForm({
               <h2 className="text-base/7 mt-4 font-semibold text-gray-900 dark:text-white">
                 Mailing Address
               </h2>
+              <p className="col-span-full mt-1 text-sm/6 text-gray-600 dark:text-gray-400">
+                Use a permanent address where you can receive mail.
+              </p>
               <label
                 htmlFor="street-address"
                 className="block text-sm/6 font-medium text-gray-900 dark:text-white"

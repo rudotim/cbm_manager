@@ -106,14 +106,14 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
                   >
                     <path
                       d="M3 8L6 11L11 3.5"
-                      stroke-width="2"
+                      strokeWidth="2"
                       stroke-linecap="round"
                       stroke-linejoin="round"
                       className="opacity-0 group-has-checked:opacity-100"
                     />
                     <path
                       d="M3 7H11"
-                      stroke-width="2"
+                      strokeWidth="2"
                       stroke-linecap="round"
                       stroke-linejoin="round"
                       className="opacity-0 group-has-indeterminate:opacity-100"
@@ -147,14 +147,14 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
                   >
                     <path
                       d="M3 8L6 11L11 3.5"
-                      stroke-width="2"
+                      strokeWidth="2"
                       stroke-linecap="round"
                       stroke-linejoin="round"
                       className="opacity-0 group-has-checked:opacity-100"
                     />
                     <path
                       d="M3 7H11"
-                      stroke-width="2"
+                      strokeWidth="2"
                       stroke-linecap="round"
                       stroke-linejoin="round"
                       className="opacity-0 group-has-indeterminate:opacity-100"

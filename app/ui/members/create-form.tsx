@@ -28,9 +28,6 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
           <h2 className="text-base/7 font-semibold text-gray-900 dark:text-white">
             Personal Information
           </h2>
-          <p className="mt-1 text-sm/6 text-gray-600 dark:text-gray-400">
-            Use a permanent address where you can receive mail.
-          </p>
 
           <div className="grid grid-cols-1 gap-x-6 gap-y-2 sm:grid-cols-6">
             <div className="sm:col-span-3">
@@ -186,6 +183,9 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
               <h2 className="text-base/7 mt-4 font-semibold text-gray-900 dark:text-white">
                 Mailing Address
               </h2>
+              <p className="col-span-full mt-1 text-sm/6 text-gray-600 dark:text-gray-400">
+                Use a permanent address where you can receive mail.
+              </p>
               <label
                 htmlFor="street-address"
                 className="block text-sm/6 font-medium text-gray-900 dark:text-white"
@@ -254,151 +254,6 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
                   name="postal-code"
                   type="text"
                   autoComplete="postal-code"
-                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-indigo-500"
-                />
-              </div>
-            </div>
-
-            {/*
-            <div className="mt-6 flex justify-end gap-4">
-              <Link
-                href="/dashboard/members"
-                className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
-              >
-                Cancel
-              </Link>
-              <Button type="submit">Add New Property</Button>
-            </div>
-            */}
-
-            {/* Property Address */}
-            <div className="col-span-full">
-              <div className="flex items-center gap-x-3 mr-4">
-                <input
-                  id="is_property_owner"
-                  name="is_property_owner"
-                  type="checkbox"
-                  autoComplete="is_property_owner"
-                  className="relative size-4  border-gray-300 bg-white before:absolute before:inset-1 before:rounded-full before:bg-white not-checked:before:hidden checked:border-indigo-600 checked:bg-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:before:bg-gray-400 forced-colors:appearance-auto forced-colors:before:hidden"
-                />
-                <label
-                  htmlFor="is_property_owner"
-                  className="block text-sm/6 font-medium text-gray-900 dark:text-white"
-                >
-                  This member owns property in Cape Breton
-                </label>
-              </div>
-
-              <label
-                htmlFor="street-address"
-                className="block text-sm/6 font-medium text-gray-900 dark:text-white"
-              >
-                Select Street address
-              </label>
-              <div className="mt-2">
-                <input
-                  id="street-address"
-                  name="street-address"
-                  type="text"
-                  autoComplete="street-address"
-                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-indigo-500"
-                />
-              </div>
-            </div>
-
-            {/* Property Owner Address */}
-            <div className="col-span-full">
-              <h2 className="text-1xl mt-4 font-semibold text-gray-900 dark:text-white">
-                Property Owner Address (If different from mailing)
-              </h2>
-              <label
-                htmlFor="street-address"
-                className="block text-sm/6 font-medium text-gray-900 dark:text-white"
-              >
-                Street address
-              </label>
-              <div className="mt-2">
-                <input
-                  id="street-address"
-                  name="street-address"
-                  type="text"
-                  autoComplete="street-address"
-                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-indigo-500"
-                />
-              </div>
-            </div>
-
-            {/* Property Owner City */}
-            <div className="sm:col-span-2 sm:col-start-1">
-              <label
-                htmlFor="city"
-                className="block text-sm/6 font-medium text-gray-900 dark:text-white"
-              >
-                City
-              </label>
-              <div className="mt-2">
-                <input
-                  id="city"
-                  name="city"
-                  type="text"
-                  autoComplete="address-level2"
-                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-indigo-500"
-                />
-              </div>
-            </div>
-
-            {/* Property Owner State */}
-            <div className="sm:col-span-2">
-              <label
-                htmlFor="region"
-                className="block text-sm/6 font-medium text-gray-900 dark:text-white"
-              >
-                State / Province
-              </label>
-              <div className="mt-2">
-                <input
-                  id="region"
-                  name="region"
-                  type="text"
-                  autoComplete="address-level1"
-                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-indigo-500"
-                />
-              </div>
-            </div>
-
-            {/* Property Owner Zip */}
-            <div className="sm:col-span-2">
-              <label
-                htmlFor="postal-code"
-                className="block text-sm/6 font-medium text-gray-900 dark:text-white"
-              >
-                ZIP / Postal code
-              </label>
-              <div className="mt-2">
-                <input
-                  id="postal-code"
-                  name="postal-code"
-                  type="text"
-                  autoComplete="postal-code"
-                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-indigo-500"
-                />
-              </div>
-            </div>
-
-            {/* Property Owner Phone */}
-            <div className="sm:col-span-2">
-              <label
-                htmlFor="property_owner_phone"
-                className="block text-sm/6 font-medium text-gray-900 dark:text-white"
-              >
-                Property Owner Phone
-              </label>
-              <div className="mt-2">
-                <input
-                  id="property_owner_phone"
-                  name="property_owner_phone"
-                  type="tel"
-                  autoComplete="phone"
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-indigo-500"
                 />
               </div>
