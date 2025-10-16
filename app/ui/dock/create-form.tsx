@@ -96,7 +96,6 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
                     id="comments"
                     type="checkbox"
                     name="comments"
-                    defaultChecked
                     aria-describedby="comments-description"
                     className="col-start-1 row-start-1 appearance-none rounded-sm border border-gray-300 bg-white checked:border-indigo-600 checked:bg-indigo-600 indeterminate:border-indigo-600 indeterminate:bg-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto"
                   />
@@ -138,7 +137,6 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
                     id="comments"
                     type="checkbox"
                     name="comments"
-                    defaultChecked
                     aria-describedby="comments-description"
                     className="col-start-1 row-start-1 appearance-none rounded-sm border border-gray-300 bg-white checked:border-indigo-600 checked:bg-indigo-600 indeterminate:border-indigo-600 indeterminate:bg-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto"
                   />
