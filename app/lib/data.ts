@@ -504,9 +504,7 @@ export async function fetchDockByMembershipId(id: string, all: boolean = true) {
 
     console.log("[dock] fetchDockByMembershipId:", data[0]);
 
-    //return invoice[0];
     return all ? data[0] : data[0][0];
-    //return data[0][0];
   } catch (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to fetch dock record by id", id);
@@ -524,8 +522,7 @@ export async function fetchPropertyById(id: string) {
         p.owner_city,
         p.owner_zip,
         p.owner_state,
-        p.owner_phone,
-        p.notes        
+        p.owner_phone 
       FROM properties p
       WHERE
       p.id = "${id}";
@@ -581,27 +578,6 @@ export async function fetchFilteredProperties(
       ORDER BY p.property_address
             limit ${ITEMS_PER_PAGE} OFFSET ${offset}
 	  `);
-
-    // const data = await sql.query<PropertyTableType[]>(`SELECT
-    //   d.dock_id as "id",
-    //   d.slip_number,
-    //   concat(m.first_name, " ", m.last_name) as "name",
-    //   "2025" as year,
-    //   d.boat_size,
-    //   d.owed,
-    //   d.balance
-    // FROM membership m
-    // INNER join dock d ON
-    //   d.membership_id = m.membership_id
-    // ORDER BY d.slip_number asc
-    // limit ${ITEMS_PER_PAGE} OFFSET ${offset}
-    // `);
-
-    // const dock_records = data[0].map((dock_record) => ({
-    //   ...dock_record,
-    //   owed: formatCurrency(dock_record.owed),
-    //   balance: formatCurrency(dock_record.balance),
-    // }));
 
     console.log("[properties] Fetching properties filtered table data");
 

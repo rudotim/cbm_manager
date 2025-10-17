@@ -42,6 +42,20 @@ const MemberFormSchema = z.object({
 const CreateMember = MemberFormSchema.omit({ id: true, date: true });
 const UpdateMember = MemberFormSchema.omit({ id: true, date: true });
 
+const PropertyFormSchema = z.object({
+  id: z.string(),
+  property_address: z.string(),
+  owner_name: z.string(),
+  owner_address: z.string(),
+  owner_city: z.string(),
+  owner_zip: z.string(),
+  owner_state: z.string(),
+  owner_phone: z.string(),
+  date: z.string(),
+});
+const CreateProperty = PropertyFormSchema.omit({ id: true, date: true });
+const UpdateProperty = PropertyFormSchema.omit({ id: true, date: true });
+
 export async function createInvoice(formData: FormData) {
   console.log("Creating invoice on server");
   const { customerId, amount, status } = CreateInvoice.parse({
@@ -134,7 +148,7 @@ export async function createMember(formData: FormData) {
 }
 
 export async function updateMember(id: string, formData: FormData) {
-  console.log("Creating member on server", formData);
+  console.log("Updating member on server", formData);
   const {
     first_name,
     last_name,
@@ -179,20 +193,67 @@ export async function deleteMember(id: string) {
   revalidatePath("/dashboard/members");
 }
 
+export async function createProperty(formData: FormData) {
+  console.log("Creating property on server");
+  const {
+    property_address,
+    owner_name,
+    owner_address,
+    owner_city,
+    owner_zip,
+    owner_state,
+    owner_phone,
+  } = CreateProperty.parse({
+    property_address: formData.get("property_address"),
+    owner_name: formData.get("owner_name"),
+    owner_address: formData.get("owner_address"),
+    owner_city: formData.get("owner_city"),
+    owner_zip: formData.get("owner_zip"),
+    owner_state: formData.get("owner_state"),
+    owner_phone: formData.get("owner_phone"),
+  });
+  const date = new Date().toISOString().split("T")[0];
+
+  await sql.execute(`
+    INSERT INTO properties (
+    property_address, owner_name, owner_address, owner_city, owner_zip,
+    owner_state, owner_phone)
+    VALUES (
+    "${property_address}", "${owner_name}", "${owner_address}", "${owner_city}", "${owner_zip}",
+    "${owner_state}", "${owner_phone}"
+    )
+  `);
+
+  revalidatePath("/dashboard/properties");
+  redirect("/dashboard/properties");
+}
+
 export async function updateProperty(id: string, formData: FormData) {
-  // const { customerId, amount, status } = UpdateMember.parse({
-  //   customerId: formData.get("customerId"),
-  //   amount: formData.get("amount"),
-  //   status: formData.get("status"),
-  // });
+  console.log("Updating property on server", formData);
+  const {
+    property_address,
+    owner_name,
+    owner_address,
+    owner_city,
+    owner_zip,
+    owner_state,
+    owner_phone,
+  } = UpdateProperty.parse({
+    property_address: formData.get("property_address"),
+    owner_name: formData.get("owner_name"),
+    owner_address: formData.get("owner_address"),
+    owner_city: formData.get("owner_city"),
+    owner_zip: formData.get("owner_zip"),
+    owner_state: formData.get("owner_state"),
+    owner_phone: formData.get("owner_phone"),
+  });
 
-  // const amountInCents = amount * 100;
-
-  // await sql.execute(`
-  //   UPDATE invoices
-  //   SET membership_id = ${customerId}, amount = ${amountInCents}, description = "${status}"
-  //   WHERE id = ${id}
-  // `);
+  await sql.execute(`
+    UPDATE properties
+    SET property_address = "${property_address}", owner_name = "${owner_name}", owner_city = "${owner_city}",
+    owner_zip = "${owner_zip}", owner_state = "${owner_state}", owner_phone = "${owner_phone}"    
+    WHERE id = ${id}
+  `);
 
   revalidatePath("/dashboard/properties");
   redirect("/dashboard/properties");
