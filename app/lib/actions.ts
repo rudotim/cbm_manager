@@ -134,19 +134,41 @@ export async function createMember(formData: FormData) {
 }
 
 export async function updateMember(id: string, formData: FormData) {
-  // const { customerId, amount, status } = UpdateMember.parse({
-  //   customerId: formData.get("customerId"),
-  //   amount: formData.get("amount"),
-  //   status: formData.get("status"),
-  // });
+  console.log("Creating member on server", formData);
+  const {
+    first_name,
+    last_name,
+    email,
+    cell_phone,
+    cape_phone,
+    membership_type,
+    status,
+    mailing_street,
+    mailing_city,
+    mailing_state,
+    mailing_zip,
+  } = UpdateMember.parse({
+    first_name: formData.get("first_name"),
+    last_name: formData.get("last_name"),
+    email: formData.get("email"),
+    cell_phone: formData.get("cell_phone"),
+    membership_type: formData.get("membership_type"),
+    cape_phone: formData.get("cape_phone"),
+    status: formData.get("status"),
+    mailing_street: formData.get("mailing_street"),
+    mailing_city: formData.get("mailing_city"),
+    mailing_state: formData.get("mailing_state"),
+    mailing_zip: formData.get("mailing_zip"),
+  });
 
-  // const amountInCents = amount * 100;
-
-  // await sql.execute(`
-  //   UPDATE invoices
-  //   SET membership_id = ${customerId}, amount = ${amountInCents}, description = "${status}"
-  //   WHERE id = ${id}
-  // `);
+  await sql.execute(`
+    UPDATE membership
+    SET first_name = "${first_name}", last_name = "${last_name}", email = "${email}",
+    cell_phone = "${cell_phone}", cape_phone = "${cape_phone}", membership_type = "${membership_type}",
+    status = "${status}", mailing_street = "${mailing_street}", mailing_city = "${mailing_city}",
+    mailing_state = "${mailing_state}", mailing_zip = "${mailing_zip}"
+    WHERE membership_id = ${id}
+  `);
 
   revalidatePath("/dashboard/members");
   redirect("/dashboard/members");

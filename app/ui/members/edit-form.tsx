@@ -50,15 +50,15 @@ export default function EditMemberForm({
             {/* First Name */}
             <div className="sm:col-span-3">
               <label
-                htmlFor="first-name"
+                htmlFor="first_name"
                 className="block text-sm/6 font-medium text-gray-900 dark:text-white"
               >
                 First name
               </label>
               <div className="mt-2">
                 <input
-                  id="first-name"
-                  name="first-name"
+                  id="first_name"
+                  name="first_name"
                   type="text"
                   autoComplete="given-name"
                   defaultValue={customer.first_name || ""}
@@ -70,15 +70,15 @@ export default function EditMemberForm({
             {/* Last Name */}
             <div className="sm:col-span-3">
               <label
-                htmlFor="last-name"
+                htmlFor="last_name"
                 className="block text-sm/6 font-medium text-gray-900 dark:text-white"
               >
                 Last name
               </label>
               <div className="mt-2">
                 <input
-                  id="last-name"
-                  name="last-name"
+                  id="last_name"
+                  name="last_name"
                   type="text"
                   autoComplete="family-name"
                   defaultValue={customer.last_name}
@@ -222,15 +222,15 @@ export default function EditMemberForm({
                 Use a permanent address where you can receive mail.
               </p>
               <label
-                htmlFor="street-address"
+                htmlFor="mailing_street"
                 className="block text-sm/6 font-medium text-gray-900 dark:text-white"
               >
                 Street address
               </label>
               <div className="mt-2">
                 <input
-                  id="street-address"
-                  name="street-address"
+                  id="mailing_street"
+                  name="mailing_street"
                   type="text"
                   autoComplete="street-address"
                   defaultValue={customer.mailing_street}
@@ -242,15 +242,15 @@ export default function EditMemberForm({
             {/* City */}
             <div className="sm:col-span-2 sm:col-start-1">
               <label
-                htmlFor="city"
+                htmlFor="mailing_city"
                 className="block text-sm/6 font-medium text-gray-900 dark:text-white"
               >
                 City
               </label>
               <div className="mt-2">
                 <input
-                  id="city"
-                  name="city"
+                  id="mailing_city"
+                  name="mailing_city"
                   type="text"
                   autoComplete="address-level2"
                   defaultValue={customer.mailing_city}
@@ -262,15 +262,15 @@ export default function EditMemberForm({
             {/* State/Province */}
             <div className="sm:col-span-2">
               <label
-                htmlFor="region"
+                htmlFor="mailing_state"
                 className="block text-sm/6 font-medium text-gray-900 dark:text-white"
               >
                 State / Province
               </label>
               <div className="mt-2">
                 <input
-                  id="region"
-                  name="region"
+                  id="mailing_state"
+                  name="mailing_state"
                   type="text"
                   autoComplete="address-level1"
                   defaultValue={customer.mailing_state}
@@ -282,15 +282,15 @@ export default function EditMemberForm({
             {/* Zip / Postal */}
             <div className="sm:col-span-2">
               <label
-                htmlFor="postal-code"
+                htmlFor="mailing_zip"
                 className="block text-sm/6 font-medium text-gray-900 dark:text-white"
               >
                 ZIP / Postal code
               </label>
               <div className="mt-2">
                 <input
-                  id="postal-code"
-                  name="postal-code"
+                  id="mailing_zip"
+                  name="mailing_zip"
                   type="text"
                   defaultValue={customer.mailing_zip}
                   autoComplete="postal-code"
