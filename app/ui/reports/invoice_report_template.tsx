@@ -6,6 +6,7 @@ export default function InvoiceReportTemplate({
 }: {
   member_data: MemberInvoiceForm;
 }) {
+  let count = 1;
   return (
     <div>
       <div id="invoice">
@@ -37,8 +38,13 @@ export default function InvoiceReportTemplate({
                 <div className="row contacts">
                   <div className="col invoice-to">
                     <div className="text-gray-light">INVOICE TO:</div>
-                    <h2 className="to">{member_data.first_name}</h2>
-                    <div className="address">@@MEMBER_ADDRESS</div>
+                    <h2 className="to">
+                      {member_data.first_name} {member_data.last_name}
+                    </h2>
+                    <div className="address">
+                      {member_data.mailing_street}, {member_data.mailing_city},{" "}
+                      {member_data.mailing_state}, {member_data.mailing_zip}
+                    </div>
                   </div>
                   <div className="col invoice-details">
                     <div className="date">Date of Invoice: @@INVOICE_DATE</div>
@@ -62,9 +68,59 @@ export default function InvoiceReportTemplate({
                   </tr>
                 </thead>
                 <tbody>
-                  @@MEMBERSHIP_FEE_RECORD @@BEACH_BADGE_RECORD
-                  @@VISIONARY_FUND_RECORD @@DOCK_RENTAL_RECORD @@DOCK_TEE_SLIP
-                  @@DOCK_SHORE_POWER
+                  <tr>
+                    <td className="no">{count++}</td>
+                    <td className="text-left">
+                      Cape Breton Annual Service Fee
+                    </td>
+                    <td className="unit">$325.00</td>
+                    <td className="qty">1</td>
+                    <td className="total">$325.00</td>
+                  </tr>
+                  <tr>
+                    <td className="no">{count++}</td>
+                    <td className="text-left">
+                      Additional badgest up to six (6)
+                    </td>
+                    <td className="unit">$10.00</td>
+                    <td className="qty"></td>
+                    <td className="total"></td>
+                  </tr>
+                  <tr>
+                    <td className="no">{count++}</td>
+                    <td className="text-left">Visionary Fund</td>
+                    <td className="unit">$50.00</td>
+                    <td className="qty">1</td>
+                    <td className="total"></td>
+                  </tr>
+                  {member_data.slip > 0 ? (
+                    <>
+                      <tr>
+                        <td className="no">{count++}</td>
+                        <td className="text-left">Dock Slip Rental</td>
+                        <td className="unit"></td>
+                        <td className="qty"></td>
+                        <td className="total"></td>
+                      </tr>
+
+                      <tr>
+                        <td className="no">{count++}</td>
+                        <td className="text-left">Optional Tee Slip</td>
+                        <td className="unit">$125.00</td>
+                        <td className="qty"></td>
+                        <td className="total"></td>
+                      </tr>
+                      <tr>
+                        <td className="no">{count++}</td>
+                        <td className="text-left">Optional Shore Power</td>
+                        <td className="unit">$150.00</td>
+                        <td className="qty"></td>
+                        <td className="total"></td>
+                      </tr>
+                    </>
+                  ) : (
+                    ""
+                  )}
                 </tbody>
                 <tfoot>
                   <tr>
@@ -75,7 +131,7 @@ export default function InvoiceReportTemplate({
                   <tr>
                     <td colspan="2"></td>
                     <td colspan="2">Early Payment Discount*</td>
-                    <td>-@@EARLY_DISCOUNT_FEE</td>
+                    <td>-$10.00</td>
                   </tr>
                   <tr>
                     <td colspan="2"></td>
@@ -92,7 +148,7 @@ export default function InvoiceReportTemplate({
                   <b>
                     <i>received</i>
                   </b>{" "}
-                  no later than April 10th, 2025
+                  no later than April 10th, 2026
                 </div>
               </div>
               <div className="mt-10"></div>
@@ -100,7 +156,7 @@ export default function InvoiceReportTemplate({
                 <div className="notice">
                   All Slip Rental fees and Options MUST be paid in full before
                   tying up your boat or Jet Ski at the dock. No boats or Jet
-                  Skis at the dock before April 1, 2025
+                  Skis at the dock before April 1, 2026
                 </div>
               </div>
             </main>
