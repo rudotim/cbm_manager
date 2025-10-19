@@ -6,6 +6,7 @@ import { lusitana } from "@/app/ui/fonts";
 import { InvoicesTableSkeleton } from "@/app/ui/skeletons";
 import { Suspense } from "react";
 import { fetchCustomerPages } from "@/app/lib/data";
+import Link from "next/link";
 
 import "./report.styles.css";
 
@@ -26,10 +27,9 @@ export default async function ReportsPage(props: {
         <h2>Membership Reports</h2>
         <ul>
           <li>
-            <a href="#">Membership List</a>
-          </li>
-          <li>
-            <a href="#">Membership Trend</a>
+            <Link href={`/reports/membership/active`} target="_blank">
+              Active Membership List
+            </Link>
           </li>
         </ul>
       </div>
@@ -38,13 +38,9 @@ export default async function ReportsPage(props: {
         <h2>Invoice Reports</h2>
         <ul>
           <li>
-            <a href="#">Invoice Aging</a>
-          </li>
-          <li>
-            <a href="#">Invoice Details</a>
-          </li>
-          <li>
-            <a href="#">Credit Note Details</a>
+            <Link href={`/reports/invoices/generate_members`} target="_blank">
+              Generate Invoices
+            </Link>
           </li>
         </ul>
       </div>

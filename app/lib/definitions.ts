@@ -161,3 +161,18 @@ export type PropertyTableType = RowDataPacket & {
   owner_name: string;
   membership_type: string;
 };
+
+export type MemberInvoiceForm = RowDataPacket & {
+  id: string;
+  first_name: string;
+  last_name: string;
+  membership_type: string;
+  status: string;
+  mailing_street: string;
+  mailing_city: string;
+  mailing_state: string;
+  mailing_zip: string;
+  slip: number;
+  shore_power: boolean;
+  t_slip: boolean;
+};
