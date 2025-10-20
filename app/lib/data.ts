@@ -1,4 +1,3 @@
-import postgres from "postgres";
 import {
   CustomerField,
   MemberForm,
@@ -14,32 +13,6 @@ import {
 } from "./definitions";
 import { formatCurrency } from "./utils";
 import sql from "./db";
-
-//const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
-// import mysql from "mysql2/promise";
-
-// const sql = await mysql.createConnection({
-//   host: process.env.MYSQL_URL!,
-//   user: process.env.MYSQL_USER!,
-//   password: process.env.MYSQL_PASSWORD!,
-//   database: process.env.MYSQL_DATABASE!,
-// });
-
-// Potentially use a pool
-// const pool = mysql.createPool({
-//     host: process.env.DB_HOST,
-//     user: process.env.DB_USER,
-//     password: process.env.DB_PASSWORD,
-//     database: process.env.DB_NAME,
-//     waitForConnections: true,
-//     connectionLimit: 10, // Adjust this based on your max_user_connections
-//     queueLimit: 0
-//   });
-
-//  export async function query(sql, params) {
-//       const [rows] = await pool.execute(sql, params);
-//       return rows;
-//     }
 
 export async function fetchRevenue(): Promise<Revenue[]> {
   try {

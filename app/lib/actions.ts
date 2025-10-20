@@ -3,17 +3,9 @@
 import { signIn } from "@/auth";
 import { AuthError } from "next-auth";
 import { z } from "zod";
-//import mysql from "mysql2/promise";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import sql from "@/app/lib/db";
-
-// const sql = await mysql.createConnection({
-//   host: process.env.MYSQL_URL!,
-//   user: process.env.MYSQL_USER!,
-//   password: process.env.MYSQL_PASSWORD!,
-//   database: process.env.MYSQL_DATABASE!,
-// });
 
 const FormSchema = z.object({
   id: z.string(),
