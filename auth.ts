@@ -4,19 +4,20 @@ import { authConfig } from "./auth.config";
 import { z } from "zod";
 import type { User } from "@/app/lib/definitions";
 import bcrypt from "bcrypt";
-import postgres from "postgres";
+//import postgres from "postgres";
+import sql from "@/app/lib/db";
 
 //const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
-import mysql from "mysql2/promise";
+//import mysql from "mysql2/promise";
 
 console.log("mysql url>", process.env.MYSQL_URL!);
 
-const sql = await mysql.createConnection({
-  host: process.env.MYSQL_URL!,
-  user: process.env.MYSQL_USER!,
-  password: process.env.MYSQL_PASSWORD!,
-  database: process.env.MYSQL_DATABASE!,
-});
+// const sql = await mysql.createConnection({
+//   host: process.env.MYSQL_URL!,
+//   user: process.env.MYSQL_USER!,
+//   password: process.env.MYSQL_PASSWORD!,
+//   database: process.env.MYSQL_DATABASE!,
+// });
 
 async function getUser(username: string): Promise<User | undefined> {
   try {
