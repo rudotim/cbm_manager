@@ -91,7 +91,7 @@ export default function InvoiceReportTemplate({
                     <td className="text-left">Visionary Fund</td>
                     <td className="unit">$50.00</td>
                     <td className="qty">1</td>
-                    <td className="total"></td>
+                    <td className="total">$50.00</td>
                   </tr>
                   {member_data.slip > 0 ? (
                     <>
@@ -125,17 +125,17 @@ export default function InvoiceReportTemplate({
                 <tfoot>
                   <tr>
                     <td colSpan="2"></td>
-                    <td colspan="2">SUBTOTAL</td>
+                    <td colSpan="2">SUBTOTAL</td>
                     <td></td>
                   </tr>
                   <tr>
-                    <td colspan="2"></td>
-                    <td colspan="2">Early Payment Discount*</td>
+                    <td colSpan="2"></td>
+                    <td colSpan="2">Early Payment Discount*</td>
                     <td>-$10.00</td>
                   </tr>
                   <tr>
-                    <td colspan="2"></td>
-                    <td colspan="2">GRAND TOTAL</td>
+                    <td colSpan="2"></td>
+                    <td colSpan="2">GRAND TOTAL</td>
                     <td></td>
                   </tr>
                 </tfoot>
