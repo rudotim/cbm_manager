@@ -13,16 +13,17 @@ import {
   MemberProperty,
 } from "./definitions";
 import { formatCurrency } from "./utils";
+import sql from "./db";
 
 //const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
-import mysql from "mysql2/promise";
+// import mysql from "mysql2/promise";
 
-const sql = await mysql.createConnection({
-  host: process.env.MYSQL_URL!,
-  user: process.env.MYSQL_USER!,
-  password: process.env.MYSQL_PASSWORD!,
-  database: process.env.MYSQL_DATABASE!,
-});
+// const sql = await mysql.createConnection({
+//   host: process.env.MYSQL_URL!,
+//   user: process.env.MYSQL_USER!,
+//   password: process.env.MYSQL_PASSWORD!,
+//   database: process.env.MYSQL_DATABASE!,
+// });
 
 // Potentially use a pool
 // const pool = mysql.createPool({

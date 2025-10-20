@@ -1,17 +1,18 @@
 // import postgres from 'postgres';
 
 // const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
+import sql from "@/app/lib/db";
 
-import mysql from "mysql2/promise";
+//import mysql from "mysql2/promise";
 
 console.log("mysql url>", process.env.MYSQL_URL!);
 
-const sql = await mysql.createConnection({
-  host: process.env.MYSQL_URL!,
-  user: process.env.MYSQL_USER!,
-  password: process.env.MYSQL_PASSWORD!,
-  database: process.env.MYSQL_DATABASE!,
-});
+// const sql = await mysql.createConnection({
+//   host: process.env.MYSQL_URL!,
+//   user: process.env.MYSQL_USER!,
+//   password: process.env.MYSQL_PASSWORD!,
+//   database: process.env.MYSQL_DATABASE!,
+// });
 
 async function listInvoices() {
   // const data = await sql`

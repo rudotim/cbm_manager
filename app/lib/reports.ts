@@ -1,12 +1,13 @@
-import mysql from "mysql2/promise";
+//import mysql from "mysql2/promise";
+import sql from "./db";
 import { MemberInvoiceForm } from "@/app/lib/definitions";
 
-const sql = await mysql.createConnection({
-  host: process.env.MYSQL_URL!,
-  user: process.env.MYSQL_USER!,
-  password: process.env.MYSQL_PASSWORD!,
-  database: process.env.MYSQL_DATABASE!,
-});
+// const sql = await mysql.createConnection({
+//   host: process.env.MYSQL_URL!,
+//   user: process.env.MYSQL_USER!,
+//   password: process.env.MYSQL_PASSWORD!,
+//   database: process.env.MYSQL_DATABASE!,
+// });
 
 export async function fetchMembershipReport() {
   try {
