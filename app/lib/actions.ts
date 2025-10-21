@@ -252,7 +252,7 @@ export async function updateProperty(id: string, formData: FormData) {
   redirect("/dashboard/properties");
 }
 
-export async function updateDock(id: number, formData: FormData) {
+export async function updateDock(id: string, formData: FormData) {
   const { customerId, amount, status } = UpdateInvoice.parse({
     customerId: formData.get("customerId"),
     amount: formData.get("amount"),

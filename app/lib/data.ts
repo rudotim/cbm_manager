@@ -270,7 +270,7 @@ export async function fetchMemberPropertiesByMemberId(id: string) {
 
 export async function fetchMemberById(id: string) {
   try {
-    const data = await sql.query<MemberForm>(`
+    const data = await sql.query<MemberForm[]>(`
       SELECT
         membership_id as "id",
         first_name,
@@ -454,11 +454,11 @@ export async function fetchDockById(id: string) {
     return data[0][0];
   } catch (error) {
     console.error("Database Error:", error);
-    throw new Error("Failed to fetch dock record by id", id);
+    throw new Error("Failed to fetch dock record by id " + id);
   }
 }
 
-export async function fetchDockByMembershipId(id: string, all: boolean = true) {
+export async function fetchDockByMembershipId(id: string) {
   try {
     const data = await sql.query<DockTableType[]>(`
      SELECT 
@@ -478,10 +478,11 @@ export async function fetchDockByMembershipId(id: string, all: boolean = true) {
 
     console.log("[dock] fetchDockByMembershipId:", data[0]);
 
-    return all ? data[0] : data[0][0];
+    //return all ? data[0] : data[0][0];
+    return data[0] as DockTableType[];
   } catch (error) {
     console.error("Database Error:", error);
-    throw new Error("Failed to fetch dock record by id", id);
+    throw new Error("Failed to fetch dock record by id " + id);
   }
 }
 
@@ -522,11 +523,12 @@ select count(*) as "count"
       ORDER BY p.property_address
   `);
 
+    let count = Number((data[0] as any)[0].count);
     console.log(
       "[properties] fetching property page count for pagination:",
-      data[0][0].count
+      count
     );
-    return Math.ceil(Number((data[0] as any)[0].count) / ITEMS_PER_PAGE);
+    return Math.ceil(count / ITEMS_PER_PAGE);
   } catch (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to fetch total number of invoices.");

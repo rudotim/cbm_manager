@@ -142,7 +142,7 @@ export type MemberProperty = RowDataPacket & {
 };
 
 export type DockTableType = RowDataPacket & {
-  id: number;
+  id: string;
   name: string;
   year: number;
   slip_number: number;
@@ -155,7 +155,7 @@ export type DockTableType = RowDataPacket & {
 };
 
 export type PropertyTableType = RowDataPacket & {
-  id: number;
+  id: string;
   property_address: string;
   owner_address: string;
   owner_name: string;

@@ -3,7 +3,7 @@ import { MemberInvoiceForm } from "@/app/lib/definitions";
 
 export async function fetchMembershipReport() {
   try {
-    const data = await sql.query(`SELECT
+    const data = await sql.query<MemberInvoiceForm[]>(`SELECT
       membership_id as id,
       first_name, last_name
       FROM membership m

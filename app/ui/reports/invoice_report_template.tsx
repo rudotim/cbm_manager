@@ -57,7 +57,7 @@ export default function InvoiceReportTemplate({
                   </div>
                 </div>
               </div>
-              <table border="0" cellspacing="0" cellpadding="0">
+              <table border={0} cellSpacing="0" cellPadding="0">
                 <thead>
                   <tr>
                     <th>#</th>
@@ -124,18 +124,18 @@ export default function InvoiceReportTemplate({
                 </tbody>
                 <tfoot>
                   <tr>
-                    <td colSpan="2"></td>
-                    <td colSpan="2">SUBTOTAL</td>
+                    <td colSpan={2}></td>
+                    <td colSpan={2}>SUBTOTAL</td>
                     <td></td>
                   </tr>
                   <tr>
-                    <td colSpan="2"></td>
-                    <td colSpan="2">Early Payment Discount*</td>
+                    <td colSpan={2}></td>
+                    <td colSpan={2}>Early Payment Discount*</td>
                     <td>-$10.00</td>
                   </tr>
                   <tr>
-                    <td colSpan="2"></td>
-                    <td colSpan="2">GRAND TOTAL</td>
+                    <td colSpan={2}></td>
+                    <td colSpan={2}>GRAND TOTAL</td>
                     <td></td>
                   </tr>
                 </tfoot>
