@@ -9,11 +9,9 @@ import sql from "@/app/lib/db";
 async function getUser(username: string): Promise<User | undefined> {
   try {
     console.log("email=", username);
-    //     const invoices = await sql.query<InvoicesTable[]>(`
     const user = await sql.query<User[]>(
       `SELECT * from users where username='${username}'`
     );
-    //const user = await sql<User[]>`SELECT * FROM users WHERE email=${email}`;
     return user[0][0];
   } catch (error) {
     console.error("Failed to fetch user:", error);
@@ -35,10 +33,7 @@ export const { auth, signIn, signOut } = NextAuth({
           const { username, password } = parsedCredentials.data;
           const user = await getUser(username);
           if (!user) return null;
-          const encrypted_pw = await bcrypt.hash("tim", 10);
-          console.log("encrypted: ", encrypted_pw);
-          //const passwordsMatch = await bcrypt.compare(password, user.password);
-          const passwordsMatch = await bcrypt.compare(password, encrypted_pw);
+          const passwordsMatch = await bcrypt.compare(password, user.password);
 
           if (passwordsMatch) return user;
         } else {
