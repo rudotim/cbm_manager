@@ -27,7 +27,7 @@ export default async function LatestInvoices() {
                     }
                   )}
                 >
-                  <div className="flex items-center">
+                  <div className="flex items-center w-[150]">
                     <div className="min-w-0">
                       <p className="truncate text-sm font-semibold md:text-base">
                         {invoice.name}
