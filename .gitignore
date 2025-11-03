@@ -7,6 +7,9 @@ backup/
 
 sql/
 
+# sqlite database
+cbm.db*
+
 # dependencies
 /node_modules
 /.pnp
@@ -32,6 +35,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # local env files
+.env*.prod
 .env*.local
 .env
 
