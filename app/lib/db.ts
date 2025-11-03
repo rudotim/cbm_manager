@@ -11,5 +11,10 @@ const pool = mysql.createPool({
   queueLimit: 0,
 });
 
+// import Database from "better-sqlite3";
+
+// let options = {};
+// const pool = new Database("./cbm.db");
+// pool.pragma("journal_mode = WAL");
+
 export default pool;
-//module.exports = pool;

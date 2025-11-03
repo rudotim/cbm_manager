@@ -6,6 +6,21 @@ import type { User } from "@/app/lib/definitions";
 import bcrypt from "bcrypt";
 import sql from "@/app/lib/db";
 
+/*
+async function getUser(username: string): Promise<User | undefined> {
+  try {
+    const user = await sql
+      .prepare<User[]>(`SELECT * from users where username=?`)
+      .bind(username)
+      .get();
+    return user;
+  } catch (error) {
+    console.error("Failed to fetch user:", error);
+    throw new Error("Failed to fetch user.");
+  }
+}
+*/
+
 async function getUser(username: string): Promise<User | undefined> {
   try {
     console.log("email=", username);
@@ -32,8 +47,9 @@ export const { auth, signIn, signOut } = NextAuth({
         if (parsedCredentials.success) {
           const { username, password } = parsedCredentials.data;
           const user = await getUser(username);
+          //console.log("User>:", user);
           if (!user) return null;
-          //console.log("pw: ", bcrypt.hashSync(password, 10));
+          //console.log("pw: ", bcrypt.hashSync("!mbc6677", 10));
           const passwordsMatch = await bcrypt.compare(password, user.password);
 
           if (passwordsMatch) return user;
