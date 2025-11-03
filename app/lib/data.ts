@@ -395,6 +395,9 @@ export async function fetchDockTableData(query: string, currentPage: number) {
     FROM membership m
     INNER join dock d ON 
       d.membership_id = m.membership_id
+    WHERE 
+      m.first_name like "${`%${query}%`}" OR
+      m.last_name like "${`%${query}%`}"      
     ORDER BY d.slip_number asc
     limit ${ITEMS_PER_PAGE} OFFSET ${offset}
 	  `);
