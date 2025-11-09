@@ -150,6 +150,7 @@ export async function fetchFilteredInvoices(
         inv.amount,
         inv.payment,
         inv.description,
+        YEAR(inv.date) as year,
   CASE WHEN inv.payment - inv.amount = inv.payment THEN
     inv.payment
   WHEN inv.payment - ABS(inv.amount) < 0 THEN	
@@ -174,7 +175,7 @@ export async function fetchFilteredInvoices(
       WHERE 
         m.first_name like "${`%${query}%`}" OR
         m.last_name like "${`%${query}%`}" OR
-        m.email like "${`%${query}%`}"
+        YEAR(inv.date) like "${`%${query}%`}"
       ORDER BY inv.date DESC
         limit ${ITEMS_PER_PAGE} OFFSET ${offset}
     `);
@@ -200,7 +201,8 @@ export async function fetchInvoicesPages(query: string) {
       ON m.membership_id = inv.membership_id
       WHERE 
         m.first_name like "${`%${query}%`}" OR
-        m.email like "${`%${query}%`}"
+        m.last_name like "${`%${query}%`}" OR
+        YEAR(inv.date) like "${`%${query}%`}"
   `);
 
     console.log("[invoices] fetchInvoicePages");

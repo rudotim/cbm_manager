@@ -27,7 +27,7 @@ export default async function InvoicesTable({
                   Amount
                 </th>
                 <th scope="col" className="px-3 py-5 font-medium">
-                  Date
+                  Year
                 </th>
                 <th scope="col" className="px-3 py-5 font-medium">
                   Status
@@ -52,7 +52,7 @@ export default async function InvoicesTable({
                     {invoice.final}
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
-                    {formatDateToLocal(invoice.date)}
+                    {invoice.year}
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
                     <InvoiceStatus status={invoice.status} />
