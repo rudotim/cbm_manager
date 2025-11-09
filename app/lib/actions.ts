@@ -56,10 +56,10 @@ const DockFormSchema = z.object({
   boat_size: z.coerce.number(),
   shore_power: z.number().optional(),
   t_slip: z.number().optional(),
-  date: z.string(),
+  year: z.coerce.number(),
 });
-const CreateDock = DockFormSchema.omit({ id: true, date: true });
-const UpdateDock = DockFormSchema.omit({ id: true, date: true });
+const CreateDock = DockFormSchema.omit({ id: true });
+const UpdateDock = DockFormSchema.omit({ id: true });
 
 export async function createInvoice(formData: FormData) {
   console.log("Creating invoice on server");
@@ -266,21 +266,26 @@ export async function updateProperty(id: string, formData: FormData) {
 
 export async function createDock(formData: FormData) {
   console.log("Creating dock record on server");
-  const { membership_id, slip_number, boat_size, shore_power, t_slip } =
+  const { membership_id, slip_number, boat_size, shore_power, t_slip, year } =
     CreateDock.parse({
       membership_id: formData.get("membership_id"),
       slip_number: formData.get("slip_number"),
       boat_size: formData.get("boat_size"),
       shore_power: (formData.get("shore_power") ?? 0) === "on" ? 1 : 0,
       t_slip: (formData.get("t_slip") ?? 0) === "on" ? 1 : 0,
+      year: formData.get("year"),
     });
-  const date = new Date().toISOString().split("T")[0];
+
+  const date = new Date();
+  date.setFullYear(year);
+  const dateStr = date.toISOString().split("T")[0];
 
   await sql.execute(`
     INSERT INTO dock (
-    membership_id, slip_number, boat_size, shore_power, t_slip)
+    membership_id, slip_number, boat_size, shore_power, t_slip, date)
     VALUES (
-    "${membership_id}", "${slip_number}", "${boat_size}", "${shore_power}", "${t_slip}"
+    "${membership_id}", "${slip_number}", "${boat_size}", 
+    "${shore_power}", "${t_slip}", "${dateStr}"
     )
   `);
 
@@ -290,14 +295,19 @@ export async function createDock(formData: FormData) {
 
 export async function updateDock(id: string, formData: FormData) {
   console.log("Updating dock on server", formData);
-  const { membership_id, slip_number, boat_size, shore_power, t_slip } =
+  const { membership_id, slip_number, boat_size, shore_power, t_slip, year } =
     UpdateDock.parse({
       membership_id: formData.get("membership_id"),
       slip_number: formData.get("slip_number"),
       boat_size: formData.get("boat_size"),
       shore_power: (formData.get("shore_power") ?? 0) === "on" ? 1 : 0,
       t_slip: (formData.get("t_slip") ?? 0) === "on" ? 1 : 0,
+      year: formData.get("year"),
     });
+
+  const date = new Date();
+  date.setFullYear(year);
+  const dateStr = date.toISOString().split("T")[0];
 
   await sql.execute(`
     UPDATE dock
@@ -305,7 +315,8 @@ export async function updateDock(id: string, formData: FormData) {
       slip_number = "${slip_number}", 
       boat_size = "${boat_size}", 
       shore_power = "${shore_power}",
-      t_slip = "${t_slip}"
+      t_slip = "${t_slip}",
+      date = "${dateStr}"
     WHERE dock_id = ${id}
   `);
 
@@ -314,7 +325,7 @@ export async function updateDock(id: string, formData: FormData) {
 }
 
 export async function deleteDock(id: string) {
-  await sql.execute(`DELETE FROM dock WHERE id = ${id}`);
+  await sql.execute(`DELETE FROM dock WHERE dock_id = ${id}`);
   revalidatePath("/dashboard/dock");
 }
 

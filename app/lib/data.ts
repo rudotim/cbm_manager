@@ -388,7 +388,7 @@ export async function fetchDockTableData(query: string, currentPage: number) {
       d.dock_id as "id", 
       d.slip_number, 
       concat(m.first_name, " ", m.last_name) as "name",
-      "2025" as year,
+      YEAR(d.date) as year,
       d.boat_size, 
       d.shore_power,
       d.t_slip
@@ -397,7 +397,8 @@ export async function fetchDockTableData(query: string, currentPage: number) {
       d.membership_id = m.membership_id
     WHERE 
       m.first_name like "${`%${query}%`}" OR
-      m.last_name like "${`%${query}%`}"      
+      m.last_name like "${`%${query}%`}" OR    
+      YEAR(d.date) like "${`%${query}%`}"      
     ORDER BY d.slip_number asc
     limit ${ITEMS_PER_PAGE} OFFSET ${offset}
 	  `);
@@ -424,6 +425,10 @@ export async function fetchDockPages(query: string) {
       FROM dock d
       INNER JOIN membership m
       ON m.membership_id = d.membership_id
+      WHERE 
+        m.first_name like "${`%${query}%`}" OR
+        m.last_name like "${`%${query}%`}" OR    
+        YEAR(d.date) like "${`%${query}%`}"  
   `);
 
     console.log("[dock] fetching dock page count for pagination");
@@ -441,7 +446,7 @@ export async function fetchDockById(id: string) {
       d.dock_id as "id", 
       d.slip_number, 
       concat(m.first_name, " ", m.last_name) as "name",
-      "2025" as year,
+      YEAR(d.date) as year,
       d.boat_size, 
       d.shore_power,
       d.t_slip,
@@ -468,7 +473,7 @@ export async function fetchDockByMembershipId(id: string) {
       d.dock_id as "id", 
       d.slip_number, 
       concat(m.first_name, " ", m.last_name) as "name",
-      "2025" as year,
+      YEAR(d.date) as year,
       d.boat_size, 
       d.shore_power,
       d.t_slip,
