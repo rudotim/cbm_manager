@@ -177,3 +177,18 @@ export type MemberInvoiceForm = RowDataPacket & {
   shore_power: boolean;
   t_slip: boolean;
 };
+
+export type SettingsData = RowDataPacket & {
+  year: number;
+  membership_fee: number;
+  extra_badge_fee: number;
+  visionary_fund_fee: number;
+  shore_power_fee: number;
+  t_slip_fee: number;
+  early_payment_discount: number;
+  max_badges: number;
+  date_of_invoice: string;
+  invoice_due_date: string;
+  early_payment_due_date: string;
+  no_boats_before_date: string;
+};

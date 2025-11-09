@@ -1,10 +1,12 @@
-import { MemberInvoiceForm } from "@/app/lib/definitions";
+import { MemberInvoiceForm, SettingsData } from "@/app/lib/definitions";
+import { formatCurrency } from "@/app/lib/utils";
 
-//const InvoiceReportTemplate = (member_data: MemberInvoiceForm) => {
 export default function InvoiceReportTemplate({
   member_data,
+  settings,
 }: {
   member_data: MemberInvoiceForm;
+  settings: SettingsData;
 }) {
   let count = 1;
   return (
@@ -47,13 +49,17 @@ export default function InvoiceReportTemplate({
                     </div>
                   </div>
                   <div className="col invoice-details">
-                    <div className="date">Date of Invoice: @@INVOICE_DATE</div>
-                    <div className="date">Due Date: @@INVOICE_DUE_DATE</div>
+                    <div className="date">
+                      Date of Invoice: {settings.date_of_invoice}
+                    </div>
+                    <div className="date">
+                      Due Date: {settings.invoice_due_date}
+                    </div>
                   </div>
                 </div>
                 <div className="col invoice-details">
                   <div className="invoice-id">
-                    Cape Breton 2025 Membership Invoice
+                    Cape Breton {settings.year} Membership Invoice
                   </div>
                 </div>
               </div>
@@ -73,25 +79,36 @@ export default function InvoiceReportTemplate({
                     <td className="text-left">
                       Cape Breton Annual Service Fee
                     </td>
-                    <td className="unit">$325.00</td>
+                    <td className="unit">
+                      {formatCurrency(settings.membership_fee)}
+                    </td>
                     <td className="qty">1</td>
-                    <td className="total">$325.00</td>
+                    <td className="total">
+                      {formatCurrency(settings.membership_fee)}
+                    </td>
                   </tr>
                   <tr>
                     <td className="no">{count++}</td>
                     <td className="text-left">
-                      Additional badgest up to six (6)
+                      Additional badges, up to {settings.max_badges_str} (
+                      {settings.max_badges})
                     </td>
-                    <td className="unit">$10.00</td>
+                    <td className="unit">
+                      {formatCurrency(settings.extra_badge_fee)}
+                    </td>
                     <td className="qty"></td>
                     <td className="total"></td>
                   </tr>
                   <tr>
                     <td className="no">{count++}</td>
                     <td className="text-left">Visionary Fund</td>
-                    <td className="unit">$50.00</td>
+                    <td className="unit">
+                      {formatCurrency(settings.visionary_fund_fee)}
+                    </td>
                     <td className="qty">1</td>
-                    <td className="total">$50.00</td>
+                    <td className="total">
+                      {formatCurrency(settings.visionary_fund_fee)}
+                    </td>
                   </tr>
                   {member_data.slip > 0 ? (
                     <>
@@ -106,14 +123,18 @@ export default function InvoiceReportTemplate({
                       <tr>
                         <td className="no">{count++}</td>
                         <td className="text-left">Optional Tee Slip</td>
-                        <td className="unit">$125.00</td>
+                        <td className="unit">
+                          {formatCurrency(settings.t_slip_fee)}
+                        </td>
                         <td className="qty"></td>
                         <td className="total"></td>
                       </tr>
                       <tr>
                         <td className="no">{count++}</td>
                         <td className="text-left">Optional Shore Power</td>
-                        <td className="unit">$150.00</td>
+                        <td className="unit">
+                          {formatCurrency(settings.shore_power_fee)}
+                        </td>
                         <td className="qty"></td>
                         <td className="total"></td>
                       </tr>
@@ -131,7 +152,7 @@ export default function InvoiceReportTemplate({
                   <tr>
                     <td colSpan={2}></td>
                     <td colSpan={2}>Early Payment Discount*</td>
-                    <td>-$10.00</td>
+                    <td>-{formatCurrency(settings.early_payment_discount)}</td>
                   </tr>
                   <tr>
                     <td colSpan={2}></td>
@@ -148,7 +169,7 @@ export default function InvoiceReportTemplate({
                   <b>
                     <i>received</i>
                   </b>{" "}
-                  no later than April 10th, 2026
+                  no later than {settings.early_payment_due_date}, 2026
                 </div>
               </div>
               <div className="mt-10"></div>
@@ -156,7 +177,7 @@ export default function InvoiceReportTemplate({
                 <div className="notice">
                   All Slip Rental fees and Options MUST be paid in full before
                   tying up your boat or Jet Ski at the dock. No boats or Jet
-                  Skis at the dock before April 1, 2026
+                  Skis at the dock before {settings.no_boats_before_date}
                 </div>
               </div>
             </main>

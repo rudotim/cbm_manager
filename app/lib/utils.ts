@@ -7,6 +7,21 @@ export const formatCurrency = (amount: number) => {
   });
 };
 
+/**
+ * Returns date in: yyyy-mm-dd (zero padded) string
+ */
+export const formatDateToShort = (
+  dateStr: string,
+  locale: string = "en-US"
+) => {
+  const date = new Date(dateStr);
+  const mm = String(date.getMonth() + 1).padStart(2, "0");
+  const dd = String(date.getDate()).padStart(2, "0");
+  const yyyy = date.getFullYear();
+
+  return `${yyyy}-${mm}-${dd}`;
+};
+
 export const formatDateToLocal = (
   dateStr: string,
   locale: string = "en-US"
@@ -67,4 +82,63 @@ export const generatePagination = (currentPage: number, totalPages: number) => {
     "...",
     totalPages,
   ];
+};
+
+export const numToWords = (num: any = 0) => {
+  if (num == 0) return "Zero";
+  num = ("0".repeat((2 * (num += "").length) % 3) + num).match(/.{3}/g);
+  let out = "",
+    T10s = [
+      "",
+      "One",
+      "Two",
+      "Three",
+      "Four",
+      "Five",
+      "Six",
+      "Seven",
+      "Eight",
+      "Nine",
+      "Ten",
+      "Eleven",
+      "Twelve",
+      "Thirteen",
+      "Fourteen",
+      "Fifteen",
+      "Sixteen",
+      "Seventeen",
+      "Eighteen",
+      "Nineteen",
+    ],
+    T20s = [
+      "",
+      "",
+      "Twenty",
+      "Thirty",
+      "Forty",
+      "Fifty",
+      "Sixty",
+      "Seventy",
+      "Eighty",
+      "Ninety",
+    ],
+    sclT = ["", "Thousand", "Million", "Billion", "Trillion", "Quadrillion"];
+  return (
+    num.forEach((n: any, i: any) => {
+      if (+n) {
+        let hund = +n[0],
+          ten = +n.substring(1),
+          scl = sclT[num.length - i - 1];
+        out +=
+          (out ? " " : "") +
+          (hund ? T10s[hund] + " Hundred" : "") +
+          (hund && ten ? " " : "") +
+          (ten < 20
+            ? T10s[ten]
+            : T20s[+n[1]] + (+n[2] ? "-" : "") + T10s[+n[2]]);
+        out += (out && scl ? " " : "") + scl;
+      }
+    }),
+    out
+  );
 };

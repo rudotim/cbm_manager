@@ -29,6 +29,11 @@ const links = [
     href: "/dashboard/reports",
     icon: ClipboardDocumentListIcon,
   },
+  {
+    name: "Settings",
+    href: "/dashboard/settings",
+    icon: ClipboardDocumentListIcon,
+  },
 ];
 
 export default function NavLinks() {

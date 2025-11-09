@@ -61,6 +61,21 @@ const DockFormSchema = z.object({
 const CreateDock = DockFormSchema.omit({ id: true });
 const UpdateDock = DockFormSchema.omit({ id: true });
 
+const SettingsFormSchema = z.object({
+  membership_fee: z.coerce.number(),
+  extra_badge_fee: z.coerce.number(),
+  visionary_fund_fee: z.coerce.number(),
+  shore_power_fee: z.coerce.number(),
+  t_slip_fee: z.coerce.number(),
+  early_payment_discount: z.coerce.number(),
+  max_badges: z.coerce.number(),
+  date_of_invoice: z.string(),
+  invoice_due_date: z.string(),
+  early_payment_due_date: z.string(),
+  no_boats_before_date: z.string(),
+});
+const UpdateSettings = SettingsFormSchema;
+
 export async function createInvoice(formData: FormData) {
   console.log("Creating invoice on server");
   const { customerId, amount, status } = CreateInvoice.parse({
@@ -327,6 +342,54 @@ export async function updateDock(id: string, formData: FormData) {
 export async function deleteDock(id: string) {
   await sql.execute(`DELETE FROM dock WHERE dock_id = ${id}`);
   revalidatePath("/dashboard/dock");
+}
+
+export async function updateSettings(id: string, formData: FormData) {
+  console.log("Updating settings on server", formData);
+  const {
+    membership_fee,
+    extra_badge_fee,
+    visionary_fund_fee,
+    shore_power_fee,
+    t_slip_fee,
+    early_payment_discount,
+    max_badges,
+    date_of_invoice,
+    invoice_due_date,
+    early_payment_due_date,
+    no_boats_before_date,
+  } = UpdateSettings.parse({
+    membership_fee: formData.get("membership_fee"),
+    extra_badge_fee: formData.get("extra_badge_fee"),
+    visionary_fund_fee: formData.get("visionary_fund_fee"),
+    shore_power_fee: formData.get("shore_power_fee"),
+    t_slip_fee: formData.get("t_slip_fee"),
+    early_payment_discount: formData.get("early_payment_discount"),
+    max_badges: formData.get("max_badges"),
+    date_of_invoice: formData.get("date_of_invoice"),
+    invoice_due_date: formData.get("invoice_due_date"),
+    early_payment_due_date: formData.get("early_payment_due_date"),
+    no_boats_before_date: formData.get("no_boats_before_date"),
+  });
+
+  await sql.execute(`
+    UPDATE settings
+    SET 
+      membership_fee = "${membership_fee}", 
+      extra_badge_fee = "${extra_badge_fee}", 
+      visionary_fund_fee = "${visionary_fund_fee}",
+      shore_power_fee = "${shore_power_fee}",
+      t_slip_fee = "${t_slip_fee}",
+      early_payment_discount = "${early_payment_discount}",
+      max_badges = "${max_badges}",
+      date_of_invoice = "${date_of_invoice}",
+      invoice_due_date = "${invoice_due_date}",
+      early_payment_due_date = "${early_payment_due_date}",
+      no_boats_before_date = "${no_boats_before_date}"
+  `);
+
+  revalidatePath("/dashboard/settings");
+  redirect("/dashboard/settings");
 }
 
 export async function authenticate(

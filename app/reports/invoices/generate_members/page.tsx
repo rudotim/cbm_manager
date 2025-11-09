@@ -1,16 +1,14 @@
-import AcmeLogo from "@/app/ui/acme-logo";
-import LoginForm from "@/app/ui/login-form";
-import { Suspense } from "react";
 import { fetchMembershipInvoices } from "@/app/lib/reports";
-import clsx from "clsx";
 import ReportHeader from "@/app/ui/reports/report_header";
 import InvoiceReportTemplate from "@/app/ui/reports/invoice_report_template";
-import { MemberInvoiceForm } from "@/app/lib/definitions";
+import { fetchSettings } from "@/app/lib/data";
+import { formatDateToLocal } from "@/app/lib/utils";
 
 import "./invoice_styles.css";
 
 export default async function MembershipPage() {
   const invoices = await fetchMembershipInvoices();
+  const settings = await fetchSettings(formatDateToLocal);
 
   return (
     <>
@@ -24,6 +22,7 @@ export default async function MembershipPage() {
               <div key={member_invoice.id}>
                 <InvoiceReportTemplate
                   member_data={member_invoice}
+                  settings={settings}
                 ></InvoiceReportTemplate>
               </div>
             );
@@ -33,23 +32,3 @@ export default async function MembershipPage() {
     </>
   );
 }
-
-// export default function PDFApp() {
-//   const [loaded, setLoaded] = useState(false);
-
-//   useEffect(() => {
-//     setLoaded(true);
-//   }, []);
-
-//   return (
-//     <div className="">
-//       {loaded && (
-//         <PDFViewer>
-//           <MyDocument />
-//         </PDFViewer>
-//       )}
-//     </div>
-//   );
-// }
-
-//ReactDOM.render(<App />, document.getElementById('root'));

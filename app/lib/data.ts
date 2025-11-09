@@ -10,8 +10,9 @@ import {
   Revenue,
   PropertyTableType,
   MemberProperty,
+  SettingsData,
 } from "./definitions";
-import { formatCurrency } from "./utils";
+import { formatCurrency, formatDateToShort, numToWords } from "./utils";
 import sql from "./db";
 
 export async function fetchRevenue(): Promise<Revenue[]> {
@@ -571,5 +572,43 @@ export async function fetchFilteredProperties(
   } catch (err) {
     console.error("Database Error:", err);
     throw new Error("Failed to fetch dock table.");
+  }
+}
+
+export async function fetchSettings(
+  formatDateFunc: Function = formatDateToShort
+) {
+  try {
+    const data = await sql.query<SettingsData[]>(`SELECT 
+        year,
+        membership_fee,
+        extra_badge_fee,
+        visionary_fund_fee,
+        shore_power_fee,
+        t_slip_fee,
+        early_payment_discount,
+        max_badges,
+        date_of_invoice,
+        invoice_due_date,
+        early_payment_due_date,
+        no_boats_before_date
+      FROM settings s
+	  `);
+
+    const latestInvoices = data[0].map((invoice) => ({
+      ...invoice,
+      date_of_invoice: formatDateFunc(invoice.date_of_invoice),
+      invoice_due_date: formatDateFunc(invoice.invoice_due_date),
+      early_payment_due_date: formatDateFunc(invoice.early_payment_due_date),
+      no_boats_before_date: formatDateFunc(invoice.no_boats_before_date),
+      max_badges_str: numToWords(invoice.max_badges),
+    }));
+
+    //console.log("[settings] Fetching settings table data:", latestInvoices);
+
+    return latestInvoices[0];
+  } catch (err) {
+    console.error("Database Error:", err);
+    throw new Error("Failed to fetch settings data");
   }
 }
