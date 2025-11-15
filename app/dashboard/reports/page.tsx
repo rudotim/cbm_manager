@@ -38,8 +38,16 @@ export default async function ReportsPage(props: {
         <h2>Invoice Reports</h2>
         <ul>
           <li>
+            <Link
+              href={`/reports/invoices/generate_members?limit=3`}
+              target="_blank"
+            >
+              Generate 3 Invoices
+            </Link>
+          </li>
+          <li>
             <Link href={`/reports/invoices/generate_members`} target="_blank">
-              Generate Invoices
+              Generate All Invoices
             </Link>
           </li>
         </ul>

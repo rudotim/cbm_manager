@@ -134,7 +134,7 @@ export async function fetchCardData() {
   }
 }
 
-const ITEMS_PER_PAGE = 6;
+const ITEMS_PER_PAGE = 15;
 export async function fetchFilteredInvoices(
   query: string,
   currentPage: number
@@ -460,7 +460,7 @@ export async function fetchDockById(id: string) {
       WHERE dock_id = "${id}";
     `);
 
-    console.log("[dock] fetchDockById:", data[0]);
+    //console.log("[dock] fetchDockById:", data[0]);
 
     return data[0][0];
   } catch (error) {
@@ -487,7 +487,7 @@ export async function fetchDockByMembershipId(id: string) {
       WHERE d.membership_id = "${id}";
     `);
 
-    console.log("[dock] fetchDockByMembershipId:", data[0]);
+    //console.log("[dock] fetchDockByMembershipId:", data[0]);
 
     //return all ? data[0] : data[0][0];
     return data[0] as DockTableType[];

@@ -6,8 +6,18 @@ import { formatDateToLocal } from "@/app/lib/utils";
 
 import "./invoice_styles.css";
 
-export default async function MembershipPage() {
-  const invoices = await fetchMembershipInvoices();
+export default async function MembershipPage(props: {
+  searchParams?: Promise<{
+    query?: string;
+    page?: string;
+    limit?: string;
+  }>;
+}) {
+  const searchParams = await props.searchParams;
+
+  const limit = Number(searchParams?.limit) || 0;
+
+  const invoices = await fetchMembershipInvoices(limit);
   const settings = await fetchSettings(formatDateToLocal);
 
   return (

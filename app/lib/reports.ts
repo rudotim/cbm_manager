@@ -18,7 +18,9 @@ export async function fetchMembershipReport() {
   }
 }
 
-export async function fetchMembershipInvoices() {
+export async function fetchMembershipInvoices(limit: number = 0) {
+  const limitStr = limit > 0 ? "limit ${limit}" : "";
+
   try {
     const data = await sql.query<MemberInvoiceForm[]>(`SELECT
       m.membership_id as id,
@@ -29,8 +31,9 @@ export async function fetchMembershipInvoices() {
       LEFT JOIN dock d
       ON m.membership_id = d.membership_id
       WHERE LOWER(m.status) = "active"
+      group by m.membership_id
       ORDER BY m.last_name asc
-      limit 3
+      ${limitStr}
   `);
 
     return data[0];
