@@ -92,33 +92,13 @@ export default function EditSettingsForm({
               </div>
             </div>
 
-            {/* Extra Badge Fee */}
-            <div className="col-span-full">
-              <label
-                htmlFor="extra_badge_fee"
-                className="block text-sm/6 font-medium text-gray-900 dark:text-white"
-              >
-                Additional Badge Fee
-              </label>
-              <div className="mt-2">
-                <input
-                  id="extra_badge_fee"
-                  name="extra_badge_fee"
-                  type="text"
-                  autoComplete="extra_badge_fee"
-                  defaultValue={settings?.extra_badge_fee || ""}
-                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-indigo-500"
-                />
-              </div>
-            </div>
-
             {/* Visionary Fund Fee */}
             <div className="col-span-full">
               <label
                 htmlFor="visionary_fund_fee"
                 className="block text-sm/6 font-medium text-gray-900 dark:text-white"
               >
-                Additional Badge Fee
+                Visionary Fund Fee
               </label>
               <div className="mt-2">
                 <input
@@ -178,7 +158,7 @@ export default function EditSettingsForm({
                 htmlFor="early_payment_discount"
                 className="block text-sm/6 font-medium text-gray-900 dark:text-white"
               >
-                T Slip Fee
+                Early Payment Discount
               </label>
               <div className="mt-2">
                 <input
