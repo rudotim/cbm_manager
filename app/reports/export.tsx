@@ -38,6 +38,9 @@ export async function generateAndSaveFile(data: any) {
       case "fetchMembershipReport":
         data = await rep.fetchMembershipReport();
         break;
+      case "fetchMembershipInvoices":
+        data = await rep.fetchMembershipInvoices();
+        break;
     }
 
     const content = createCSVFileFromData(data);

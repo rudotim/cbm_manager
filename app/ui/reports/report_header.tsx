@@ -34,7 +34,7 @@ const ReportHeader = ({
       hiddenElement.href = url; // "/" + file_path;
       // data:application/octet-stream
       hiddenElement.target = "_blank";
-      hiddenElement.download = "data.csv";
+      hiddenElement.download = data + ".csv"; // "data.csv";
       hiddenElement.click();
     } else console.log("No file path:", file_path0);
 
