@@ -23,7 +23,10 @@ export default async function MembershipPage(props: {
   return (
     <>
       <header className="print:hidden">
-        <ReportHeader report_title={"Membership Invoices"}></ReportHeader>
+        <ReportHeader
+          report_title={"Membership Invoices"}
+          data={"fetchMembershipInvoices"}
+        ></ReportHeader>
       </header>
       <main className="flex items-center justify-center">
         <div className="relative mx-auto flex w-full w-[8.5in] h-[11in] flex-col space-y-2.5 p-4">
