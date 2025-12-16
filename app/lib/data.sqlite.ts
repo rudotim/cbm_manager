@@ -11,13 +11,13 @@ import {
   PropertyTableType,
   MemberProperty,
 } from "./definitions";
-import { formatCurrency } from "./utils";
+import { formatCurrency, formatDateToShort, numToWords } from "./utils";
 import sql from "./db";
 
 export async function fetchRevenue(): Promise<Revenue[]> {
   try {
-    const data = await sql
-      .prepare<Revenue[]>(
+    const data: Revenue[] = await sql
+      .prepare(
         `
 select strftime('%Y', date) as "Date", 
 sum(amount) as "Amount", 
@@ -45,8 +45,8 @@ export async function fetchLatestInvoices(): Promise<LatestInvoice[]> {
   );
 
   try {
-    const data = await sql
-      .prepare<LatestInvoice[]>(
+    const data: LatestInvoice[] = await sql
+      .prepare(
         `
       SELECT
 	inv.amount,
@@ -146,7 +146,7 @@ export async function fetchCardData() {
   }
 }
 
-const ITEMS_PER_PAGE = 6;
+const ITEMS_PER_PAGE = 15;
 export async function fetchFilteredInvoices(
   query: string,
   currentPage: number
@@ -156,8 +156,8 @@ export async function fetchFilteredInvoices(
   console.log("[invoices] fetchFilteredInvoices");
 
   try {
-    const data = await sql
-      .prepare<InvoicesTable[]>(
+    const data: InvoicesTable[] = await sql
+      .prepare(
         `
       select 
       inv.id as "id",
@@ -179,7 +179,7 @@ export async function fetchFilteredInvoices(
   ELSE
       'paid'
   END as 'status',        
-        inv.date as 'date',        
+        strftime('%Y', date) as "year",        
         concat(m.first_name, ' ', m.last_name) as 'name',
         m.email as 'email',
         '/profile.jpg' as 'image_url'
@@ -189,7 +189,7 @@ export async function fetchFilteredInvoices(
       WHERE 
         m.first_name like '${`%${query}%`}' OR
         m.last_name like '${`%${query}%`}' OR
-        m.email like '${`%${query}%`}'
+        strftime('%Y', date) like '${`%${query}%`}'
       ORDER BY inv.date DESC
         limit ${ITEMS_PER_PAGE} OFFSET ${offset}
     `
@@ -219,7 +219,7 @@ export async function fetchInvoicesPages(query: string) {
       ON m.membership_id = inv.membership_id
       WHERE 
         m.first_name like '${`%${query}%`}' OR
-        m.email like '${`%${query}%`}'
+        strftime('%Y', date) like '${`%${query}%`}'
   `
       )
       .all();
@@ -235,8 +235,8 @@ export async function fetchInvoicesPages(query: string) {
 
 export async function fetchInvoiceById(id: string) {
   try {
-    const data = await sql
-      .prepare<InvoiceForm[]>(
+    const data: InvoiceForm[] = await sql
+      .prepare(
         `
       SELECT
         id as "id",
@@ -267,8 +267,8 @@ export async function fetchInvoiceById(id: string) {
 
 export async function fetchMemberPropertiesByMemberId(id: string) {
   try {
-    const data = await sql
-      .prepare<MemberProperty[]>(
+    const data: MemberProperty[] = await sql
+      .prepare(
         `
       SELECT
         p.id,
@@ -301,8 +301,8 @@ export async function fetchMemberPropertiesByMemberId(id: string) {
 
 export async function fetchMemberById(id: string) {
   try {
-    const data = await sql
-      .prepare<MemberForm[]>(
+    const data: MemberForm[] = await sql
+      .prepare(
         `
       SELECT
         membership_id as "id",
@@ -336,8 +336,8 @@ export async function fetchMemberById(id: string) {
 // Verify that this is called
 export async function fetchCustomers() {
   try {
-    const customers = await sql
-      .prepare<CustomerField[]>(
+    const customers: CustomerField[] = await sql
+      .prepare(
         `
       SELECT
         membership_id as "id",
@@ -364,8 +364,8 @@ export async function fetchFilteredCustomers(
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
   try {
-    const data = await sql
-      .prepare<CustomersTableType[]>(
+    const data: CustomersTableType[] = await sql
+      .prepare(
         `
 SELECT
   m.membership_id as 'id',
@@ -432,19 +432,23 @@ export async function fetchDockTableData(query: string, currentPage: number) {
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
   try {
-    const data = await sql
-      .prepare<DockTableType[]>(
+    const data: DockTableType[] = await sql
+      .prepare(
         `SELECT 
       d.dock_id as 'id', 
       d.slip_number, 
       concat(m.first_name, ' ', m.last_name) as 'name',
-      '2025' as year,
+      strftime('%Y', date) as "Date",
       d.boat_size, 
       d.shore_power,
       d.t_slip
     FROM membership m
     INNER join dock d ON 
       d.membership_id = m.membership_id
+    WHERE 
+      m.first_name like '${`%${query}%`}' OR
+      m.last_name like '${`%${query}%`}' OR    
+      strftime('%Y', date) like '${`%${query}%`}'      
     ORDER BY d.slip_number asc
     limit ${ITEMS_PER_PAGE} OFFSET ${offset}
 	  `
@@ -475,6 +479,10 @@ export async function fetchDockPages(query: string) {
       FROM dock d
       INNER JOIN membership m
       ON m.membership_id = d.membership_id
+      WHERE 
+        m.first_name like '${`%${query}%`}' OR
+        m.last_name like '${`%${query}%`}' OR    
+        strftime('%Y', d.date) like '${`%${query}%`}'       
   `
       )
       .all();
@@ -489,14 +497,14 @@ export async function fetchDockPages(query: string) {
 
 export async function fetchDockById(id: string) {
   try {
-    const data = await sql
-      .prepare<DockTableType[]>(
+    const data: DockTableType[] = await sql
+      .prepare(
         `
      SELECT 
       d.dock_id as 'id', 
       d.slip_number, 
       concat(m.first_name, ' ', m.last_name) as 'name',
-      '2025' as year,
+      strftime('%Y', date) as "Date",
       d.boat_size, 
       d.shore_power,
       d.t_slip,
@@ -521,14 +529,14 @@ export async function fetchDockById(id: string) {
 
 export async function fetchDockByMembershipId(id: string) {
   try {
-    const data = await sql
-      .prepare<DockTableType[]>(
+    const data: DockTableType[] = await sql
+      .prepare(
         `
      SELECT 
       d.dock_id as 'id', 
       d.slip_number, 
       concat(m.first_name, ' ', m.last_name) as 'name',
-      '2025' as year,
+      strftime('%Y', date) as "Date",
       d.boat_size, 
       d.shore_power,
       d.t_slip,
@@ -554,8 +562,8 @@ export async function fetchDockByMembershipId(id: string) {
 
 export async function fetchPropertyById(id: string) {
   try {
-    const data = await sql
-      .prepare<MemberProperty[]>(
+    const data: MemberProperty[] = await sql
+      .prepare(
         `
       SELECT
         p.id,
@@ -617,8 +625,8 @@ export async function fetchFilteredProperties(
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
   try {
-    const data = await sql
-      .prepare<PropertyTableType[]>(
+    const data: PropertyTableType[] = await sql
+      .prepare(
         `SELECT 
         p.id,
         p.property_address,
@@ -640,5 +648,47 @@ export async function fetchFilteredProperties(
   } catch (err) {
     console.error("Database Error:", err);
     throw new Error("Failed to fetch dock table.");
+  }
+}
+
+export async function fetchSettings(
+  formatDateFunc: Function = formatDateToShort
+) {
+  try {
+    const data: SettingsData[] = await sql
+      .prepare(
+        `SELECT 
+        year,
+        membership_fee,
+        extra_badge_fee,
+        visionary_fund_fee,
+        shore_power_fee,
+        t_slip_fee,
+        early_payment_discount,
+        max_badges,
+        date_of_invoice,
+        invoice_due_date,
+        early_payment_due_date,
+        no_boats_before_date
+      FROM settings s
+	  `
+      )
+      .all();
+
+    const latestInvoices = data.map((invoice) => ({
+      ...invoice,
+      date_of_invoice: formatDateFunc(invoice.date_of_invoice),
+      invoice_due_date: formatDateFunc(invoice.invoice_due_date),
+      early_payment_due_date: formatDateFunc(invoice.early_payment_due_date),
+      no_boats_before_date: formatDateFunc(invoice.no_boats_before_date),
+      max_badges_str: numToWords(invoice.max_badges),
+    }));
+
+    console.log("[settings] Fetching settings table data:", latestInvoices);
+
+    return latestInvoices[0];
+  } catch (err) {
+    console.error("Database Error:", err);
+    throw new Error("Failed to fetch settings data");
   }
 }
