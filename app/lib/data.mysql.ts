@@ -10,8 +10,9 @@ import {
   Revenue,
   PropertyTableType,
   MemberProperty,
+  SettingsData,
 } from "./definitions";
-import { formatCurrency } from "./utils";
+import { formatCurrency, formatDateToShort, numToWords } from "./utils";
 import sql from "./db";
 
 export async function fetchRevenue(): Promise<Revenue[]> {
@@ -133,7 +134,7 @@ export async function fetchCardData() {
   }
 }
 
-const ITEMS_PER_PAGE = 6;
+const ITEMS_PER_PAGE = 15;
 export async function fetchFilteredInvoices(
   query: string,
   currentPage: number
@@ -150,6 +151,7 @@ export async function fetchFilteredInvoices(
         inv.amount,
         inv.payment,
         inv.description,
+        YEAR(inv.date) as year,
   CASE WHEN inv.payment - inv.amount = inv.payment THEN
     inv.payment
   WHEN inv.payment - ABS(inv.amount) < 0 THEN	
@@ -174,7 +176,7 @@ export async function fetchFilteredInvoices(
       WHERE 
         m.first_name like "${`%${query}%`}" OR
         m.last_name like "${`%${query}%`}" OR
-        m.email like "${`%${query}%`}"
+        YEAR(inv.date) like "${`%${query}%`}"
       ORDER BY inv.date DESC
         limit ${ITEMS_PER_PAGE} OFFSET ${offset}
     `);
@@ -200,7 +202,8 @@ export async function fetchInvoicesPages(query: string) {
       ON m.membership_id = inv.membership_id
       WHERE 
         m.first_name like "${`%${query}%`}" OR
-        m.email like "${`%${query}%`}"
+        m.last_name like "${`%${query}%`}" OR
+        YEAR(inv.date) like "${`%${query}%`}"
   `);
 
     console.log("[invoices] fetchInvoicePages");
@@ -388,13 +391,17 @@ export async function fetchDockTableData(query: string, currentPage: number) {
       d.dock_id as "id", 
       d.slip_number, 
       concat(m.first_name, " ", m.last_name) as "name",
-      "2025" as year,
+      YEAR(d.date) as year,
       d.boat_size, 
       d.shore_power,
       d.t_slip
     FROM membership m
     INNER join dock d ON 
       d.membership_id = m.membership_id
+    WHERE 
+      m.first_name like "${`%${query}%`}" OR
+      m.last_name like "${`%${query}%`}" OR    
+      YEAR(d.date) like "${`%${query}%`}"      
     ORDER BY d.slip_number asc
     limit ${ITEMS_PER_PAGE} OFFSET ${offset}
 	  `);
@@ -421,6 +428,10 @@ export async function fetchDockPages(query: string) {
       FROM dock d
       INNER JOIN membership m
       ON m.membership_id = d.membership_id
+      WHERE 
+        m.first_name like "${`%${query}%`}" OR
+        m.last_name like "${`%${query}%`}" OR    
+        YEAR(d.date) like "${`%${query}%`}"  
   `);
 
     console.log("[dock] fetching dock page count for pagination");
@@ -438,7 +449,7 @@ export async function fetchDockById(id: string) {
       d.dock_id as "id", 
       d.slip_number, 
       concat(m.first_name, " ", m.last_name) as "name",
-      "2025" as year,
+      YEAR(d.date) as year,
       d.boat_size, 
       d.shore_power,
       d.t_slip,
@@ -449,7 +460,7 @@ export async function fetchDockById(id: string) {
       WHERE dock_id = "${id}";
     `);
 
-    console.log("[dock] fetchDockById:", data[0]);
+    //console.log("[dock] fetchDockById:", data[0]);
 
     return data[0][0];
   } catch (error) {
@@ -465,7 +476,7 @@ export async function fetchDockByMembershipId(id: string) {
       d.dock_id as "id", 
       d.slip_number, 
       concat(m.first_name, " ", m.last_name) as "name",
-      "2025" as year,
+      YEAR(d.date) as year,
       d.boat_size, 
       d.shore_power,
       d.t_slip,
@@ -476,7 +487,7 @@ export async function fetchDockByMembershipId(id: string) {
       WHERE d.membership_id = "${id}";
     `);
 
-    console.log("[dock] fetchDockByMembershipId:", data[0]);
+    //console.log("[dock] fetchDockByMembershipId:", data[0]);
 
     //return all ? data[0] : data[0][0];
     return data[0] as DockTableType[];
@@ -561,5 +572,43 @@ export async function fetchFilteredProperties(
   } catch (err) {
     console.error("Database Error:", err);
     throw new Error("Failed to fetch dock table.");
+  }
+}
+
+export async function fetchSettings(
+  formatDateFunc: Function = formatDateToShort
+) {
+  try {
+    const data = await sql.query<SettingsData[]>(`SELECT 
+        year,
+        membership_fee,
+        extra_badge_fee,
+        visionary_fund_fee,
+        shore_power_fee,
+        t_slip_fee,
+        early_payment_discount,
+        max_badges,
+        date_of_invoice,
+        invoice_due_date,
+        early_payment_due_date,
+        no_boats_before_date
+      FROM settings s
+	  `);
+
+    const latestInvoices = data[0].map((invoice) => ({
+      ...invoice,
+      date_of_invoice: formatDateFunc(invoice.date_of_invoice),
+      invoice_due_date: formatDateFunc(invoice.invoice_due_date),
+      early_payment_due_date: formatDateFunc(invoice.early_payment_due_date),
+      no_boats_before_date: formatDateFunc(invoice.no_boats_before_date),
+      max_badges_str: numToWords(invoice.max_badges),
+    }));
+
+    //console.log("[settings] Fetching settings table data:", latestInvoices);
+
+    return latestInvoices[0];
+  } catch (err) {
+    console.error("Database Error:", err);
+    throw new Error("Failed to fetch settings data");
   }
 }
