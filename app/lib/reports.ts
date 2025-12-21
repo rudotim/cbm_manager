@@ -19,7 +19,7 @@ export async function fetchMembershipReport() {
 }
 
 export async function fetchMembershipInvoices(limit: number = 0) {
-  const limitStr = limit > 0 ? "limit ${limit}" : "";
+  const limitStr = limit > 0 ? `limit ${limit}` : "";
 
   try {
     const data = await sql.query<MemberInvoiceForm[]>(`SELECT
