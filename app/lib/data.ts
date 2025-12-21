@@ -218,12 +218,22 @@ export async function fetchInvoicesPages(query: string) {
 export async function fetchInvoiceById(id: string) {
   try {
     const data = await sql.query<InvoiceForm[]>(`
-      SELECT
-        id as "id",
-        membership_id as "customer_id",
-        amount as "amount",
-        description as "status"
-      FROM invoices
+SELECT
+	i.id as "id",
+	i.membership_id as "customer_id",
+	i.amount as "amount",
+	i.description as "status",
+	m.first_name,
+	m.last_name,
+	d.shore_power,
+	d.t_slip,
+	d.slip_number
+FROM
+	invoices i
+INNER JOIN membership m 
+ON m.membership_id  = i.membership_id
+LEFT JOIN dock d 
+ON m.membership_id = d.membership_id 
       WHERE id = "${id}";
     `);
 
