@@ -30,8 +30,7 @@ export async function fetchMembershipInvoices(limit: number = 0) {
       FROM membership m
       LEFT JOIN dock d
       ON m.membership_id = d.membership_id
-      WHERE LOWER(m.status) = "active"
-      group by m.membership_id
+      WHERE LOWER(m.status) = "active"      
       ORDER BY m.last_name asc
       ${limitStr}
   `);

@@ -1,4 +1,5 @@
-import mysql from "mysql2/promise";
+// MYSQL ------------------------------------
+const mysql = await import("mysql2/promise");
 
 // Create a connection pool
 const pool = mysql.createPool({
@@ -10,11 +11,14 @@ const pool = mysql.createPool({
   connectionLimit: 10,
   queueLimit: 0,
 });
+// ------------------------------------------
 
-// import Database from "better-sqlite3";
+// SQLITE ------------------------------------
+// const Database = await import("better-sqlite3");
 
 // let options = {};
 // const pool = new Database("./cbm.db");
 // pool.pragma("journal_mode = WAL");
+// -------------------------------------------
 
 export default pool;

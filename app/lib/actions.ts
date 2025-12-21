@@ -6,6 +6,7 @@ import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import sql from "@/app/lib/db";
+import { fetchMembershipInvoices } from "./reports";
 
 const FormSchema = z.object({
   id: z.string(),
@@ -75,6 +76,45 @@ const SettingsFormSchema = z.object({
   no_boats_before_date: z.string(),
 });
 const UpdateSettings = SettingsFormSchema;
+
+export async function resetInvoices() {
+  console.log("RESETTING INVOICES");
+
+  const curr_year = "2025";
+
+  await sql.execute(
+    `
+    DELETE from invoices where YEAR(date) = ?;
+  `,
+    [curr_year]
+  );
+
+  const rep = await fetchMembershipInvoices();
+
+  console.log("rep resp=", rep.length);
+  for (const r of rep) {
+    //console.log("processing membership: ", r.first_name);
+
+    await sql.execute(
+      `
+      INSERT INTO invoices (membership_id, amount, description, date)
+      VALUES (?, ?, ?, ?)
+    `,
+      [r.id, 0, "owed", curr_year + "-01-01 00:00:00"]
+    );
+  }
+
+  // await sql.execute(`
+  //   SELECT first_name from membership;
+  // `);
+
+  // await sql.execute(`
+  //   INSERT INTO from invoices where strftime('%Y', date) = "2025";
+  // `);
+
+  revalidatePath("/dashboard/invoices");
+  redirect("/dashboard/invoices");
+}
 
 export async function createInvoice(formData: FormData) {
   console.log("Creating invoice on server");
