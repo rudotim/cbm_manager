@@ -144,7 +144,6 @@ export default function EditInvoiceForm({ invoice }: { invoice: InvoiceForm }) {
             type="checkbox"
             name="is_boater"
             checked={isBoater}
-            onChange={(e) => setIsBoater(e.target.checked)}
             className="h-4 w-4 rounded border-gray-300 text-gray-600 focus:ring-2"
           />
           <span className="ml-2 text-sm">Is Boater</span>
