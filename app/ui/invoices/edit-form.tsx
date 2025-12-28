@@ -151,6 +151,36 @@ export default function EditInvoiceForm({ invoice }: { invoice: InvoiceForm }) {
                   />
                   <span className="ml-2 text-sm">T Slip</span>
                 </label>
+                {/* Read-only boat size and slip number for reference */}
+                <div className="pt-2 border-t border-gray-100">
+                  <div className="mt-3">
+                    <label htmlFor="boat_size" className="mb-1 block text-sm font-medium">
+                      Boat Size
+                    </label>
+                    <input
+                      id="boat_size"
+                      name="boat_size"
+                      type="text"
+                      readOnly
+                      value={invoice.boat_size ?? "-"}
+                      className="block w-full rounded-md border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-700"
+                    />
+                  </div>
+
+                  <div className="mt-3">
+                    <label htmlFor="slip_number" className="mb-1 block text-sm font-medium">
+                      Slip #
+                    </label>
+                    <input
+                      id="slip_number"
+                      name="slip_number"
+                      type="text"
+                      readOnly
+                      value={invoice.slip_number ?? "-"}
+                      className="block w-full rounded-md border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-700"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </fieldset>
