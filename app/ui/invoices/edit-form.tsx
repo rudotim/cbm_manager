@@ -126,6 +126,35 @@ export default function EditInvoiceForm({ invoice }: { invoice: InvoiceForm }) {
             </div>
           </div>
         </fieldset>
+
+        <div id="dock">
+          <fieldset>
+            <legend className="mb-2 block text-sm font-medium">Dock</legend>
+            <div className="rounded-md border border-gray-200 bg-white px-4 py-3">
+              <div className="flex flex-col gap-3">
+                <label className="inline-flex items-center">
+                  <input
+                    type="checkbox"
+                    name="shore_power"
+                    defaultChecked={!!invoice.shore_power}
+                    className="h-4 w-4 rounded border-gray-300 text-gray-600 focus:ring-2"
+                  />
+                  <span className="ml-2 text-sm">Shore Power</span>
+                </label>
+
+                <label className="inline-flex items-center">
+                  <input
+                    type="checkbox"
+                    name="t_slip"
+                    defaultChecked={!!invoice.t_slip}
+                    className="h-4 w-4 rounded border-gray-300 text-gray-600 focus:ring-2"
+                  />
+                  <span className="ml-2 text-sm">T Slip</span>
+                </label>
+              </div>
+            </div>
+          </fieldset>
+        </div>
       </div>
       <div className="mt-6 flex justify-end gap-4">
         <Link
