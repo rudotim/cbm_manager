@@ -1,6 +1,7 @@
 "use client";
 
 import { InvoiceForm } from "@/app/lib/definitions";
+import { useState } from "react";
 import {
   CheckIcon,
   ClockIcon,
@@ -13,6 +14,17 @@ import { updateInvoice } from "@/app/lib/actions";
 
 export default function EditInvoiceForm({ invoice }: { invoice: InvoiceForm }) {
   const updateInvoiceWithId = updateInvoice.bind(null, invoice.id);
+  // consider record a boater if slip_number or boat_size or dock flags exist
+  const initialIsBoater = !!(
+    // @ts-ignore - invoice may include additional dock fields at runtime
+    (
+      invoice.slip_number ||
+      invoice.boat_size ||
+      invoice.shore_power ||
+      invoice.t_slip
+    )
+  );
+  const [isBoater, setIsBoater] = useState<boolean>(initialIsBoater);
 
   return (
     <form action={updateInvoiceWithId}>
@@ -127,7 +139,18 @@ export default function EditInvoiceForm({ invoice }: { invoice: InvoiceForm }) {
           </div>
         </fieldset>
 
-        <div id="dock">
+        <label className="inline-flex items-center mb-4">
+          <input
+            type="checkbox"
+            name="is_boater"
+            checked={isBoater}
+            onChange={(e) => setIsBoater(e.target.checked)}
+            className="h-4 w-4 rounded border-gray-300 text-gray-600 focus:ring-2"
+          />
+          <span className="ml-2 text-sm">Is Boater</span>
+        </label>
+
+        <div id="dock" className={isBoater ? "" : "hidden"}>
           <fieldset>
             <legend className="mb-2 block text-sm font-medium">Dock</legend>
             <div className="rounded-md border border-gray-200 bg-white px-4 py-3">
@@ -154,7 +177,10 @@ export default function EditInvoiceForm({ invoice }: { invoice: InvoiceForm }) {
                 {/* Read-only boat size and slip number for reference */}
                 <div className="pt-2 border-t border-gray-100">
                   <div className="mt-3">
-                    <label htmlFor="boat_size" className="mb-1 block text-sm font-medium">
+                    <label
+                      htmlFor="boat_size"
+                      className="mb-1 block text-sm font-medium"
+                    >
                       Boat Size
                     </label>
                     <input
@@ -168,7 +194,10 @@ export default function EditInvoiceForm({ invoice }: { invoice: InvoiceForm }) {
                   </div>
 
                   <div className="mt-3">
-                    <label htmlFor="slip_number" className="mb-1 block text-sm font-medium">
+                    <label
+                      htmlFor="slip_number"
+                      className="mb-1 block text-sm font-medium"
+                    >
                       Slip #
                     </label>
                     <input
