@@ -223,6 +223,7 @@ SELECT
 	i.membership_id as "customer_id",
 	i.amount as "amount",
 	i.description as "status",
+  YEAR(i.date) as year,
 	m.first_name,
 	m.last_name,
 	d.shore_power,
