@@ -11,6 +11,8 @@ import { fetchMembershipInvoices } from "./reports";
 const FormSchema = z.object({
   id: z.string(),
   customerId: z.string(),
+  num_badges: z.coerce.number(),
+  dock_slip: z.coerce.number(),
   amount: z.coerce.number(),
   status: z.enum(["pending", "paid"]),
   date: z.string(),
@@ -138,11 +140,14 @@ export async function createInvoice(formData: FormData) {
 }
 
 export async function updateInvoice(id: string, formData: FormData) {
-  const { customerId, amount, status } = UpdateInvoice.parse({
-    customerId: formData.get("customerId"),
-    amount: formData.get("amount"),
-    status: formData.get("status"),
-  });
+  const { customerId, num_badges, dock_slip, amount, status } =
+    UpdateInvoice.parse({
+      customerId: formData.get("customerId"),
+      num_badges: formData.get("num_badges"),
+      dock_slip: formData.get("dock_slip"),
+      amount: formData.get("amount"),
+      status: formData.get("status"),
+    });
 
   const amountInCents = amount * 100;
 

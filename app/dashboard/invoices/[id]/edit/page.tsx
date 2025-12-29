@@ -1,4 +1,4 @@
-import Form from "@/app/ui/invoices/edit-form";
+import Form from "@/app/ui/invoices/edit-form-invoice";
 import Breadcrumbs from "@/app/ui/invoices/breadcrumbs";
 import { fetchInvoiceById } from "@/app/lib/data";
 

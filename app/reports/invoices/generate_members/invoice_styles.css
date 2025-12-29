@@ -37,6 +37,22 @@ body {
   margin-bottom: 1.5in;
 }
 
+.header_static {
+  display: flex;
+  justify-content: space-between;
+}
+
+.invoice_input {
+  padding: 0;
+  width: 105px;
+}
+
+.invoice_input input {
+  padding-left: 4px;
+  padding-right: 0;
+  background-color: rgb(213, 241, 213);
+}
+
 .company-info {
   font-size: 12pt;
 }
