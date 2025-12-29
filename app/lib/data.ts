@@ -3,6 +3,7 @@ import {
   MemberForm,
   CustomersTableType,
   InvoiceForm,
+  MemberInvoiceForm,
   InvoicesTable,
   LatestInvoice,
   LatestInvoiceRaw,
@@ -217,25 +218,27 @@ export async function fetchInvoicesPages(query: string) {
 
 export async function fetchInvoiceById(id: string) {
   try {
-    const data = await sql.query<InvoiceForm[]>(`
-SELECT
-	i.id as "id",
-	i.membership_id as "customer_id",
-	i.amount as "amount",
-	i.description as "status",
-  YEAR(i.date) as year,
-	m.first_name,
-	m.last_name,
-	d.shore_power,
-	d.t_slip,
-	d.slip_number
-FROM
-	invoices i
-INNER JOIN membership m 
-ON m.membership_id  = i.membership_id
-LEFT JOIN dock d 
-ON m.membership_id = d.membership_id 
-      WHERE id = "${id}";
+    const data = await sql.query<MemberInvoiceForm[]>(`
+    SELECT
+	  inv.id as invoice_id,
+      m.membership_id as customerId,
+      m.first_name, m.last_name, m.membership_type,
+      m.mailing_street, m.mailing_city, m.mailing_state, m.mailing_zip,
+      inv.num_badges,
+      inv.dock_slip,
+      inv.amount,
+      inv.payment,
+	    YEAR(inv.date) as year,
+      d.slip, d.shore_power, d.t_slip
+      FROM 
+      	invoices inv
+      INNER JOIN 
+	    membership m
+        ON inv.membership_id = m.membership_id
+      LEFT JOIN 
+        dock d
+        ON m.membership_id = d.membership_id
+      WHERE inv.id = "${id}";
     `);
 
     console.log("[invoices] fetchInvoiceById");
@@ -353,7 +356,11 @@ LEFT JOIN dock d on m.membership_id = d.membership_id
 WHERE
   m.first_name LIKE "${`%${query}%`}" OR
   m.last_name LIKE "${`%${query}%`}"
-  GROUP BY m.membership_id
+  GROUP BY m.membership_id, 
+  	m.first_name, 
+    m.last_name,
+	  m.membership_type,
+	  d.slip_number
 ORDER BY m.first_name ASC
 limit ${ITEMS_PER_PAGE} OFFSET ${offset}
 	  `);

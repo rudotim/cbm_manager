@@ -13,7 +13,7 @@ const FormSchema = z.object({
   customerId: z.string(),
   num_badges: z.coerce.number(),
   dock_slip: z.coerce.number(),
-  amount: z.coerce.number(),
+  payment: z.coerce.number(),
   status: z.enum(["pending", "paid"]),
   date: z.string(),
 });
@@ -120,15 +120,15 @@ export async function resetInvoices() {
 
 export async function createInvoice(formData: FormData) {
   console.log("Creating invoice on server");
-  const { customerId, amount, status } = CreateInvoice.parse({
+  const { customerId, payment, status } = CreateInvoice.parse({
     customerId: formData.get("customerId"),
-    amount: formData.get("amount"),
+    payment: formData.get("amount"),
     status: formData.get("status"),
   });
-  const amountInCents = amount * 100;
+  const amountInCents = payment * 100;
   const date = new Date().toISOString().split("T")[0];
   // Test it out:
-  console.log(customerId, amount, status);
+  console.log(customerId, payment, status);
 
   await sql.execute(`
     INSERT INTO invoices (membership_id, amount, description, date)
@@ -140,20 +140,24 @@ export async function createInvoice(formData: FormData) {
 }
 
 export async function updateInvoice(id: string, formData: FormData) {
-  const { customerId, num_badges, dock_slip, amount, status } =
+  const { customerId, num_badges, dock_slip, payment, status } =
     UpdateInvoice.parse({
       customerId: formData.get("customerId"),
       num_badges: formData.get("num_badges"),
       dock_slip: formData.get("dock_slip"),
-      amount: formData.get("amount"),
+      payment: formData.get("payment"),
       status: formData.get("status"),
     });
 
-  const amountInCents = amount * 100;
+  //const amountInCents = amount * 100;
 
   await sql.execute(`
     UPDATE invoices
-    SET membership_id = ${customerId}, amount = ${amountInCents}, description = "${status}"
+    SET membership_id = ${customerId},
+    num_badges = ${num_badges},
+    dock_slip = ${dock_slip}, 
+    payment = ${payment}, 
+    description = "${status}"
     WHERE id = ${id}
   `);
 

@@ -76,11 +76,12 @@ export default function InvoiceReportTemplate({
                     </td>
                     <td className="qty invoice_input">
                       <input
-                        id="badge_total"
-                        name="badge_total"
+                        id="num_badges"
+                        name="num_badges"
                         type="number"
                         step="1"
                         placeholder="0"
+                        defaultValue={invoice.num_badges}
                         className="peer block w-full border border-gray-200 py-2 text-sm outline-2 placeholder:text-gray-500"
                       />
                     </td>
@@ -106,11 +107,12 @@ export default function InvoiceReportTemplate({
                         <td className="qty"></td>
                         <td className="total invoice_input">
                           <input
-                            id="slip_rental"
-                            name="slip_rental"
+                            id="dock_slip"
+                            name="dock_slip"
                             type="number"
                             step="1"
                             placeholder="$0"
+                            defaultValue={invoice.dock_slip}
                             className="peer block w-full border border-gray-200 py-2 text-sm outline-2 placeholder:text-gray-500"
                           />
                         </td>
@@ -167,11 +169,12 @@ export default function InvoiceReportTemplate({
                     <td colSpan={2}>TOTAL RECEIVED</td>
                     <td className="invoice_input">
                       <input
-                        id="total_received"
-                        name="total_received"
+                        id="payment"
+                        name="payment"
                         type="number"
                         step="1"
                         placeholder="$0"
+                        defaultValue={invoice.payment}
                         className="peer block w-full border border-gray-200 py-2 text-sm outline-2 placeholder:text-gray-500"
                       />
                     </td>
@@ -192,6 +195,8 @@ export default function InvoiceReportTemplate({
           </div>
         </div>
       </div>
+      <input type="hidden" name="status" value="pending" />
+      <input type="hidden" name="customerId" value={invoice.customerId} />
       <div className="mt-6 flex justify-end gap-4">
         <Link
           href="/dashboard/invoices"
