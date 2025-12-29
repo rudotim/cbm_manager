@@ -50,6 +50,11 @@ export default async function ReportsPage(props: {
               Generate All Invoices
             </Link>
           </li>
+          <li>
+            <Link href={`/reports/invoices/owed_vs_paid`} target="_blank">
+              Owed vs Paid
+            </Link>
+          </li>
         </ul>
       </div>
     </div>

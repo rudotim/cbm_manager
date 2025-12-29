@@ -41,3 +41,43 @@ export async function fetchMembershipInvoices(limit: number = 0) {
     throw new Error("Failed to fetch member invoices for report");
   }
 }
+
+export async function fetchInvoicesByOwedPaid(
+  limit: number = 0,
+  year: string = "",
+  paid: boolean = true
+) {
+  const limitStr = limit > 0 ? `limit ${limit}` : "";
+  const paidStr = paid
+    ? " inv.payment >= inv.amount "
+    : " (inv.payment < inv.amount OR IFNULL(inv.payment,0) = 0)";
+  const yearStr = year;
+
+  try {
+    const data = await sql.query<MemberInvoiceForm[]>(`
+    SELECT
+	  inv.id as invoice_id,
+      m.membership_id as customerId,
+      m.first_name, m.last_name, m.membership_type,
+      m.mailing_street, m.mailing_city, m.mailing_state, m.mailing_zip,
+      inv.num_badges,
+      inv.dock_slip,
+      inv.amount,
+      inv.payment,
+	    YEAR(inv.date) as year
+      FROM 
+      	invoices inv
+      INNER JOIN 
+	    membership m
+        ON inv.membership_id = m.membership_id
+      WHERE YEAR(inv.date) = ${yearStr}
+      AND ${paidStr}
+      ${limitStr}
+  `);
+
+    return data[0];
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch member invoices for report");
+  }
+}
