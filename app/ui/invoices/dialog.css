@@ -1,0 +1,20 @@
+.dialog-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.dialog-buttons .cancel {
+  border: 3px outset gray;
+  background-color: rgb(199, 193, 193);
+  color: rgb(0, 0, 0);
+  padding: 4px;
+  font-size: 1.5em;
+}
+
+.dialog-buttons .reset {
+  border: 3px outset gray;
+  background-color: red;
+  color: white;
+  padding: 4px;
+  font-size: 1.5em;
+}

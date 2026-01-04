@@ -80,8 +80,6 @@ const SettingsFormSchema = z.object({
 const UpdateSettings = SettingsFormSchema;
 
 export async function resetInvoices() {
-  console.log("RESETTING INVOICES");
-
   const curr_year = "2025";
 
   await sql.execute(
