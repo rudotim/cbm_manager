@@ -42,12 +42,12 @@ export default async function ReportsPage(props: {
               href={`/reports/invoices/generate_members?limit=3`}
               target="_blank"
             >
-              Generate 3 Invoices
+              Generate 3 Invoices For Mailing
             </Link>
           </li>
           <li>
             <Link href={`/reports/invoices/generate_members`} target="_blank">
-              Generate All Invoices
+              Generate Invoices For Mailing
             </Link>
           </li>
           <li>
