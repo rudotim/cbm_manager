@@ -52,7 +52,7 @@ export async function generateAndSaveFile(data: any) {
     return { success: true, filePath };
   } catch (error) {
     console.error("Error in Server Action:", error);
-    return { success: false, error: error.message };
+    return { success: false, error: error };
   }
 }
 
