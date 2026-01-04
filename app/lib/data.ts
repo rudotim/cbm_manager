@@ -162,7 +162,9 @@ export async function fetchFilteredInvoices(
   END as "final",
   CASE WHEN inv.payment - inv.amount = inv.payment THEN
     "paid_to"
-  WHEN inv.payment - ABS(inv.amount) < 0 THEN
+  WHEN (inv.payment - ABS(inv.amount) < 0) 
+    OR (IFNULL(inv.payment,0) = 0 
+        AND IFNULL(inv.amount,0) = 0) THEN
     "owed" 
   ELSE
       "paid"
