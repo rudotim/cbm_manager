@@ -1,3 +1,4 @@
+"use client";
 import {
   InvoiceForm,
   MemberInvoiceForm,
@@ -6,6 +7,7 @@ import {
 import { formatCurrency } from "@/app/lib/utils";
 import Link from "next/link";
 import { Button } from "@/app/ui/button";
+import { useState } from "react";
 
 export default function InvoiceReportTemplate({
   invoice,
@@ -15,6 +17,33 @@ export default function InvoiceReportTemplate({
   settings: SettingsData;
 }) {
   let count = 1;
+
+  const updateBadges = function (e: any) {
+    const num_badges = e.target.value;
+    setBadges(num_badges);
+    updateTotal(num_badges);
+  };
+
+  const cackalateTotal = function (num_badges: number) {
+    const mt =
+      settings.membership_fee +
+      settings.visionary_fund_fee +
+      settings.extra_badge_fee * num_badges;
+
+    return mt;
+  };
+
+  const updateTotal = function (num_badges: number) {
+    setTotal(cackalateTotal(num_badges));
+    setBadgeTotal(num_badges * settings.extra_badge_fee);
+  };
+
+  const [badges, setBadges] = useState(invoice.num_badges);
+  const [badgeTotal, setBadgeTotal] = useState(
+    invoice.num_badges * settings.extra_badge_fee,
+  );
+  const [total, setTotal] = useState(cackalateTotal(invoice.num_badges));
+
   return (
     <div>
       <div id="invoice">
@@ -47,7 +76,7 @@ export default function InvoiceReportTemplate({
                     <th>#</th>
                     <th className="text-left">DESCRIPTION</th>
                     <th className="text-left">UNIT PRICE</th>
-                    <th className="text-left">AMOUNT</th>
+                    <th className="text-left">QUANTITY</th>
                     <th className="text-left">TOTAL</th>
                   </tr>
                 </thead>
@@ -81,11 +110,12 @@ export default function InvoiceReportTemplate({
                         type="number"
                         step="1"
                         placeholder="0"
-                        defaultValue={invoice.num_badges}
+                        defaultValue={badges}
+                        onChange={updateBadges}
                         className="peer block w-full border border-gray-200 py-2 text-sm outline-2 placeholder:text-gray-500"
                       />
                     </td>
-                    <td className="total"></td>
+                    <td className="total">{formatCurrency(badgeTotal)}</td>
                   </tr>
                   <tr>
                     <td className="no">{count++}</td>
@@ -151,18 +181,8 @@ export default function InvoiceReportTemplate({
                 <tfoot>
                   <tr>
                     <td colSpan={2}></td>
-                    <td colSpan={2}>SUBTOTAL</td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td colSpan={2}></td>
-                    <td colSpan={2}>Early Payment Discount*</td>
-                    <td>-{formatCurrency(settings.early_payment_discount)}</td>
-                  </tr>
-                  <tr>
-                    <td colSpan={2}></td>
                     <td colSpan={2}>GRAND TOTAL</td>
-                    <td></td>
+                    <td>{formatCurrency(total)}</td>
                   </tr>
                   <tr>
                     <td colSpan={2}></td>
@@ -182,15 +202,17 @@ export default function InvoiceReportTemplate({
                 </tfoot>
               </table>
 
+              {/*
               <div className="notices">
                 <div className="notice">
                   *Early Payment Discount: To qualify, payment must be{" "}
                   <b>
                     <i>received</i>
                   </b>{" "}
-                  no later than {settings.early_payment_due_date}, 2026
+                  no later than {settings.early_payment_due_date}
                 </div>
               </div>
+              */}
             </main>
           </div>
         </div>
