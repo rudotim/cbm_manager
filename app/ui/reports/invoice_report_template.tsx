@@ -144,11 +144,13 @@ export default function InvoiceReportTemplate({
                     <td colSpan={2}>SUBTOTAL</td>
                     <td></td>
                   </tr>
+                  {/*
                   <tr>
                     <td colSpan={2}></td>
                     <td colSpan={2}>Early Payment Discount*</td>
                     <td>-{formatCurrency(settings.early_payment_discount)}</td>
                   </tr>
+                  */}
                   <tr>
                     <td colSpan={2}></td>
                     <td colSpan={2}>GRAND TOTAL</td>
@@ -159,6 +161,7 @@ export default function InvoiceReportTemplate({
               <div className="thanks">Thank you!</div>
 
               <div className="notices">
+                {/*
                 <div className="notice">
                   *Early Payment Discount: To qualify, payment must be{" "}
                   <b>
@@ -166,6 +169,7 @@ export default function InvoiceReportTemplate({
                   </b>{" "}
                   no later than {settings.early_payment_due_date}, 2026
                 </div>
+                */}
               </div>
               <div className="mt-10"></div>
               <div className="notices">
