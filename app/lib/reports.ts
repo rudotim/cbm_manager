@@ -28,7 +28,7 @@ export async function fetchMembershipInvoices(limit: number = 0) {
       m.membership_id as id,
       m.first_name, m.last_name, m.membership_type,
       m.mailing_street, m.mailing_city, m.mailing_state, m.mailing_zip,
-      d.slip, d.shore_power, d.t_slip
+      d.slip_number, d.slip, d.shore_power, d.t_slip
       FROM membership m
       LEFT JOIN dock d
       ON m.membership_id = d.membership_id

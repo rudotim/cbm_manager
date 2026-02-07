@@ -80,13 +80,13 @@ const SettingsFormSchema = z.object({
 const UpdateSettings = SettingsFormSchema;
 
 export async function resetInvoices() {
-  const curr_year = "2025";
+  const curr_year = "2026";
 
   await sql.execute(
     `
     DELETE from invoices where YEAR(date) = ?;
   `,
-    [curr_year]
+    [curr_year],
   );
 
   const rep = await fetchMembershipInvoices();
@@ -100,7 +100,7 @@ export async function resetInvoices() {
       INSERT INTO invoices (membership_id, amount, description, date)
       VALUES (?, ?, ?, ?)
     `,
-      [r.id, 0, "owed", curr_year + "-01-01 00:00:00"]
+      [r.id, 0, "owed", curr_year + "-01-01 00:00:00"],
     );
   }
 
@@ -441,7 +441,7 @@ export async function updateSettings(id: string, formData: FormData) {
 
 export async function authenticate(
   prevState: string | undefined,
-  formData: FormData
+  formData: FormData,
 ) {
   try {
     await signIn("credentials", formData);

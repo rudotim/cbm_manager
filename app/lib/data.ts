@@ -27,7 +27,7 @@ WHERE date is not NULL
 group by Year(date)
 order by date desc
 limit 10
-      `
+      `,
     );
 
     console.log("[dashboard]fetchRevenue fetch completed after 3 seconds:");
@@ -41,7 +41,7 @@ limit 10
 
 export async function fetchLatestInvoices(): Promise<LatestInvoice[]> {
   console.log(
-    "[dashboard]fetchLatestInvoices fetch completed after 3 seconds:"
+    "[dashboard]fetchLatestInvoices fetch completed after 3 seconds:",
   );
 
   try {
@@ -94,7 +94,7 @@ export async function fetchCardData() {
   try {
     const customerCountPromise = await sql.query(
       `SELECT COUNT(*) as "count" FROM membership
-      WHERE lower(status) = "active";`
+      WHERE lower(status) = "active";`,
     );
     const invoiceStatusPromise = await sql.query(`SELECT 
       count(*) as "count", 
@@ -117,10 +117,10 @@ export async function fetchCardData() {
     const numberOfCustomers = Number((data[0][0] as any)[0].count ?? 0);
     const numberOfInvoices = Number((data[1][0] as any)[0].count ?? 0);
     const totalPaidInvoices = formatCurrency(
-      Number((data[1][0] as any)[0].paid ?? 0)
+      Number((data[1][0] as any)[0].paid ?? 0),
     );
     const totalPendingInvoices = formatCurrency(
-      Number((data[1][0] as any)[0].pending ?? 0)
+      Number((data[1][0] as any)[0].pending ?? 0),
     );
 
     return {
@@ -138,7 +138,7 @@ export async function fetchCardData() {
 const ITEMS_PER_PAGE = 15;
 export async function fetchFilteredInvoices(
   query: string,
-  currentPage: number
+  currentPage: number,
 ) {
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
@@ -230,8 +230,8 @@ export async function fetchInvoiceById(id: string) {
       inv.dock_slip,
       inv.amount,
       inv.payment,
-	    YEAR(inv.date) as year,
-      d.slip, d.shore_power, d.t_slip
+	  YEAR(inv.date) as year,
+      d.slip_number, d.slip, d.shore_power, d.t_slip
       FROM 
       	invoices inv
       INNER JOIN 
@@ -338,7 +338,7 @@ export async function fetchCustomers() {
 
 export async function fetchFilteredCustomers(
   query: string,
-  currentPage: number
+  currentPage: number,
 ) {
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
@@ -394,7 +394,7 @@ select count(*) as "count"
 
     console.log(
       "[membership] fetching membership page count for pagination:",
-      (data[0] as any)[0].count
+      (data[0] as any)[0].count,
     );
     return Math.ceil(Number((data[0] as any)[0].count) / ITEMS_PER_PAGE);
   } catch (error) {
@@ -557,7 +557,7 @@ select count(*) as "count"
     let count = Number((data[0] as any)[0].count);
     console.log(
       "[properties] fetching property page count for pagination:",
-      count
+      count,
     );
     return Math.ceil(count / ITEMS_PER_PAGE);
   } catch (error) {
@@ -568,7 +568,7 @@ select count(*) as "count"
 
 export async function fetchFilteredProperties(
   query: string,
-  currentPage: number
+  currentPage: number,
 ) {
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
@@ -596,7 +596,7 @@ export async function fetchFilteredProperties(
 }
 
 export async function fetchSettings(
-  formatDateFunc: Function = formatDateToShort
+  formatDateFunc: Function = formatDateToShort,
 ) {
   try {
     const data = await sql.query<SettingsData[]>(`SELECT 

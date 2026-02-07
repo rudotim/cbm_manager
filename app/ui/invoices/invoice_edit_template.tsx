@@ -21,29 +21,47 @@ export default function InvoiceReportTemplate({
   const updateBadges = function (e: any) {
     const num_badges = e.target.value;
     setBadges(num_badges);
-    updateTotal(num_badges);
+    updateTotal(num_badges, slipPrice);
   };
 
-  const cackalateTotal = function (num_badges: number) {
+  const updateSlip = function (e: any) {
+    const _slipPrice = e.target.value;
+    setSlipPrice(_slipPrice);
+    //console.log("Slip Price:", _slipPrice);
+    updateTotal(badges, _slipPrice);
+  };
+
+  const cackalateTotal = function (num_badges: number, slip: number) {
     const mt =
       settings.membership_fee +
       settings.visionary_fund_fee +
+      slip * 1 +
       settings.extra_badge_fee * num_badges;
+
+    // console.log(
+    //   "Adding:",
+    //   settings.membership_fee,
+    //   settings.visionary_fund_fee,
+    //   slip,
+    // );
 
     return mt;
   };
 
-  const updateTotal = function (num_badges: number) {
-    setTotal(cackalateTotal(num_badges));
+  const updateTotal = function (num_badges: number, slip: number) {
+    setTotal(cackalateTotal(num_badges, slip));
     setBadgeTotal(num_badges * settings.extra_badge_fee);
   };
 
+  const [slipPrice, setSlipPrice] = useState(invoice.slip);
   const [badges, setBadges] = useState(invoice.num_badges);
   const [badgeTotal, setBadgeTotal] = useState(
     invoice.num_badges * settings.extra_badge_fee,
   );
-  const [total, setTotal] = useState(cackalateTotal(invoice.num_badges));
-
+  const [total, setTotal] = useState(
+    cackalateTotal(invoice.num_badges, invoice.dock_slip),
+  );
+  //console.log("invoice>", invoice);
   return (
     <div>
       <div id="invoice">
@@ -128,7 +146,7 @@ export default function InvoiceReportTemplate({
                       {formatCurrency(settings.visionary_fund_fee)}
                     </td>
                   </tr>
-                  {invoice.slip > 0 ? (
+                  {invoice.slip_number > 0 ? (
                     <>
                       <tr>
                         <td className="no">{count++}</td>
@@ -143,6 +161,7 @@ export default function InvoiceReportTemplate({
                             step="1"
                             placeholder="$0"
                             defaultValue={invoice.dock_slip}
+                            onChange={updateSlip}
                             className="peer block w-full border border-gray-200 py-2 text-sm outline-2 placeholder:text-gray-500"
                           />
                         </td>
