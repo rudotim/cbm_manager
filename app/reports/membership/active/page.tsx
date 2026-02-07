@@ -19,14 +19,16 @@ export default async function MembershipPage() {
         ></ReportHeader>
       </header>
       <main className="flex items-center justify-center">
-        <div className="relative mx-auto flex w-full max-w-[400px] flex-col space-y-2.5 p-4">
+        <div className="relative mx-auto flex w-full flex-col space-y-2.5 p-4">
           <div className="flex text-white w-full items-end rounded-lg bg-blue-500 p-3">
             Active Membership Report
           </div>
           {report.map((rep, i) => {
             return (
               <div key={rep.id}>
-                {i}: {rep.last_name}, {rep.first_name}
+                {i}: {rep.last_name}, {rep.first_name}, {rep.mailing_street},{" "}
+                {rep.mailing_city}, {rep.mailing_state}, {rep.mailing_zip},{" "}
+                {rep.email}, {rep.membership_type}, {rep.senior_status}
               </div>
             );
           })}

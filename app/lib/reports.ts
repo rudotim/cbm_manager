@@ -5,7 +5,9 @@ export async function fetchMembershipReport() {
   try {
     const data = await sql.query<MemberInvoiceForm[]>(`SELECT
       membership_id as id,
-      first_name, last_name
+      first_name, last_name, 
+      mailing_street, mailing_city, mailing_state, mailing_zip,
+      email, membership_type, senior_status
       FROM membership m
       WHERE LOWER(status) = "active"
       ORDER BY last_name asc
@@ -45,7 +47,7 @@ export async function fetchMembershipInvoices(limit: number = 0) {
 export async function fetchInvoicesByOwedPaid(
   limit: number = 0,
   year: string = "",
-  paid: boolean = true
+  paid: boolean = true,
 ) {
   const limitStr = limit > 0 ? `limit ${limit}` : "";
   const paidStr = paid
