@@ -115,24 +115,37 @@ export default function InvoiceReportTemplate({
                         <td className="total"></td>
                       </tr>
 
-                      <tr>
-                        <td className="no">{count++}</td>
-                        <td className="text-left">Optional Tee Slip</td>
-                        <td className="unit">
-                          {formatCurrency(settings.t_slip_fee)}
-                        </td>
-                        <td className="qty"></td>
-                        <td className="total"></td>
-                      </tr>
-                      <tr>
-                        <td className="no">{count++}</td>
-                        <td className="text-left">Optional Shore Power</td>
-                        <td className="unit">
-                          {formatCurrency(settings.shore_power_fee)}
-                        </td>
-                        <td className="qty"></td>
-                        <td className="total"></td>
-                      </tr>
+                      {(member_data.t_slip ?? false) ? (
+                        <tr>
+                          <td className="no">{count++}</td>
+                          <td className="text-left">Optional Tee Slip</td>
+                          <td className="unit">
+                            {formatCurrency(settings.t_slip_fee)}
+                          </td>
+                          <td className="qty">1</td>
+                          <td className="total">
+                            {formatCurrency(settings.t_slip_fee)}
+                          </td>
+                        </tr>
+                      ) : (
+                        <></>
+                      )}
+
+                      {(member_data.shore_power ?? false) ? (
+                        <tr>
+                          <td className="no">{count++}</td>
+                          <td className="text-left">Optional Shore Power</td>
+                          <td className="unit">
+                            {formatCurrency(settings.shore_power_fee)}
+                          </td>
+                          <td className="qty">1</td>
+                          <td className="total">
+                            {formatCurrency(settings.shore_power_fee)}
+                          </td>
+                        </tr>
+                      ) : (
+                        <></>
+                      )}
                     </>
                   ) : (
                     ""

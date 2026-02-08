@@ -27,15 +27,22 @@ export default function InvoiceReportTemplate({
   const updateSlip = function (e: any) {
     const _slipPrice = e.target.value;
     setSlipPrice(_slipPrice);
-    //console.log("Slip Price:", _slipPrice);
     updateTotal(badges, _slipPrice);
   };
+
+  //   const updateSlipDeposit = function (e: any) {
+  //     // dock_slip_deposit
+  //     const _deposit = e.target.value;
+  //     setSlipDepositPrice(_deposit);
+  //   };
 
   const cackalateTotal = function (num_badges: number, slip: number) {
     const mt =
       settings.membership_fee +
       settings.visionary_fund_fee +
       slip * 1 +
+      ((invoice.shore_power ?? false) ? 1 * settings.shore_power_fee : 0) +
+      ((invoice.t_slip ?? false) ? 1 * settings.t_slip_fee : 0) +
       settings.extra_badge_fee * num_badges;
 
     // console.log(
@@ -54,6 +61,7 @@ export default function InvoiceReportTemplate({
   };
 
   const [slipPrice, setSlipPrice] = useState(invoice.slip);
+  //const [slipDepositPrice, setSlipDepositPrice] = useState(invoice.deposit);
   const [badges, setBadges] = useState(invoice.num_badges);
   const [badgeTotal, setBadgeTotal] = useState(
     invoice.num_badges * settings.extra_badge_fee,
@@ -61,7 +69,7 @@ export default function InvoiceReportTemplate({
   const [total, setTotal] = useState(
     cackalateTotal(invoice.num_badges, invoice.dock_slip),
   );
-  //console.log("invoice>", invoice);
+
   return (
     <div>
       <div id="invoice">
@@ -150,6 +158,24 @@ export default function InvoiceReportTemplate({
                     <>
                       <tr>
                         <td className="no">{count++}</td>
+                        <td className="text-left">Dock Slip Deposit</td>
+                        <td className="unit"></td>
+                        <td className="qty"></td>
+                        <td className="total invoice_input">
+                          <input
+                            id="dock_slip_deposit"
+                            name="dock_slip_deposit"
+                            type="number"
+                            step="1"
+                            placeholder="$0"
+                            defaultValue={invoice.dock_slip_deposit}
+                            className="peer block w-full border border-gray-200 py-2 text-sm outline-2 placeholder:text-gray-500"
+                          />
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td className="no">{count++}</td>
                         <td className="text-left">Dock Slip Rental</td>
                         <td className="unit"></td>
                         <td className="qty"></td>
@@ -167,34 +193,40 @@ export default function InvoiceReportTemplate({
                         </td>
                       </tr>
 
-                      <tr>
-                        <td className="no">{count++}</td>
-                        <td className="text-left">Optional Tee Slip</td>
-                        <td className="unit">
-                          {formatCurrency(settings.t_slip_fee)}
-                        </td>
-                        <td className="qty"></td>
-                        <td className="total">
-                          <input
-                            type="input"
-                            name="t_slip"
-                            defaultChecked={!!invoice.t_slip}
-                            className="h-4 w-4 rounded border-gray-300 text-gray-600 focus:ring-2"
-                          />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="no">{count++}</td>
-                        <td className="text-left">Optional Shore Power</td>
-                        <td className="unit">
-                          {formatCurrency(settings.shore_power_fee)}
-                        </td>
-                        <td className="qty"></td>
-                        <td className="total"></td>
-                      </tr>
+                      {(invoice.t_slip ?? false) ? (
+                        <tr>
+                          <td className="no">{count++}</td>
+                          <td className="text-left">Optional Tee Slip</td>
+                          <td className="unit">
+                            {formatCurrency(settings.t_slip_fee)}
+                          </td>
+                          <td className="qty">1</td>
+                          <td className="total">
+                            {formatCurrency(settings.t_slip_fee)}
+                          </td>
+                        </tr>
+                      ) : (
+                        <></>
+                      )}
+
+                      {(invoice.shore_power ?? false) ? (
+                        <tr>
+                          <td className="no">{count++}</td>
+                          <td className="text-left">Optional Shore Power</td>
+                          <td className="unit">
+                            {formatCurrency(settings.shore_power_fee)}
+                          </td>
+                          <td className="qty">1</td>
+                          <td className="total">
+                            {formatCurrency(settings.shore_power_fee)}
+                          </td>
+                        </tr>
+                      ) : (
+                        <></>
+                      )}
                     </>
                   ) : (
-                    ""
+                    <></>
                   )}
                 </tbody>
                 <tfoot>
