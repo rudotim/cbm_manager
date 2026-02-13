@@ -105,7 +105,7 @@ export default function InvoiceReportTemplate({
                       {formatCurrency(settings.visionary_fund_fee)}
                     </td>
                   </tr>
-                  {member_data.slip > 0 ? (
+                  {member_data.slip_number > 0 ? (
                     <>
                       <tr>
                         <td className="no">{count++}</td>
@@ -187,7 +187,7 @@ export default function InvoiceReportTemplate({
               </div>
                 */}
               <div className="notices">
-                {member_data.slip > 0 ? (
+                {member_data.slip_number > 0 ? (
                   <>
                     <div className="notice">
                       50% deposit due by March 23, 2026. Remaining balance due
