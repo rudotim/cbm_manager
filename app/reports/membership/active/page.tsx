@@ -1,11 +1,12 @@
-"use server";
-
 import AcmeLogo from "@/app/ui/acme-logo";
 import LoginForm from "@/app/ui/login-form";
 import { Suspense } from "react";
 import { fetchMembershipReport } from "@/app/lib/reports";
 import clsx from "clsx";
 import ReportHeader from "@/app/ui/reports/report_header";
+
+// Stop the query from being cached
+export const dynamic = "force-dynamic";
 
 export default async function MembershipPage() {
   const report = await fetchMembershipReport();

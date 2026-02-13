@@ -3,6 +3,9 @@ import ReportHeader from "@/app/ui/reports/report_header";
 
 import "./invoice_styles.css";
 
+// Stop the query from being cached
+export const dynamic = "force-dynamic";
+
 export default async function OwedVsPaidPage(props: {
   searchParams?: Promise<{
     query?: string;

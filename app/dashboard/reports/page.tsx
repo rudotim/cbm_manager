@@ -27,7 +27,11 @@ export default async function ReportsPage(props: {
         <h2>Membership Reports</h2>
         <ul>
           <li>
-            <Link href={`/reports/membership/active`} target="_blank">
+            <Link
+              href={`/reports/membership/active`}
+              prefetch={false}
+              target="_blank"
+            >
               Active Membership List
             </Link>
           </li>
@@ -40,18 +44,27 @@ export default async function ReportsPage(props: {
           <li>
             <Link
               href={`/reports/invoices/generate_members?limit=3`}
+              prefetch={false}
               target="_blank"
             >
               Generate 3 Invoices For Mailing
             </Link>
           </li>
           <li>
-            <Link href={`/reports/invoices/generate_members`} target="_blank">
+            <Link
+              href={`/reports/invoices/generate_members`}
+              prefetch={false}
+              target="_blank"
+            >
               Generate Invoices For Mailing
             </Link>
           </li>
           <li>
-            <Link href={`/reports/invoices/owed_vs_paid`} target="_blank">
+            <Link
+              href={`/reports/invoices/owed_vs_paid`}
+              prefetch={false}
+              target="_blank"
+            >
               Owed vs Paid
             </Link>
           </li>

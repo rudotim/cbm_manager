@@ -6,6 +6,9 @@ import { formatDateToLocal } from "@/app/lib/utils";
 
 import "./invoice_styles.css";
 
+// Stop the query from being cached
+export const dynamic = "force-dynamic";
+
 export default async function MembershipPage(props: {
   searchParams?: Promise<{
     query?: string;
