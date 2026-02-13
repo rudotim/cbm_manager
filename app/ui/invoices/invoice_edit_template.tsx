@@ -253,6 +253,15 @@ export default function InvoiceReportTemplate({
                 </tfoot>
               </table>
 
+              <textarea
+                id="notes"
+                name="notes"
+                defaultValue={invoice?.notes}
+                rows={3} // Optional: sets initial height in rows
+                cols={40} // Optional: sets initial width in columns
+                placeholder="Notes"
+              />
+
               {/*
               <div className="notices">
                 <div className="notice">

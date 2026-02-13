@@ -16,6 +16,7 @@ const FormSchema = z.object({
   dock_slip: z.coerce.number(),
   payment: z.coerce.number(),
   status: z.enum(["pending", "paid"]),
+  notes: z.string(),
   date: z.string(),
 });
 const CreateInvoice = FormSchema.omit({ id: true, date: true });
@@ -146,12 +147,14 @@ export async function updateInvoice(id: string, formData: FormData) {
     payment,
     status,
     dock_slip_deposit,
+    notes,
   } = UpdateInvoice.parse({
     customerId: formData.get("customerId"),
     num_badges: formData.get("num_badges"),
     dock_slip: formData.get("dock_slip"),
     payment: formData.get("payment"),
     status: formData.get("status"),
+    notes: formData.get("notes"),
     dock_slip_deposit: formData.get("dock_slip_deposit"),
   });
 
@@ -164,7 +167,8 @@ export async function updateInvoice(id: string, formData: FormData) {
     dock_slip = ${dock_slip}, 
     payment = ${payment}, 
     description = "${status}",
-    dock_slip_deposit = "${dock_slip_deposit}"
+    dock_slip_deposit = "${dock_slip_deposit}",
+    notes = "${notes}"
     WHERE id = ${id}
   `);
 

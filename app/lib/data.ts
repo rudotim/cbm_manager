@@ -231,6 +231,7 @@ export async function fetchInvoiceById(id: string) {
       inv.amount,
       inv.payment,
       inv.dock_slip_deposit,
+      inv.notes,
 	  YEAR(inv.date) as year,
       d.slip_number, d.slip, d.shore_power, d.t_slip
       FROM 
