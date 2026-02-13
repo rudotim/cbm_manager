@@ -171,10 +171,12 @@ export default function InvoiceReportTemplate({
                   </tr>
                 </tfoot>
               </table>
+              <div className="mt-2"></div>
               <div className="thanks">Thank you!</div>
+              <div className="mt-4"></div>
 
+              {/*
               <div className="notices">
-                {/*
                 <div className="notice">
                   *Early Payment Discount: To qualify, payment must be{" "}
                   <b>
@@ -182,10 +184,24 @@ export default function InvoiceReportTemplate({
                   </b>{" "}
                   no later than {settings.early_payment_due_date}, 2026
                 </div>
-                */}
               </div>
-              <div className="mt-10"></div>
+                */}
               <div className="notices">
+                {member_data.slip > 0 ? (
+                  <>
+                    <div className="notice">
+                      50% deposit due by March 23, 2026. Remaining balance due
+                      by April 15, 2026. No vessel may occupy a slip prior to
+                      April 1, 2026 and not until full payment is made and proof
+                      of liability insurance is provided. A signed copy of the
+                      Cape Breton Dock and Boat slip rules must accompany your
+                      payment.
+                    </div>
+                    <div className="mt-5"></div>
+                  </>
+                ) : (
+                  <></>
+                )}
                 <div className="notice">
                   All Slip Rental fees and Options MUST be paid in full before
                   tying up your boat or Jet Ski at the dock. No boats or Jet
