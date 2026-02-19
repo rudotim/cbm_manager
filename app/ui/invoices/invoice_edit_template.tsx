@@ -21,26 +21,33 @@ export default function InvoiceReportTemplate({
   const updateBadges = function (e: any) {
     const num_badges = e.target.value;
     setBadges(num_badges);
-    updateTotal(num_badges, slipPrice);
+    updateTotal(num_badges, slipPrice, slipDepositPrice);
   };
 
   const updateSlip = function (e: any) {
     const _slipPrice = e.target.value;
     setSlipPrice(_slipPrice);
-    updateTotal(badges, _slipPrice);
+    updateTotal(badges, _slipPrice, slipDepositPrice);
   };
 
-  //   const updateSlipDeposit = function (e: any) {
-  //     // dock_slip_deposit
-  //     const _deposit = e.target.value;
-  //     setSlipDepositPrice(_deposit);
-  //   };
+  const updateSlipDeposit = function (e: any) {
+    const _deposit = e.target.value;
+    console.log("Setting deposit price:", _deposit);
+    setSlipDepositPrice(_deposit);
+    updateTotal(badges, slipPrice, _deposit);
+  };
 
-  const cackalateTotal = function (num_badges: number, slip: number) {
+  const cackalateTotal = function (
+    num_badges: number,
+    slip: number,
+    deposit: number,
+  ) {
+    //console.log("Adding depsoti:", deposit);
     const mt =
       settings.membership_fee +
       settings.visionary_fund_fee +
       slip * 1 +
+      deposit * 1 +
       ((invoice.shore_power ?? false) ? 1 * settings.shore_power_fee : 0) +
       ((invoice.t_slip ?? false) ? 1 * settings.t_slip_fee : 0) +
       settings.extra_badge_fee * num_badges;
@@ -50,24 +57,35 @@ export default function InvoiceReportTemplate({
     //   settings.membership_fee,
     //   settings.visionary_fund_fee,
     //   slip,
+    //   deposit,
     // );
 
     return mt;
   };
 
-  const updateTotal = function (num_badges: number, slip: number) {
-    setTotal(cackalateTotal(num_badges, slip));
+  const updateTotal = function (
+    num_badges: number,
+    slip: number,
+    deposit: number,
+  ) {
+    setTotal(cackalateTotal(num_badges, slip, deposit));
     setBadgeTotal(num_badges * settings.extra_badge_fee);
   };
 
   const [slipPrice, setSlipPrice] = useState(invoice.slip);
-  //const [slipDepositPrice, setSlipDepositPrice] = useState(invoice.deposit);
+  const [slipDepositPrice, setSlipDepositPrice] = useState(
+    invoice.dock_slip_deposit,
+  );
   const [badges, setBadges] = useState(invoice.num_badges);
   const [badgeTotal, setBadgeTotal] = useState(
     invoice.num_badges * settings.extra_badge_fee,
   );
   const [total, setTotal] = useState(
-    cackalateTotal(invoice.num_badges, invoice.dock_slip),
+    cackalateTotal(
+      invoice.num_badges,
+      invoice.dock_slip,
+      invoice.dock_slip_deposit,
+    ),
   );
 
   return (
@@ -168,6 +186,7 @@ export default function InvoiceReportTemplate({
                             type="number"
                             step="1"
                             placeholder="$0"
+                            onChange={updateSlipDeposit}
                             defaultValue={invoice.dock_slip_deposit}
                             className="peer block w-full border border-gray-200 py-2 text-sm outline-2 placeholder:text-gray-500"
                           />
