@@ -20,7 +20,9 @@ export default async function MembershipPage(props: {
 
   const limit = Number(searchParams?.limit) || 0;
 
-  const invoices = await fetchMembershipInvoices(limit);
+  const current_year = "2026";
+
+  const invoices = await fetchMembershipInvoices(current_year, limit);
   const settings = await fetchSettings(formatDateToLocal);
 
   return (
