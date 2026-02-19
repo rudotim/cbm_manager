@@ -20,8 +20,8 @@ export function ResetInvoiceDialog({
   isOpen: boolean;
   done: any;
 }) {
-  const handleDeactivate = () => {
-    resetInvoices();
+  const handleReset = (year: string) => {
+    resetInvoices(year);
     close();
   };
 
@@ -40,21 +40,21 @@ export function ResetInvoiceDialog({
 
       <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
         <DialogPanel className="border-2 border-black max-w-lg space-y-4 border bg-white p-12">
-          <DialogTitle>Reset Invoices for 2025</DialogTitle>
+          <DialogTitle>Reset Invoices for 2026</DialogTitle>
 
           <Description>
-            This will delete and recreate all invoices for 2025
+            This will delete and recreate all invoices for <b>2026</b>
           </Description>
           <p>
-            Any edits you have made to any 2025 invoices will be undone. Are you
-            sure you want to do this?
+            Any edits you have made to any <b>2026</b> invoices will be undone.
+            Are you sure you want to do this?
           </p>
 
           <div className="dialog-buttons">
             <button className="cancel" onClick={close}>
               No, Cancel
             </button>
-            <button className="reset" onClick={handleDeactivate}>
+            <button className="reset" onClick={() => handleReset("2026")}>
               Yes, Reset
             </button>
           </div>

@@ -81,9 +81,7 @@ const SettingsFormSchema = z.object({
 });
 const UpdateSettings = SettingsFormSchema;
 
-export async function resetInvoices() {
-  const curr_year = "2026";
-
+export async function resetInvoices(curr_year: string) {
   await sql.execute(
     `
     DELETE from invoices where YEAR(date) = ?;
@@ -105,14 +103,6 @@ export async function resetInvoices() {
       [r.id, 0, "owed", curr_year + "-01-01 00:00:00"],
     );
   }
-
-  // await sql.execute(`
-  //   SELECT first_name from membership;
-  // `);
-
-  // await sql.execute(`
-  //   INSERT INTO from invoices where strftime('%Y', date) = "2025";
-  // `);
 
   revalidatePath("/dashboard/invoices");
   redirect("/dashboard/invoices");
