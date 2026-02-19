@@ -34,12 +34,13 @@ function createCSVFileFromData(data: []) {
 
 export async function generateAndSaveFile(data: any) {
   try {
+    const current_year = "2026";
     switch (data) {
       case "fetchMembershipReport":
         data = await rep.fetchMembershipReport();
         break;
       case "fetchMembershipInvoices":
-        data = await rep.fetchMembershipInvoices();
+        data = await rep.fetchMembershipInvoices(current_year);
         break;
     }
 

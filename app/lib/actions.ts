@@ -6,7 +6,7 @@ import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import sql from "@/app/lib/db";
-import { fetchMembershipInvoices } from "./reports";
+import { fetchMembershipReport } from "./reports";
 
 const FormSchema = z.object({
   id: z.string(),
@@ -89,7 +89,7 @@ export async function resetInvoices(curr_year: string) {
     [curr_year],
   );
 
-  const rep = await fetchMembershipInvoices();
+  const rep = await fetchMembershipReport();
 
   console.log("rep resp=", rep.length);
   for (const r of rep) {
