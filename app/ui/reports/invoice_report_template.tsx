@@ -109,6 +109,16 @@ export default function InvoiceReportTemplate({
                     <>
                       <tr>
                         <td className="no">{count++}</td>
+                        <td className="text-left">Dock Slip Deposit</td>
+                        <td className="unit"></td>
+                        <td className="qty"></td>
+                        <td className="total">
+                          {formatCurrency(member_data.dock_slip_deposit)}
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td className="no">{count++}</td>
                         <td className="text-left">Dock Slip Rental</td>
                         <td className="unit"></td>
                         <td className="qty"></td>
