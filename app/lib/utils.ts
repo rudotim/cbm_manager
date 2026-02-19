@@ -12,29 +12,49 @@ export const formatCurrency = (amount: number) => {
  */
 export const formatDateToShort = (
   dateStr: string,
-  locale: string = "en-US"
+  locale: string = "en-US",
 ) => {
-  const date = new Date(dateStr);
-  const mm = String(date.getMonth() + 1).padStart(2, "0");
-  const dd = String(date.getDate()).padStart(2, "0");
-  const yyyy = date.getFullYear();
+  //   const date = new Date(dateStr);
+  //   const mm = String(date.getMonth() + 1).padStart(2, "0");
+  //   const dd = String(date.getDate()).padStart(2, "0");
+  //   const yyyy = date.getFullYear();
 
-  return `${yyyy}-${mm}-${dd}`;
+  //   let result = `${yyyy}-${mm}-${dd}`;
+
+  //   console.log("CONVERTING", dateStr, "to", result);
+  try {
+    return new Date(dateStr).toISOString().slice(0, 10);
+  } catch (error) {
+    return "";
+  }
 };
 
 export const formatDateToLocal = (
   dateStr: string,
-  locale: string = "en-US"
+  locale: string = "en-US",
 ) => {
-  const date = new Date(dateStr);
-  const options: Intl.DateTimeFormatOptions = {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  };
+  //   const date = new Date(dateStr);
+  //   const options: Intl.DateTimeFormatOptions = {
+  //     day: "numeric",
+  //     month: "short",
+  //     year: "numeric",
+  //   };
+  //   const formatter = new Intl.DateTimeFormat(locale, options);
+  //   return formatter.format(date);
+  // Source - https://stackoverflow.com/a/15171030
+  // Posted by Matt Johnson-Pint, modified by community. See post 'Timeline' for change history
+  // Retrieved 2026-02-18, License - CC BY-SA 4.0
+  //   return new Date(dateStr).toLocaleString("en", {
+  //     timeZone: "America/New_York",
+  //   });
+  //return new Date(dateStr).toLocaleDateString(locale);
 
-  const formatter = new Intl.DateTimeFormat(locale, options);
-  return formatter.format(date);
+  try {
+    let parts = dateStr.split("-");
+    return `${parts[1]}/${parts[2]}/${parts[0]}`;
+  } catch (error) {
+    return "";
+  }
 };
 
 export const generateYAxis = (revenue: Revenue[]) => {
