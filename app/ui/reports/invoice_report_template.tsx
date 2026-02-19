@@ -198,15 +198,16 @@ export default function InvoiceReportTemplate({
                       payment.
                     </div>
                     <div className="mt-5"></div>
+                    <div className="notice">
+                      All Slip Rental fees and Options MUST be paid in full
+                      before tying up your boat or Jet Ski at the dock. No boats
+                      or Jet Skis at the dock before{" "}
+                      {settings.no_boats_before_date}
+                    </div>
                   </>
                 ) : (
                   <></>
                 )}
-                <div className="notice">
-                  All Slip Rental fees and Options MUST be paid in full before
-                  tying up your boat or Jet Ski at the dock. No boats or Jet
-                  Skis at the dock before {settings.no_boats_before_date}
-                </div>
               </div>
             </main>
           </div>
