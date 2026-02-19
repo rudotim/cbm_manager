@@ -157,8 +157,8 @@ export async function updateInvoice(id: string, formData: FormData) {
     dock_slip = ${dock_slip}, 
     payment = ${payment}, 
     description = "${status}",
-    dock_slip_deposit = "${dock_slip_deposit}",
-    notes = "${notes}"
+    dock_slip_deposit = ${dock_slip_deposit},
+    notes = "${notes.replace(/"/g, "")}"
     WHERE id = ${id}
   `);
 
