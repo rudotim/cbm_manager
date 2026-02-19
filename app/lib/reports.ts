@@ -20,22 +20,51 @@ export async function fetchMembershipReport() {
   }
 }
 
-export async function fetchMembershipInvoices(limit: number = 0) {
+export async function fetchMembershipInvoices(
+  current_year: string,
+  limit: number = 0,
+) {
   const limitStr = limit > 0 ? `limit ${limit}` : "";
 
   try {
-    const data = await sql.query<MemberInvoiceForm[]>(`SELECT
-      m.membership_id as id,
+    //     const data = await sql.query<MemberInvoiceForm[]>(`SELECT
+    //       m.membership_id as id,
+    //       m.first_name, m.last_name, m.membership_type,
+    //       m.mailing_street, m.mailing_city, m.mailing_state, m.mailing_zip,
+    //       d.slip_number, d.slip, d.shore_power, d.t_slip
+    //       FROM membership m
+    //       LEFT JOIN dock d
+    //       ON m.membership_id = d.membership_id
+    //       WHERE LOWER(m.status) = "active"
+    //       ORDER BY m.last_name asc
+    //       ${limitStr}
+    //   `);
+
+    const data = await sql.query<MemberInvoiceForm[]>(`
+    SELECT
+	  inv.id as invoice_id,
+      m.membership_id as customerId,
       m.first_name, m.last_name, m.membership_type,
       m.mailing_street, m.mailing_city, m.mailing_state, m.mailing_zip,
+      inv.num_badges,
+      inv.dock_slip,
+      inv.amount,
+      inv.payment,
+      inv.dock_slip_deposit,
+      inv.notes,
+	  YEAR(inv.date) as year,
       d.slip_number, d.slip, d.shore_power, d.t_slip
-      FROM membership m
-      LEFT JOIN dock d
-      ON m.membership_id = d.membership_id
-      WHERE LOWER(m.status) = "active"      
-      ORDER BY m.last_name asc
-      ${limitStr}
-  `);
+      FROM 
+      	invoices inv
+      INNER JOIN 
+	    membership m
+        ON inv.membership_id = m.membership_id
+      LEFT JOIN 
+        dock d
+        ON m.membership_id = d.membership_id
+      WHERE YEAR(inv.date) = "${current_year}"
+      ${limitStr};
+    `);
 
     return data[0];
   } catch (error) {
