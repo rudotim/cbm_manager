@@ -9,6 +9,17 @@ export default function InvoiceReportTemplate({
   settings: SettingsData;
 }) {
   let count = 1;
+
+  const total =
+    settings.membership_fee +
+    settings.visionary_fund_fee +
+    member_data.dock_slip +
+    ((member_data.shore_power ?? false) ? 1 * settings.shore_power_fee : 0) +
+    ((member_data.t_slip ?? false) ? 1 * settings.t_slip_fee : 0) +
+    settings.extra_badge_fee * member_data.num_badges;
+
+  const badge_price = settings.extra_badge_fee * (member_data.num_badges ?? 0);
+
   return (
     <div>
       <div id="invoice">
@@ -91,8 +102,8 @@ export default function InvoiceReportTemplate({
                     <td className="unit">
                       {formatCurrency(settings.extra_badge_fee)}
                     </td>
-                    <td className="qty"></td>
-                    <td className="total"></td>
+                    <td className="qty">{member_data.num_badges}</td>
+                    <td className="total">{formatCurrency(badge_price)}</td>
                   </tr>
                   <tr>
                     <td className="no">{count++}</td>
@@ -169,7 +180,7 @@ export default function InvoiceReportTemplate({
                   <tr>
                     <td colSpan={2}></td>
                     <td colSpan={2}>GRAND TOTAL</td>
-                    <td></td>
+                    <td>{formatCurrency(total)}</td>
                   </tr>
                   <tr>
                     <td>Notes:</td>
@@ -192,6 +203,7 @@ export default function InvoiceReportTemplate({
                 </div>
               </div>
                 */}
+              {/*
               <div className="notices">
                 {member_data.slip_number > 0 ? (
                   <>
@@ -215,6 +227,7 @@ export default function InvoiceReportTemplate({
                   <></>
                 )}
               </div>
+              */}
             </main>
           </div>
         </div>
