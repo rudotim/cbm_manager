@@ -37,7 +37,7 @@ export default async function MembershipPage(props: {
         <div className="relative mx-auto flex w-full w-[8.5in] h-[11in] flex-col space-y-2.5 p-4">
           {invoices.map((member_invoice, i) => {
             return (
-              <div key={member_invoice.id}>
+              <div key={member_invoice.invoice_id}>
                 <InvoiceReportTemplate
                   member_data={member_invoice}
                   settings={settings}
